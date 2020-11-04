@@ -1,16 +1,17 @@
 package com.example.studentrelief;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.example.studentrelief.services.interfaces.DonnerClient;
+import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.ui.dialogs.AlertDialogFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,9 +20,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.web.client.RestClientException;
+
+import java.util.List;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     @ViewById
     Toolbar toolbar;
-
+    @RestService
+    DonnerClient accomplishmentClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,11 +62,35 @@ public class MainActivity extends AppCompatActivity {
     }
     @Click(R.id.fab)
     void click(View view){
+        loadListAsync();
         AlertDialogFragment d = new AlertDialogFragment();
         d.show(getSupportFragmentManager(),"Alert");
 
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+    }
+    @Background
+    void loadListAsync(){
+        try {
+
+            accomplishmentClient.getAll();
+
+        } catch (RestClientException e){
+            Log.e("Rest error",e.getMessage());
+
+        }
+    }
+    @UiThread
+    void loadList( List<DonnerModel> list){
+
+        if (list.size() == 0){
+            Toast.makeText(this,"No record found!",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this,list.size(),Toast.LENGTH_SHORT).show();
+        }
+
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
