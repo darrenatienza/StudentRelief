@@ -27,13 +27,17 @@ android {
     buildTypes {
         debug {
             // note that to define a string you need to escape it
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/api.php\""
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //need to make project for updating changes
             //buildConfigField "String", "BASE_URL",
+        }
+        'debug-home' {
+            // note that to define a string you need to escape it
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.43.144/api.php\""
         }
     }
     packagingOptions {

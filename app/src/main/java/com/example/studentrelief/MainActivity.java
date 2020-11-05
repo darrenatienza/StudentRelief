@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.ui.dialogs.AlertDialogFragment;
+import com.example.studentrelief.ui.student.MyStudentRecyclerViewAdapter;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,7 +25,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
 import java.util.List;
@@ -36,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     @ViewById
     Toolbar toolbar;
-    @RestService
-    DonnerClient accomplishmentClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
     void loadListAsync(){
         try {
 
-            accomplishmentClient.getAll();
+
+
 
         } catch (RestClientException e){
             Log.e("Rest error",e.getMessage());

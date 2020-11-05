@@ -1,14 +1,11 @@
 package com.example.studentrelief.services.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 public class DonnerModel {
-   int donner_id;
+    int donner_id;
     String  full_name;
     String  address;
-            String contact_number;
-    Date create_time_stamp;
+    String contact_number;
+    String create_time_stamp;
 
     public int getDonner_id() {
         return donner_id;
@@ -42,11 +39,11 @@ public class DonnerModel {
         this.contact_number = contact_number;
     }
 
-    public Date getCreate_time_stamp() {
+    public String getCreate_time_stamp() {
         return create_time_stamp;
     }
 
-    public void setCreate_time_stamp(Date create_time_stamp) {
+    public void setCreate_time_stamp(String create_time_stamp) {
         this.create_time_stamp = create_time_stamp;
     }
 }

@@ -1,35 +1,45 @@
 package com.example.studentrelief.ui.home;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.DonnerClient;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.web.client.RestClientException;
+
+@EFragment(R.layout.fragment_home)
 public class HomeFragment extends Fragment {
+    @RestService
+    DonnerClient donnerClient;
+   @ViewById(R.id.text_home)
+    TextView et;
+    private int count;
 
-    private HomeViewModel homeViewModel;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }
+    @AfterViews
+    void Init(){
+       et.setText("asdf");
+       loadDonners();
+   }
+   @Background
+    void loadDonners(){
+       try {
+           count = donnerClient.getAll().getRecords().size();
+           updateDonners();
+       }catch (RestClientException ex){
+           Toast.makeText(getContext(),ex.getMessage(),Toast.LENGTH_SHORT).show();
+       }
+   }
+   @UiThread
+    void updateDonners(){
+       et.setText(String.valueOf(count));
+   }
 }
