@@ -1,10 +1,10 @@
 package com.example.studentrelief.services.model;
 
-import com.example.studentrelief.ui.student.MyStudentRecyclerViewAdapter;
+
 
 import java.util.List;
 
-public class DonnerModels {
+public class DonnerContainer {
     public List<DonnerModel> getRecords() {
         return records;
     }

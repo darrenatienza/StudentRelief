@@ -12,20 +12,13 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.studentrelief.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.studentrelief.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
-
     <fragment
-        android:id="@+id/nav_student_list"
-        android:name="com.example.studentrelief.ui.student.StudentFragment_"
-        android:label="@string/menu_student_list"
-        tools:layout="@layout/fragment_student_list" />
+        android:id="@+id/nav_donners_list"
+        android:name="com.example.studentrelief.ui.donner.DonnerListFragment_"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
 </navigation>
