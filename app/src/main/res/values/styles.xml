@@ -15,5 +15,23 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
+    <style
+        name="dialog" parent="AppTheme">
+        <!-- title encapsulating main part (backgroud) of custom alertdialog -->
+        <!--<item
+            name="android:windowFrame">true</item> -->
+        <!-- turn off any drawable used to draw a frame on the window -->
+        <item
+            name="android:windowBackground">@color/design_default_color_primary</item>
+        <!-- turn off any drawable used to draw a frame on the window -->
+        <item
+            name="android:windowIsFloating">true</item>
+        <!-- float the window so it does not fill the screen -->
+        <item
+            name="android:windowNoTitle">true</item>
+        <!-- remove the title bar we make our own-->
+        <item
+            name="android:windowContentOverlay">@color/colorPrimary</item>
+        <!-- remove the shadow from under the title bar -->
+    </style>
 </resources>

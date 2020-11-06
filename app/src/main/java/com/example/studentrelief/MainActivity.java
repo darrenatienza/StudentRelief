@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.ui.dialogs.AlertDialogFragment;
 
+import com.example.studentrelief.ui.donner.DonnerFormFragment_;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     @ViewById
     Toolbar toolbar;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home,  R.id.nav_slideshow,R.id.nav_student_list,R.id.nav_donners_list)
+                R.id.nav_home,  R.id.nav_slideshow,R.id.nav_student_list,R.id.nav_donners_list,R.id.nav_donner_form)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -60,37 +62,18 @@ public class MainActivity extends AppCompatActivity {
     }
     @Click(R.id.fab)
     void click(View view){
-        loadListAsync();
-        AlertDialogFragment d = new AlertDialogFragment();
-        d.show(getSupportFragmentManager(),"Alert");
+        Boolean isDonnerListActive = navigationView.getMenu().findItem(R.id.nav_donners_list).isChecked();
 
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
-    @Background
-    void loadListAsync(){
-        try {
-
-
-
-
-        } catch (RestClientException e){
-            Log.e("Rest error",e.getMessage());
-
-        }
-    }
-    @UiThread
-    void loadList( List<DonnerModel> list){
-
-        if (list.size() == 0){
-            Toast.makeText(this,"No record found!",Toast.LENGTH_SHORT).show();
+        if (isDonnerListActive){
+            DonnerFormFragment_ formDialog = new DonnerFormFragment_();
+            formDialog.show(getSupportFragmentManager(),"dialog");
         }else{
-            Toast.makeText(this,list.size(),Toast.LENGTH_SHORT).show();
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }
 
-
-
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

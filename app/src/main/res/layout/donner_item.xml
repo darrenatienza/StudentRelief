@@ -1,13 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@color/cardview_light_background"
+    >
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginLeft="10dp">
 
-    <TextView
-        android:id="@+id/fullNameView"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:text="asdf">
+       /**Id */
+       <TextView
+           android:id="@+id/idView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:visibility="gone"
+           />
 
-    </TextView>
-</LinearLayout>
+       <TextView
+           android:id="@+id/fullNameView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="10dp"
+           android:textSize="18dp"
+           android:textStyle="bold"
+           android:text="Full Name" />
+
+       <TextView
+           android:id="@+id/addressView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/fullNameView"
+           android:textSize="16dp"
+
+           android:layout_marginLeft="10dp"
+           android:layout_marginTop="5dp"
+           android:text="Address" />
+
+       <TextView
+           android:id="@+id/contactNumberView"
+           android:layout_width="match_parent"
+           android:layout_height="26dp"
+           android:layout_marginLeft="10dp"
+           android:textSize="14dp"
+           android:layout_below="@+id/addressView"
+           android:text="09xxxx" />
+   </RelativeLayout>
+
+
+
+</RelativeLayout>

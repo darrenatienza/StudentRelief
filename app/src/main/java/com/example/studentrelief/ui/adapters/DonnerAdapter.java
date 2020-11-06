@@ -23,12 +23,17 @@ public class DonnerAdapter extends RecyclerViewAdapterBase<DonnerModel, DonnerIt
 
     @RootContext
     Context context;
-    public List<DonnerModel> donnerModelList = new ArrayList<>();
+
+    public void setDonnerModelList(List<DonnerModel> donnerModelList) {
+        items = donnerModelList;
+    }
+
+
     @Override
     protected DonnerItemView onCreateItemView(ViewGroup parent, int viewType) {
         return DonnerItemView_.build(context);
     }
-    OnClickI
+
     @Override
     public void onBindViewHolder(ViewWrapper<DonnerItemView> viewHolder, int position) {
         DonnerItemView view = viewHolder.getView();
@@ -36,19 +41,7 @@ public class DonnerAdapter extends RecyclerViewAdapterBase<DonnerModel, DonnerIt
 
         view.bind(person);
     }
-    @AfterInject
-    void initAdapter() {
-        DonnerModel d = new DonnerModel();
-        d.setFull_name("asdf");
-        items.add(d);
-        items.add(d);
-        items.add(d);
-        items.add(d);
-        items.add(d);
-        items.add(d);
-        items.add(d);
-        items.add(d);
-    }
+
 
 
 }

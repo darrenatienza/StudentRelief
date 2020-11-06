@@ -27,19 +27,7 @@ public class HomeFragment extends Fragment {
     @AfterViews
     void Init(){
        et.setText("asdf");
-       loadDonners();
+
    }
-   @Background
-    void loadDonners(){
-       try {
-           count = donnerClient.getAll().getRecords().size();
-           updateDonners();
-       }catch (RestClientException ex){
-           Toast.makeText(getContext(),ex.getMessage(),Toast.LENGTH_SHORT).show();
-       }
-   }
-   @UiThread
-    void updateDonners(){
-       et.setText(String.valueOf(count));
-   }
+
 }

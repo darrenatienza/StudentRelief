@@ -11,6 +11,9 @@ import com.example.studentrelief.MainActivity;
 import com.example.studentrelief.MainActivity_;
 import com.example.studentrelief.R;
 
+import org.androidannotations.annotations.EFragment;
+
+@EFragment
 public class AlertDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
