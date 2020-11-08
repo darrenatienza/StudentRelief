@@ -16,6 +16,7 @@ import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.ui.adapters.DonnerAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -32,7 +33,7 @@ import static android.widget.Toast.makeText;
 
 
 @EFragment(R.layout.fragment_donner_list)
-public class DonnerListFragment extends Fragment {
+public class DonnerListFragment extends Fragment implements DonnerFormFragment.DialogFragmentListener {
 
     @RestService
     DonnerClient donnerClient;
@@ -63,9 +64,18 @@ public class DonnerListFragment extends Fragment {
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 // do it
                 TextView t = v.findViewById(R.id.idView);
-                Log.d("Test",t.getText().toString());
+                int id = Integer.parseInt(t.getText().toString());
+                showFormDialog(id);
             }
         });
+    }
+
+    private void showFormDialog(int id) {
+        DonnerFormFragment_ formDialog = new DonnerFormFragment_();
+        // use to load new list after save or delete on dialog
+        formDialog.setParentFragment(this);
+        formDialog.setId(id);
+        formDialog.show(getFragmentManager(),"dialog");
     }
 
     @Background
@@ -87,5 +97,18 @@ public class DonnerListFragment extends Fragment {
     void search(){
         loadList();
     }
+    @Click(R.id.fab)
+    void click(View view){
+            DonnerFormFragment_ formDialog = new DonnerFormFragment_();
+            // use to load new list after save or delete on dialog
+            formDialog.setParentFragment(this);
 
+            formDialog.show(getFragmentManager(),"dialog");
+    }
+
+    // action after save or delete click on dialog form
+    @Override
+    public void onFinishAction() {
+       loadList();
+    }
 }

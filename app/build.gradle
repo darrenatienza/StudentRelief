@@ -27,8 +27,8 @@ android {
     buildTypes {
         debug {
             // note that to define a string you need to escape it
-            //buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/api.php\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
+            //buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/api.php\""
         }
         release {
             minifyEnabled false
@@ -70,5 +70,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
+    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
 }

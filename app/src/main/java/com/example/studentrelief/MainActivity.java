@@ -60,19 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public void doPositiveClick(){
         Toast.makeText(this,"message",Toast.LENGTH_SHORT).show();
     }
-    @Click(R.id.fab)
-    void click(View view){
-        Boolean isDonnerListActive = navigationView.getMenu().findItem(R.id.nav_donners_list).isChecked();
 
-        if (isDonnerListActive){
-            DonnerFormFragment_ formDialog = new DonnerFormFragment_();
-            formDialog.show(getSupportFragmentManager(),"dialog");
-        }else{
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -4,27 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="10dp"
     tools:context=".ui.donner.DonnerFormFragment_">
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/delete_button"
+        android:text="Delete"
+        app:layout_constraintEnd_toStartOf="@+id/btnSave"
+        app:layout_constraintTop_toBottomOf="@+id/tiContactNumber" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="85dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Donner's Information"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dialog_title_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tiFullName"
         android:layout_width="0dp"
         android:layout_height="76dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:hint="@string/full_name"
-        android:paddingBottom="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
 
-        <com.google.android.material.textfield.TextInputEditText
+        android:hint="@string/full_name"
+        android:textColorHint="@android:color/secondary_text_light"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <EditText
             android:id="@+id/etFullName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/secondary_text_light"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="16dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -32,22 +74,22 @@
         android:id="@+id/tiAddress"
         android:layout_width="0dp"
         android:layout_height="76dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
         android:hint="@string/address"
         android:paddingBottom="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColorHint="@android:color/secondary_text_light"
+        app:layout_constraintEnd_toEndOf="@+id/tiFullName"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tiFullName"
         app:layout_constraintTop_toBottomOf="@+id/tiFullName">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/etAddress"
             android:layout_width="match_parent"
-            android:layout_height="52dp" />
+            android:layout_height="52dp"
+            android:textSize="16dp"
+            android:backgroundTint="@android:color/secondary_text_light"
+            android:textColor="@android:color/primary_text_light"
+            android:textColorHint="@android:color/secondary_text_light" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,22 +97,23 @@
         android:id="@+id/tiContactNumber"
         android:layout_width="0dp"
         android:layout_height="76dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
+
         android:hint="@string/contact_number"
         android:paddingBottom="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tiAddress"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tiAddress">
+        app:layout_constraintStart_toStartOf="@+id/tiAddress"
+        app:layout_constraintTop_toBottomOf="@+id/tiAddress"
+        android:textColorHint="@android:color/secondary_text_light">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/etContactNumber"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:backgroundTint="@android:color/secondary_text_light"
+            android:textColor="@android:color/primary_text_light"
+            android:textColorHint="@android:color/secondary_text_light"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,10 +121,12 @@
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/save_button"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tiContactNumber" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
