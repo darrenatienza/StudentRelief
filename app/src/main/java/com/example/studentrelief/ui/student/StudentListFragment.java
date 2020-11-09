@@ -1,20 +1,20 @@
-package com.example.studentrelief.ui.donner;
+package com.example.studentrelief.ui.student;
+
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
-
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonnerClient;
+import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.ui.adapters.DonnerAdapter;
-import com.example.studentrelief.ui.misc.IActionListener;
+import com.example.studentrelief.ui.donner.DonnerFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
@@ -30,15 +30,12 @@ import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
 
-import static android.widget.Toast.makeText;
-
-
-@EFragment(R.layout.fragment_donner_list)
-public class DonnerListFragment extends Fragment {
+@EFragment(R.layout.fragment_student_list)
+public class StudentListFragment extends Fragment {
 
     static  final int SHOW_FORM = 101;
     @RestService
-    DonnerClient donnerClient;
+    StudentClient donnerClient;
     @ViewById
     RecyclerView recyclerView;
     @ViewById
