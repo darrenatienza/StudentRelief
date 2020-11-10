@@ -24,7 +24,13 @@ public class VolunteerAdapter extends RecyclerViewAdapterBase<VolunteerModel, Vo
     Context context;
 
     public void setList(List<VolunteerModel> list) {
-        items = list;
+        for (VolunteerModel m: list
+             ) {
+            if (m.getAddress() == "") {
+                items.add(m);
+            }
+
+        }
     }
 
 
@@ -35,10 +41,12 @@ public class VolunteerAdapter extends RecyclerViewAdapterBase<VolunteerModel, Vo
 
     @Override
     public void onBindViewHolder(ViewWrapper<VolunteerItemView> viewHolder, int position) {
-        VolunteerItemView view = viewHolder.getView();
-        VolunteerModel model = items.get(position);
 
-        view.bind(model);
+        VolunteerModel model = items.get(position);
+            VolunteerItemView view = viewHolder.getView();
+            view.bind(model);
+
+
     }
 
 

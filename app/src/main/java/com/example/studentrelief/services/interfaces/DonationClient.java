@@ -1,8 +1,8 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
-import com.example.studentrelief.services.model.StudentContainer;
-import com.example.studentrelief.services.model.StudentModel;
+import com.example.studentrelief.services.model.DonationContainer;
+import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.VolunteerContainer;
 import com.example.studentrelief.services.model.VolunteerModel;
 
@@ -16,21 +16,20 @@ import org.androidannotations.rest.spring.annotations.Rest;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 @Rest(rootUrl = BuildConfig.BASE_URL,converters = { MappingJackson2HttpMessageConverter.class })
-public interface VolunteerClient {
-
-    @Get("/records/volunteers?filter=full_name,cs,{criteria}")
-    VolunteerContainer getAll(@Path String criteria);
+public interface DonationClient {
+    @Get("/records/donations?filter=name,cs,{criteria}")
+    DonationContainer getAll(@Path String criteria);
     /** excludes auto generated column */
-    @Post("/records/volunteers?exclude=volunteer_id,create_time_stamp")
-    Integer addNew(@Body VolunteerModel model);
+    @Post("/records/donations?exclude=donation_id,create_time_stamp")
+    Integer addNew(@Body DonationModel model);
 
     /** excludes auto generated column */
-    @Put("/records/volunteers/{id}?exclude=volunteer_id,create_time_stamp")
-    Integer edit(@Path int id, @Body VolunteerModel model);
+    @Put("/records/donations/{id}?exclude=donation_id,create_time_stamp")
+    Integer edit(@Path int id, @Body DonationModel model);
 
-    @Delete("/records/volunteers/{id}")
+    @Delete("/records/donations/{id}")
     Integer delete(@Path int id);
 
-    @Get("/records/volunteers/{id}")
-    VolunteerModel get(@Path int id);
+    @Get("/records/donations/{id}")
+    DonationModel get(@Path int id);
 }

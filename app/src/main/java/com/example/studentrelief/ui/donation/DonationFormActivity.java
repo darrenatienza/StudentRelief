@@ -1,18 +1,24 @@
-package com.example.studentrelief.ui.volunteer;
+package com.example.studentrelief.ui.donation;
 
+import android.os.Bundle;
+
+import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.VolunteerClient;
-import com.example.studentrelief.services.model.AddEditDonnerModel;
+import com.example.studentrelief.services.model.DonationModel;
+import com.example.studentrelief.services.model.VolunteerModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.model.VolunteerModel;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -26,11 +32,12 @@ import org.springframework.web.client.RestClientException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-@EActivity(R.layout.activity_volunteer_form)
-public class VolunteerFormActivity extends AppCompatActivity {
+@EActivity(R.layout.activity_donation_form)
+public class DonationFormActivity extends AppCompatActivity {
+
 
     @RestService
-    VolunteerClient client;
+    DonationClient client;
 
     @Extra
     int id;
@@ -42,24 +49,21 @@ public class VolunteerFormActivity extends AppCompatActivity {
     Button btnSave;
 
     @ViewById
-    TextView etFullName;
+    TextView etName;
 
     @ViewById
-    EditText etContactNumber;
-    @ViewById
-    EditText etAddress;
-    private VolunteerModel model;
+    EditText etQuantity;
+
+    private DonationModel model;
 
     @Click
     void btnSave(){
         try {
-            String fullName = etFullName.getText().toString();
-            String address = etAddress.getText().toString();
-            String contactNumber = etContactNumber.getText().toString();
+            String fullName = etName.getText().toString();
+            String quantity = etQuantity.getText().toString();
 
-            model.setFull_name(fullName);
-            model.setAddress(address);
-            model.setContact_number(contactNumber);
+            model.setName(fullName);
+            model.setQuantity(Integer.valueOf(quantity));
             save(model);
 
         }catch (RestClientException ex){
@@ -109,7 +113,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
     }
 
     @Background
-    void save(VolunteerModel model){
+    void save(DonationModel model){
         if (id > 0){
             client.edit(id,model);
         }else{
@@ -134,7 +138,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
                 getFormData();
 
             }else{
-                model = new VolunteerModel();
+                model = new DonationModel();
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
@@ -152,10 +156,8 @@ public class VolunteerFormActivity extends AppCompatActivity {
     }
 
     @UiThread
-    void updateUIFormData(VolunteerModel model) {
-        etAddress.setText(model.getAddress());
-        etContactNumber.setText(model.getContact_number());
-        etFullName.setText(model.getFull_name());
-
+    void updateUIFormData(DonationModel model) {
+        etName.setText(model.getName());
+        etQuantity.setText(String.valueOf(model.getQuantity()));
     }
 }

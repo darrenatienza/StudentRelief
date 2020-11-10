@@ -13,9 +13,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.donner_donation.DonnerDonationFormActivity"
+            android:label="@string/title_activity_donner_donation_form"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.donation.DonationFormActivity_"
+            android:label="@string/title_activity_donation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.volunteer.VolunteerFormActivity_"
             android:label="@string/title_activity_volunteer_form"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity_"
             android:label="@string/app_name"
@@ -29,7 +37,7 @@
         <activity
             android:name=".ui.donner.DonnerFormActivity_"
             android:label="@string/title_donner"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -98,7 +98,7 @@ public class DonnerListFragment extends Fragment {
     }
     @Click(R.id.fab)
     void click(View view){
-        DonnerFormActivity_.intent(getContext()).startForResult(SHOW_FORM);
+       showFormDialog(0);
     }
 
     // action after save or delete click on dialog form

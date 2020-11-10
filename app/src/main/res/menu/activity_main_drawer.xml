@@ -22,5 +22,9 @@
             android:id="@+id/nav_volunteer_list"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_volunteer" />
+        <item
+            android:id="@+id/nav_donation_list"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_donation" />
     </group>
 </menu>

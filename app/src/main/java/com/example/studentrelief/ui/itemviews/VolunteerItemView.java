@@ -30,9 +30,12 @@ public class VolunteerItemView extends RelativeLayout {
     }
 
     public void bind(VolunteerModel model) {
-        idView.setText(String.valueOf(model.getVolunteer_id()));
-        fullNameView.setText(model.getFull_name());
-        addressView.setText(model.getAddress());
-        contactNumberView.setText(model.getContact_number());
+
+            idView.setText(String.valueOf(model.getVolunteer_id()));
+            fullNameView.setText(model.getFull_name());
+            addressView.setText(model.getAddress());
+            contactNumberView.setText(model.getContact_number());
+
+
     }
 }

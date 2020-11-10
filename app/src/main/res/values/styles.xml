@@ -16,8 +16,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style
-        name="dialog" parent="Theme.AppCompat.Dialog">
+    <style name="dialog" parent="Theme.AppCompat.Dialog">
         <!-- title encapsulating main part (backgroud) of custom alertdialog -->
 
         <item name="android:windowBackground">@color/white</item>
@@ -29,7 +28,7 @@
         <!-- float the window so it does not fill the screen -->
         <item name="android:windowNoTitle">true</item>
         <!-- remove the title bar we make our own-->
-            <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">center</item>
         <!-- remove the title bar we make our own-->
     </style>
 

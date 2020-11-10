@@ -1,4 +1,6 @@
-package com.example.studentrelief.ui.volunteer;
+package com.example.studentrelief.ui.donation;
+
+import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -6,17 +8,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.VolunteerClient;
-import com.example.studentrelief.services.model.DonnerModel;
+import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.VolunteerModel;
+import com.example.studentrelief.ui.adapters.DonationAdapter;
 import com.example.studentrelief.ui.adapters.VolunteerAdapter;
-import com.example.studentrelief.ui.donner.DonnerFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.example.studentrelief.ui.volunteer.VolunteerFormActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -30,19 +36,18 @@ import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
 
-
-@EFragment(R.layout.fragment_volunteer_list)
-public class VolunteerListFragment extends Fragment {
+@EFragment(R.layout.fragment_donation_list)
+public class DonationListFragment extends Fragment {
 
     static  final int SHOW_FORM = 101;
     @RestService
-    VolunteerClient client;
+    DonationClient client;
     @ViewById
     RecyclerView recyclerView;
     @ViewById
     TextView tvSearch;
     @Bean
-    VolunteerAdapter adapter;
+    DonationAdapter adapter;
 
     @AfterViews
     void afterViews() {
@@ -73,21 +78,21 @@ public class VolunteerListFragment extends Fragment {
     }
 
     private void showFormDialog(int id) {
-        VolunteerFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        DonationFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
     }
 
     @Background
     void loadList(){
         try {
             String criteria = tvSearch.getText().toString();
-            List<VolunteerModel> models = client.getAll(criteria).getRecords();
+            List<DonationModel> models = client.getAll(criteria).getRecords();
             updateList(models);
         }catch (Exception e){
             Log.e("Error",e.getMessage());
         }
     }
     @UiThread
-    void updateList(List<VolunteerModel> models) {
+    void updateList(List<DonationModel> models) {
         adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
@@ -106,6 +111,4 @@ public class VolunteerListFragment extends Fragment {
         loadList();
         Log.d("Result",String.valueOf(resultCode));
     }
-
-
 }
