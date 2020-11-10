@@ -1,5 +1,7 @@
-package com.example.studentrelief.ui.donner;
+package com.example.studentrelief.ui.volunteer;
 
+import com.example.studentrelief.services.interfaces.VolunteerClient;
+import com.example.studentrelief.services.model.AddEditDonnerModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,8 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.interfaces.DonnerClient;
-import com.example.studentrelief.services.model.AddEditDonnerModel;
+import com.example.studentrelief.services.model.VolunteerModel;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -25,12 +26,11 @@ import org.springframework.web.client.RestClientException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-
-@EActivity(R.layout.activity_donner_form)
-public class DonnerFormActivity extends AppCompatActivity {
+@EActivity(R.layout.activity_volunteer_form)
+public class VolunteerFormActivity extends AppCompatActivity {
 
     @RestService
-    DonnerClient donnerClient;
+    VolunteerClient client;
 
 
 
@@ -51,6 +51,7 @@ public class DonnerFormActivity extends AppCompatActivity {
     EditText etContactNumber;
     @ViewById
     EditText etAddress;
+    private VolunteerModel model;
 
     @Click
     void btnSave(){
@@ -59,7 +60,6 @@ public class DonnerFormActivity extends AppCompatActivity {
             String address = etAddress.getText().toString();
             String contactNumber = etContactNumber.getText().toString();
 
-            AddEditDonnerModel model = new AddEditDonnerModel();
             model.setFull_name(fullName);
             model.setAddress(address);
             model.setContact_number(contactNumber);
@@ -95,30 +95,30 @@ public class DonnerFormActivity extends AppCompatActivity {
                     .show();
 
 
-    }catch (RestClientException ex){
-        Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-    }catch (Exception ex){
-        Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-    }
+        }catch (RestClientException ex){
+            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
+        }catch (Exception ex){
+            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
+        }
 
     }
     @Background
     void delete() {
         if (id > 0){
-            donnerClient.delete(id);
+            client.delete(id);
 
         }
         updateUIAfterSave();
     }
 
     @Background
-    void save(AddEditDonnerModel model){
-            if (id > 0){
-                donnerClient.edit(id,model);
-            }else{
-                donnerClient.addNew(model);
-            }
-            updateUIAfterSave();
+    void save(VolunteerModel model){
+        if (id > 0){
+            client.edit(id,model);
+        }else{
+            client.addNew(model);
+        }
+        updateUIAfterSave();
 
     }
     @UiThread
@@ -136,6 +136,8 @@ public class DonnerFormActivity extends AppCompatActivity {
             if(id > 0){
                 getFormData();
 
+            }else{
+                model = new VolunteerModel();
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
@@ -147,20 +149,16 @@ public class DonnerFormActivity extends AppCompatActivity {
     @Background
     void getFormData() {
         if (id > 0){
-            AddEditDonnerModel model   = donnerClient.getDonner(id);
+            model   = client.get(id);
             updateUIFormData(model);
         }
     }
 
     @UiThread
-    void updateUIFormData(AddEditDonnerModel model) {
-        etAddress.setText(model.getAddress().toString());
-        etContactNumber.setText(model.getContact_number().toString());
-        etFullName.setText(model.getFull_name().toString());
+    void updateUIFormData(VolunteerModel model) {
+        etAddress.setText(model.getAddress());
+        etContactNumber.setText(model.getContact_number());
+        etFullName.setText(model.getFull_name());
 
     }
-
-
-
-
 }

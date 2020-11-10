@@ -6,41 +6,33 @@ import android.widget.TextView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.model.DonnerModel;
-import com.example.studentrelief.services.model.StudentModel;
+import com.example.studentrelief.services.model.VolunteerModel;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
-@EViewGroup(R.layout.student_item)
-public class StudentItemView extends RelativeLayout {
+@EViewGroup(R.layout.volunteer_item)
+public class VolunteerItemView extends RelativeLayout {
 
     @ViewById
     TextView idView;
     @ViewById
-    TextView tvFullName;
-    @ViewById
-    TextView tvCourse;
-    @ViewById
-    TextView tvCampus;
+    TextView fullNameView;
     @ViewById
     TextView addressView;
     @ViewById
     TextView contactNumberView;
 
-    @ViewById
-    TextView tvSrCode;
 
-    public StudentItemView(Context context) {
+
+    public VolunteerItemView(Context context) {
         super(context);
     }
 
-    public void bind(StudentModel model) {
-        idView.setText(String.valueOf(model.getStudent_id()));
-        tvSrCode.setText(model.getSr_code());
-        tvFullName.setText(model.getFull_name());
-        tvCourse.setText(model.getCourse());
+    public void bind(VolunteerModel model) {
+        idView.setText(String.valueOf(model.getVolunteer_id()));
+        fullNameView.setText(model.getFull_name());
         addressView.setText(model.getAddress());
         contactNumberView.setText(model.getContact_number());
-        tvCampus.setText(model.getCampus());
     }
 }

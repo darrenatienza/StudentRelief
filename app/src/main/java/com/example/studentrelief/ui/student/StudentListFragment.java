@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.model.DonnerModel;
-import com.example.studentrelief.ui.adapters.DonnerAdapter;
+import com.example.studentrelief.services.model.StudentModel;
+import com.example.studentrelief.ui.adapters.StudentAdapter;
 import com.example.studentrelief.ui.donner.DonnerFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
@@ -35,13 +35,13 @@ public class StudentListFragment extends Fragment {
 
     static  final int SHOW_FORM = 101;
     @RestService
-    StudentClient donnerClient;
+    StudentClient studentClient;
     @ViewById
     RecyclerView recyclerView;
     @ViewById
     TextView tvSearch;
     @Bean
-    DonnerAdapter adapter;
+    StudentAdapter adapter;
 
     @AfterViews
     void afterViews() {
@@ -72,22 +72,23 @@ public class StudentListFragment extends Fragment {
     }
 
     private void showFormDialog(int id) {
-        DonnerFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        //Todo: Add new activity
+        //DonnerFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
     }
 
     @Background
     void loadList(){
         try {
             String criteria = tvSearch.getText().toString();
-            List<DonnerModel> donners = donnerClient.getAll(criteria).getRecords();
-            updateList(donners);
+            List<StudentModel> models = studentClient.getAll(criteria).getRecords();
+            updateList(models);
         }catch (Exception e){
             Log.e("Error",e.getMessage());
         }
     }
     @UiThread
-    void updateList(List<DonnerModel> donners) {
-        adapter.setDonnerModelList(donners);
+    void updateList(List<StudentModel> models) {
+        adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
     @Click(R.id.btnSearch)

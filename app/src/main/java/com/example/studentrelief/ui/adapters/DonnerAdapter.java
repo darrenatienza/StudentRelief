@@ -24,7 +24,7 @@ public class DonnerAdapter extends RecyclerViewAdapterBase<DonnerModel, DonnerIt
     @RootContext
     Context context;
 
-    public void setDonnerModelList(List<DonnerModel> donnerModelList) {
+    public void setList(List<DonnerModel> donnerModelList) {
         items = donnerModelList;
     }
 

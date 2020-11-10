@@ -1,4 +1,4 @@
-package com.example.studentrelief.ui.donner;
+package com.example.studentrelief.ui.volunteer;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -9,11 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.interfaces.DonnerClient;
+import com.example.studentrelief.services.interfaces.VolunteerClient;
 import com.example.studentrelief.services.model.DonnerModel;
-import com.example.studentrelief.ui.adapters.DonnerAdapter;
+import com.example.studentrelief.services.model.VolunteerModel;
+import com.example.studentrelief.ui.adapters.VolunteerAdapter;
+import com.example.studentrelief.ui.donner.DonnerFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
@@ -29,21 +30,19 @@ import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
 
-import static android.widget.Toast.makeText;
 
-
-@EFragment(R.layout.fragment_donner_list)
-public class DonnerListFragment extends Fragment {
+@EFragment(R.layout.fragment_volunteer_list)
+public class VolunteerListFragment extends Fragment {
 
     static  final int SHOW_FORM = 101;
     @RestService
-    DonnerClient donnerClient;
+    VolunteerClient client;
     @ViewById
     RecyclerView recyclerView;
     @ViewById
     TextView tvSearch;
     @Bean
-    DonnerAdapter adapter;
+    VolunteerAdapter adapter;
 
     @AfterViews
     void afterViews() {
@@ -74,22 +73,22 @@ public class DonnerListFragment extends Fragment {
     }
 
     private void showFormDialog(int id) {
-        DonnerFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        VolunteerFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
     }
 
     @Background
     void loadList(){
         try {
             String criteria = tvSearch.getText().toString();
-            List<DonnerModel> donners = donnerClient.getAll(criteria).getRecords();
-            updateList(donners);
+            List<VolunteerModel> models = client.getAll(criteria).getRecords();
+            updateList(models);
         }catch (Exception e){
             Log.e("Error",e.getMessage());
         }
     }
     @UiThread
-    void updateList(List<DonnerModel> donners) {
-        adapter.setList(donners);
+    void updateList(List<VolunteerModel> models) {
+        adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
     @Click(R.id.btnSearch)
@@ -98,7 +97,7 @@ public class DonnerListFragment extends Fragment {
     }
     @Click(R.id.fab)
     void click(View view){
-        DonnerFormActivity_.intent(getContext()).startForResult(SHOW_FORM);
+        VolunteerFormActivity_.intent(getContext()).startForResult(SHOW_FORM);
     }
 
     // action after save or delete click on dialog form
@@ -107,4 +106,6 @@ public class DonnerListFragment extends Fragment {
         loadList();
         Log.d("Result",String.valueOf(resultCode));
     }
+
+
 }

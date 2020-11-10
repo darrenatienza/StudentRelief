@@ -18,5 +18,9 @@
             android:id="@+id/nav_donners_list"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_donners" />
+        <item
+            android:id="@+id/nav_volunteer_list"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_volunteer" />
     </group>
 </menu>

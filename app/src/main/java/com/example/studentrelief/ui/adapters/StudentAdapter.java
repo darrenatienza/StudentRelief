@@ -7,6 +7,8 @@ import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.itemviews.DonnerItemView;
 import com.example.studentrelief.ui.itemviews.DonnerItemView_;
+import com.example.studentrelief.ui.itemviews.StudentItemView;
+import com.example.studentrelief.ui.itemviews.StudentItemView_;
 import com.example.studentrelief.ui.misc.RecyclerViewAdapterBase;
 import com.example.studentrelief.ui.misc.ViewWrapper;
 
@@ -16,25 +18,25 @@ import org.androidannotations.annotations.RootContext;
 import java.util.List;
 
 @EBean
-public class StudentAdapter extends RecyclerViewAdapterBase<StudentModel, DonnerItemView> {
+public class StudentAdapter extends RecyclerViewAdapterBase<StudentModel, StudentItemView> {
 
     @RootContext
     Context context;
 
-    public void setDonnerModelList(List<DonnerModel> donnerModelList) {
-        items = donnerModelList;
+    public void setList(List<StudentModel> list) {
+        items = list;
     }
 
 
     @Override
-    protected DonnerItemView onCreateItemView(ViewGroup parent, int viewType) {
-        return DonnerItemView_.build(context);
+    protected StudentItemView onCreateItemView(ViewGroup parent, int viewType) {
+        return StudentItemView_.build(context);
     }
 
     @Override
-    public void onBindViewHolder(ViewWrapper<DonnerItemView> viewHolder, int position) {
-        DonnerItemView view = viewHolder.getView();
-        DonnerModel person = items.get(position);
+    public void onBindViewHolder(ViewWrapper<StudentItemView> viewHolder, int position) {
+        StudentItemView view = viewHolder.getView();
+        StudentModel person = items.get(position);
 
         view.bind(person);
     }

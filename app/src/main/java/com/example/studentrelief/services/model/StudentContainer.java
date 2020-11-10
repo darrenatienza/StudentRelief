@@ -4,13 +4,13 @@ import java.util.List;
 
 /** Response structure of json object*/
 public class StudentContainer {
-    public List<DonnerModel> getRecords() {
+    public List<StudentModel> getRecords() {
         return records;
     }
 
-    public void setRecords(List<DonnerModel> records) {
+    public void setRecords(List<StudentModel> records) {
         this.records = records;
     }
 
-    List<DonnerModel> records;
+    List<StudentModel> records;
 }
