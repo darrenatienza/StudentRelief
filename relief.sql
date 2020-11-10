@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2020 at 03:14 PM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.9
+-- Generation Time: Nov 10, 2020 at 09:55 AM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.4.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -60,7 +60,12 @@ CREATE TABLE `donners` (
 --
 
 INSERT INTO `donners` (`donner_id`, `full_name`, `address`, `contact_number`, `create_time_stamp`) VALUES
-(1, 'donner 1', 'donner address 1', '09xxxxxxxxx', '2020-11-03 20:34:18');
+(1, 'Donner 1s', 'Rosario Batangas', '09123456789', '2020-11-03 20:34:18'),
+(2, 'donner 2s', 'address', '09xxxxxxxxx', '2020-11-05 16:55:14'),
+(3, 'asdfere', 'ewrwe', 'asdfsadf', '2020-11-09 14:30:29'),
+(4, 'darren', 'comia', 'atienza', '2020-11-09 14:40:18'),
+(5, 'ererd', 'werer', 'werwer', '2020-11-09 14:41:26'),
+(6, 'xxdfdfs', 'xdfdfsfs', 'gfgfgf', '2020-11-09 14:41:45');
 
 -- --------------------------------------------------------
 
@@ -93,7 +98,10 @@ INSERT INTO `donners_donations` (`donners_donations_id`, `donation_id`, `donner_
 CREATE TABLE `students` (
   `student_id` int(11) NOT NULL,
   `sr_code` varchar(50) NOT NULL,
-  `password` varchar(250) NOT NULL,
+  `full_name` varchar(250) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `course` varchar(250) NOT NULL,
+  `contact_number` varchar(250) NOT NULL,
   `is_requesting_relief` tinyint(1) NOT NULL,
   `create_time_stamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -102,8 +110,8 @@ CREATE TABLE `students` (
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`student_id`, `sr_code`, `password`, `is_requesting_relief`, `create_time_stamp`) VALUES
-(1, '11111-11', '11111-11', 1, '2020-11-03 20:28:39');
+INSERT INTO `students` (`student_id`, `sr_code`, `full_name`, `address`, `course`, `contact_number`, `is_requesting_relief`, `create_time_stamp`) VALUES
+(1, '11111-11', 'Student 1', '', '', '', 1, '2020-11-03 20:28:39');
 
 -- --------------------------------------------------------
 
@@ -134,6 +142,13 @@ CREATE TABLE `volunteers` (
   `contact_number` varchar(50) NOT NULL,
   `create_time_stamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `volunteers`
+--
+
+INSERT INTO `volunteers` (`volunteer_id`, `full_name`, `address`, `contact_number`, `create_time_stamp`) VALUES
+(2, 'asdf', 'asdf', 'asdf', '2020-11-10 16:53:30');
 
 --
 -- Indexes for dumped tables
@@ -189,7 +204,7 @@ ALTER TABLE `donations`
 -- AUTO_INCREMENT for table `donners`
 --
 ALTER TABLE `donners`
-  MODIFY `donner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `donner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `donners_donations`
@@ -213,7 +228,7 @@ ALTER TABLE `student_reliefs`
 -- AUTO_INCREMENT for table `volunteers`
 --
 ALTER TABLE `volunteers`
-  MODIFY `volunteer_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `volunteer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
