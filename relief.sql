@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2020 at 09:55 AM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.8
+-- Generation Time: Nov 10, 2020 at 04:38 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,7 +39,7 @@ CREATE TABLE `donations` (
 --
 
 INSERT INTO `donations` (`donation_id`, `name`, `quantity`, `create_time_stamp`) VALUES
-(1, 'Canned goods', 0, '2020-11-03 20:57:15');
+(2, 'donation 1', 5, '2020-11-10 22:56:06');
 
 -- --------------------------------------------------------
 
@@ -65,7 +65,9 @@ INSERT INTO `donners` (`donner_id`, `full_name`, `address`, `contact_number`, `c
 (3, 'asdfere', 'ewrwe', 'asdfsadf', '2020-11-09 14:30:29'),
 (4, 'darren', 'comia', 'atienza', '2020-11-09 14:40:18'),
 (5, 'ererd', 'werer', 'werwer', '2020-11-09 14:41:26'),
-(6, 'xxdfdfs', 'xdfdfsfs', 'gfgfgf', '2020-11-09 14:41:45');
+(6, 'xxdfdfs', 'xdfdfsfs', 'gfgfgf', '2020-11-09 14:41:45'),
+(7, 'asdf', 'asdf', 'asdf', '2020-11-10 21:02:39'),
+(8, 'asdf', 'asdf', 'asdf', '2020-11-10 21:06:44');
 
 -- --------------------------------------------------------
 
@@ -87,7 +89,7 @@ CREATE TABLE `donners_donations` (
 --
 
 INSERT INTO `donners_donations` (`donners_donations_id`, `donation_id`, `donner_id`, `quantity`, `donation_date`, `create_time_stamp`) VALUES
-(1, 1, 1, 5, '2020-11-03 21:31:47', '2020-11-03 21:02:54');
+(1, 2, 1, 5, '2020-11-03 21:31:47', '2020-11-03 21:02:54');
 
 -- --------------------------------------------------------
 
@@ -148,7 +150,11 @@ CREATE TABLE `volunteers` (
 --
 
 INSERT INTO `volunteers` (`volunteer_id`, `full_name`, `address`, `contact_number`, `create_time_stamp`) VALUES
-(2, 'asdf', 'asdf', 'asdf', '2020-11-10 16:53:30');
+(2, 'asdf', 'asdf', 'asdf', '2020-11-10 16:53:30'),
+(3, 'ccc', 'ccc', 'ccc', '2020-11-10 21:11:56'),
+(4, 'eer', 'erer', 'erer', '2020-11-10 21:14:05'),
+(5, 'yup', '89090', '76t767', '2020-11-10 21:14:56'),
+(6, '878', '8878', '67868', '2020-11-10 21:16:53');
 
 --
 -- Indexes for dumped tables
@@ -170,7 +176,9 @@ ALTER TABLE `donners`
 -- Indexes for table `donners_donations`
 --
 ALTER TABLE `donners_donations`
-  ADD PRIMARY KEY (`donners_donations_id`);
+  ADD PRIMARY KEY (`donners_donations_id`),
+  ADD KEY `fk_donations_donation_id` (`donation_id`),
+  ADD KEY `fk_donners_donner_id` (`donner_id`);
 
 --
 -- Indexes for table `students`
@@ -198,13 +206,13 @@ ALTER TABLE `volunteers`
 -- AUTO_INCREMENT for table `donations`
 --
 ALTER TABLE `donations`
-  MODIFY `donation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `donation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `donners`
 --
 ALTER TABLE `donners`
-  MODIFY `donner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `donner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `donners_donations`
@@ -228,7 +236,18 @@ ALTER TABLE `student_reliefs`
 -- AUTO_INCREMENT for table `volunteers`
 --
 ALTER TABLE `volunteers`
-  MODIFY `volunteer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `volunteer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `donners_donations`
+--
+ALTER TABLE `donners_donations`
+  ADD CONSTRAINT `fk_donations_donation_id` FOREIGN KEY (`donation_id`) REFERENCES `donations` (`donation_id`),
+  ADD CONSTRAINT `fk_donners_donner_id` FOREIGN KEY (`donner_id`) REFERENCES `donners` (`donner_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
