@@ -12,7 +12,26 @@ public class DonnerDonationModel {
     }
 
     int donation_id;
+    String donation_name;
     int donner_id;
+    String donner_full_name;
+
+    public String getDonation_name() {
+        return donation_name;
+    }
+
+    public void setDonation_name(String donation_name) {
+        this.donation_name = donation_name;
+    }
+
+    public String getDonner_full_name() {
+        return donner_full_name;
+    }
+
+    public void setDonner_full_name(String donner_full_name) {
+        this.donner_full_name = donner_full_name;
+    }
+
     int quantity;
     String donation_date;
     String create_time_stamp;

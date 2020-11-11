@@ -3,64 +3,134 @@ package com.example.studentrelief.ui.donner_donation;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.DonationClient;
+import com.example.studentrelief.services.interfaces.DonnerClient;
+import com.example.studentrelief.services.interfaces.DonnerDonationClient;
+import com.example.studentrelief.services.model.DonationModel;
+import com.example.studentrelief.services.model.DonnerDonationModel;
+import com.example.studentrelief.ui.adapters.DonationAdapter;
+import com.example.studentrelief.ui.adapters.DonnerDonationAdapter;
+import com.example.studentrelief.ui.donation.DonationFormActivity_;
+import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DonnerDonationListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.rest.spring.annotations.RestService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+@EFragment(R.layout.fragment_donner_donation_list)
 public class DonnerDonationListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    @RestService
+    DonnerClient donnerClient;
+    @RestService
+    DonationClient donationClient;
+    @RestService
+    DonnerDonationClient client;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    static  final int SHOW_FORM = 101;
+    @ViewById
+    RecyclerView recyclerView;
+    @ViewById
+    TextView tvSearch;
 
-    public DonnerDonationListFragment() {
-        // Required empty public constructor
+    @Bean
+    DonnerDonationAdapter adapter;
+
+    @AfterViews
+    void afterViews() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        loadList();
+        initItemClick();
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DonnerDonationListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DonnerDonationListFragment newInstance(String param1, String param2) {
-        DonnerDonationListFragment fragment = new DonnerDonationListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+
+    private void initItemClick() {
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                // do it
+                TextView t = v.findViewById(R.id.idView);
+                int id = Integer.parseInt(t.getText().toString());
+                showFormDialog(id);
+            }
+        });
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    private void showFormDialog(int id) {
+        //DonnerDonation.intent(this).extra("id",id).startForResult(SHOW_FORM);
+    }
+
+    @Background
+    void loadList(){
+        try {
+            /** Model is modified to provide values on other fields*/
+            String criteria = tvSearch.getText().toString();
+            List<DonnerDonationModel> models = client.getAll(criteria).getRecords();
+            List<DonnerDonationModel> newModels = new ArrayList<>();
+            for (DonnerDonationModel model: models
+                 ) {
+                DonnerDonationModel newModel = new DonnerDonationModel();
+                newModel = model;
+                String donationName = donationClient.get(model.getDonation_id()).getName();
+                String donnerFullName = donnerClient.getDonner(model.getDonner_id()).getFull_name();
+                newModel.setDonation_name(donationName);
+                newModel.setDonner_full_name(donnerFullName);
+                newModels.add(newModel);
+            }
+            /** New models (modified model) must be pass not the original models*/
+            updateList(newModels);
+        }catch (Exception e){
+            Log.e("Error",e.getMessage());
         }
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_donner_donation_list, container, false);
+    @UiThread
+    void updateList(List<DonnerDonationModel> models) {
+        adapter.setList(models);
+        adapter.notifyDataSetChanged();
     }
+    @Click(R.id.btnSearch)
+    void search(){
+        loadList();
+    }
+    @Click(R.id.fab)
+    void click(View view){
+        showFormDialog(0);
+    }
+
+    // action after save or delete click on dialog form
+    @OnActivityResult(SHOW_FORM)
+    void onResult(int resultCode) {
+        loadList();
+        Log.d("Result",String.valueOf(resultCode));
+    }
+
 }

@@ -26,9 +26,9 @@ public class VolunteerAdapter extends RecyclerViewAdapterBase<VolunteerModel, Vo
     public void setList(List<VolunteerModel> list) {
         for (VolunteerModel m: list
              ) {
-            if (m.getAddress() == "") {
+
                 items.add(m);
-            }
+
 
         }
     }

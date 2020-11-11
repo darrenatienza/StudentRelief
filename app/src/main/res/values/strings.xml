@@ -35,8 +35,9 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="menu_donation">Donation\'s</string>
-    <string name="title_activity_donation">DonationActivity</string>
+    <string name="title_activity_donation">Donations</string>
     <string name="name">Name</string>
     <string name="quantity">Quantity</string>
     <string name="title_activity_donner_donation_form">DonnerDonationFormActivity</string>
+    <string name="menu_donner_donation_list">Donner\'s Donation\'s</string>
 </resources>
