@@ -1,5 +1,10 @@
 package com.example.studentrelief.services.model;
 
+import com.github.thunder413.datetimeutils.DateTimeStyle;
+import com.github.thunder413.datetimeutils.DateTimeUtils;
+
+import java.util.Date;
+
 public class DonnerDonationModel {
     int donners_donations_id;
 
@@ -33,6 +38,20 @@ public class DonnerDonationModel {
     }
 
     int quantity;
+
+    public String getDonation_date() {
+        return donation_date;
+    }
+    public Date getDonation_dateFormat() {
+        return DateTimeUtils.formatDate(donation_date);
+    }
+    public String getDonation_medium_dateFormat() {
+        return DateTimeUtils.formatWithStyle(DateTimeUtils.formatDate(donation_date), DateTimeStyle.MEDIUM);
+    }
+    public void setDonation_date(String donation_date) {
+        this.donation_date = donation_date;
+    }
+
     String donation_date;
     String create_time_stamp;
 
@@ -60,13 +79,7 @@ public class DonnerDonationModel {
         this.quantity = quantity;
     }
 
-    public String getDonation_date() {
-        return donation_date;
-    }
 
-    public void setDonation_date(String donation_date) {
-        this.donation_date = donation_date;
-    }
 
     public String getCreate_time_stamp() {
         return create_time_stamp;

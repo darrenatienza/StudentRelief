@@ -11,6 +11,7 @@ import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.ui.dialogs.AlertDialogFragment;
 
 
+import com.github.thunder413.datetimeutils.DateTimeUtils;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // cannot include on annotation
         setContentView(R.layout.activity_main);
+        DateTimeUtils.setTimeZone("UTC");
 
     }
     public void doPositiveClick(){

@@ -7,6 +7,8 @@ import android.widget.TextView;
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.DonnerDonationModel;
+import com.github.thunder413.datetimeutils.DateTimeStyle;
+import com.github.thunder413.datetimeutils.DateTimeUtils;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -36,7 +38,7 @@ public class DonnerDonationItemView extends RelativeLayout {
         idView.setText(String.valueOf(model.getDonners_donations_id()));
         donnerFullNameView.setText(model.getDonner_full_name());
         donationNameView.setText("Donation: " + model.getDonation_name());
-        donationDateView.setText("Date: " +model.getDonation_date().substring(0,10));
+        donationDateView.setText("Date: " + model.getDonation_medium_dateFormat());
         quantityView.setText("Quantity: " + model.getQuantity());
     }
 }

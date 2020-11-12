@@ -1,5 +1,7 @@
 package com.example.studentrelief.ui.donner_donation;
 
+import com.example.studentrelief.MainActivity;
+import com.example.studentrelief.MainActivity_;
 import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.interfaces.DonnerDonationClient;
@@ -10,13 +12,21 @@ import com.example.studentrelief.services.model.DonnerModel;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.DatePickerDialog;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.studentrelief.R;
+
+import com.example.studentrelief.ui.dialogs.AlertDialogFragment;
+import com.example.studentrelief.ui.dialogs.DatePickerFragment;
+import com.github.thunder413.datetimeutils.DateTimeStyle;
+import com.github.thunder413.datetimeutils.DateTimeUtils;
+
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -29,12 +39,16 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 @EActivity(R.layout.activity_donner_donation_form)
-public class DonnerDonationFormActivity extends AppCompatActivity {
+public class DonnerDonationFormActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     @RestService
     DonnerDonationClient client;
@@ -71,11 +85,13 @@ public class DonnerDonationFormActivity extends AppCompatActivity {
     private int donationPos;
     private int donnerID;
     private int donationID;
+    private String donationDate;
 
     @AfterViews
     void afterViews(){
 
         try{
+            etDate.setEnabled(false);
             loadDonnerListAsync();
             loadDonationListAsync();
             setSupportActionBar(toolbar);
@@ -96,11 +112,10 @@ public class DonnerDonationFormActivity extends AppCompatActivity {
     @Click
     void btnSave(){
         try {
-            String date = etDate.getText().toString();
             String quantity = etQuantity.getText().toString();
             model.setDonation_id(donationID);
             model.setDonner_id(donnerID);
-            model.setDonation_date(date);
+            model.setDonation_date(donationDate);
             model.setQuantity(Integer.valueOf(quantity));
             saveAsync(model);
 
@@ -109,6 +124,17 @@ public class DonnerDonationFormActivity extends AppCompatActivity {
         }catch (Exception ex){
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
         }
+
+    }
+
+    @Click
+    void imgCalendar(){
+        DatePickerFragment mDatePickerDialogFragment;
+        mDatePickerDialogFragment = new DatePickerFragment();
+        mDatePickerDialogFragment.show(getSupportFragmentManager(), "DATE PICK");
+    }
+    @Click
+    void etDate(){
 
     }
     @Click
@@ -222,7 +248,8 @@ public class DonnerDonationFormActivity extends AppCompatActivity {
         // setting value of selected model from list
         donnerPos = getDonnerPosition(model.getDonner_id());
         donationPos = getDonationPosition(model.getDonation_id());
-        etDate.setText(model.getDonation_date());
+
+        etDate.setText(DateTimeUtils.formatWithStyle(model.getDonation_date(), DateTimeStyle.MEDIUM));
         etQuantity.setText(String.valueOf(model.getQuantity()));
     }
 
@@ -251,5 +278,17 @@ public class DonnerDonationFormActivity extends AppCompatActivity {
         }
         // no list found;
         return 0;
+    }
+
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+        Calendar mCalender = Calendar.getInstance();
+        mCalender.set(Calendar.YEAR, year);
+        mCalender.set(Calendar.MONTH, month);
+        mCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String selectedDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(mCalender.getTime());
+        donationDate = DateTimeUtils.formatWithPattern(mCalender.getTime(),"YYYY-M-d hh:mm:ss", Locale.ENGLISH);
+        etDate.setText(selectedDate);
     }
 }
