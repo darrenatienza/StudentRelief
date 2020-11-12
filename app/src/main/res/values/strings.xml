@@ -38,6 +38,7 @@
     <string name="title_activity_donation">Donations</string>
     <string name="name">Name</string>
     <string name="quantity">Quantity</string>
-    <string name="title_activity_donner_donation_form">DonnerDonationFormActivity</string>
+    <string name="title_activity_donner_donation_form">Donner\'s Donation\'s</string>
     <string name="menu_donner_donation_list">Donner\'s Donation\'s</string>
+    <string name="date">Date</string>
 </resources>

@@ -33,7 +33,7 @@ public class DonnerDonationItemView extends RelativeLayout {
     }
 
     public void bind(DonnerDonationModel model) {
-        idView.setText(String.valueOf(model.getDonation_id()));
+        idView.setText(String.valueOf(model.getDonners_donations_id()));
         donnerFullNameView.setText(model.getDonner_full_name());
         donationNameView.setText("Donation: " + model.getDonation_name());
         donationDateView.setText("Date: " +model.getDonation_date().substring(0,10));

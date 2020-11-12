@@ -1,5 +1,7 @@
 package com.example.studentrelief.services.model;
 
+import androidx.annotation.NonNull;
+
 public class DonationModel {
     int donation_id;
     String name;
@@ -36,5 +38,11 @@ public class DonationModel {
 
     public void setCreate_time_stamp(String create_time_stamp) {
         this.create_time_stamp = create_time_stamp;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -31,4 +31,7 @@ public interface DonnerClient  {
 
     @Get("/records/donners/{id}")
     AddEditDonnerModel getDonner(@Path int id);
+
+    @Get("/records/donners/{id}")
+    DonnerModel get(@Path int id);
 }

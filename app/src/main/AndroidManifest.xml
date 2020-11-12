@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.donner_donation.DonnerDonationFormActivity"
+            android:name=".ui.donner_donation.DonnerDonationFormActivity_"
             android:label="@string/title_activity_donner_donation_form"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity

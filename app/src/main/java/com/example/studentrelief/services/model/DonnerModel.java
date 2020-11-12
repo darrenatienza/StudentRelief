@@ -1,5 +1,7 @@
 package com.example.studentrelief.services.model;
 
+import androidx.annotation.NonNull;
+
 public class DonnerModel {
     int donner_id;
     String  full_name;
@@ -45,5 +47,12 @@ public class DonnerModel {
 
     public void setCreate_time_stamp(String create_time_stamp) {
         this.create_time_stamp = create_time_stamp;
+    }
+
+    /** Use for showing string value to spinners */
+    @NonNull
+    @Override
+    public String toString() {
+        return full_name;
     }
 }

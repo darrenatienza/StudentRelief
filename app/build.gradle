@@ -27,8 +27,8 @@ android {
     buildTypes {
         debug {
             // note that to define a string you need to escape it
-           //buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/api.php\""
+           buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
+            //buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/api.php\""
         }
         release {
             minifyEnabled false
