@@ -7,6 +7,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
+    <ImageView
+        android:id="@+id/imgUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/spDonation"
+        app:layout_constraintTop_toBottomOf="@+id/spDonation"
+        app:srcCompat="@drawable/ic_baseline_arrow_upward_24" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tiDate"
         android:layout_width="0dp"
@@ -48,10 +57,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toEndOf="@+id/imgCalendar"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
     <TextView
@@ -64,6 +70,7 @@
         android:text="Donation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spDonner" />
+
     <Spinner
         android:id="@+id/spDonation"
         android:layout_width="0dp"
@@ -71,10 +78,7 @@
         android:layout_marginStart="35dp"
         android:layout_marginLeft="35dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="@+id/spDonner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -87,11 +91,9 @@
 
         android:layout_marginLeft="35dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
         android:hint="@string/quantity"
         android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgUpload"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spDonation">
 
@@ -110,12 +112,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
         android:background="@color/save_button"
         android:text="Save"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imgUpload"
         app:layout_constraintTop_toBottomOf="@+id/tiQuantity" />
 
     <Button
@@ -124,18 +124,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@color/delete_button"
-        android:text="Delete"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/btnSave"
-        app:layout_constraintTop_toTopOf="@+id/btnSave" />
-
-    <Button
-        android:id="@+id/btnDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
-        android:layout_marginRight="120dp"
         android:background="@color/delete_button"
         android:text="Delete"
         android:textColor="@color/white"

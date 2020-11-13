@@ -21,6 +21,16 @@ public class DonnerDonationModel {
     int donner_id;
     String donner_full_name;
 
+    public boolean isQuantity_uploaded() {
+        return quantity_uploaded;
+    }
+
+    public void setQuantity_uploaded(boolean quantity_uploaded) {
+        this.quantity_uploaded = quantity_uploaded;
+    }
+
+    boolean quantity_uploaded;
+
     public String getDonation_name() {
         return donation_name;
     }

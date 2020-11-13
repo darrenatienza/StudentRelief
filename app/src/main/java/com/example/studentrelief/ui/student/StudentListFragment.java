@@ -95,6 +95,7 @@ public class StudentListFragment extends Fragment {
     void search(){
         loadList();
     }
+
     @Click(R.id.fab)
     void click(View view){
         DonnerFormActivity_.intent(getContext()).startForResult(SHOW_FORM);

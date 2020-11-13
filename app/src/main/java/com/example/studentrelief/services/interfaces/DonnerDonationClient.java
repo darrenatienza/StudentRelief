@@ -32,4 +32,5 @@ public interface DonnerDonationClient {
 
     @Get("/records/donners_donations/{id}")
     DonnerDonationModel get(@Path int id);
+
 }

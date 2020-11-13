@@ -38,6 +38,8 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 @EFragment(R.layout.fragment_donner_donation_list)
 public class DonnerDonationListFragment extends Fragment {
@@ -80,13 +82,40 @@ public class DonnerDonationListFragment extends Fragment {
                 // do it
                 TextView t = v.findViewById(R.id.idView);
                 int id = Integer.parseInt(t.getText().toString());
-                showFormDialog(id);
+               validateItemForEdit(id);
             }
         });
     }
+    @UiThread
+    void showFormDialog(int id) {
 
-    private void showFormDialog(int id) {
         DonnerDonationFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+    }
+    @Background
+    void validateItemForEdit(int id) {
+        DonnerDonationModel donnerDonationModel = client.get(id);
+        if(!donnerDonationModel.isQuantity_uploaded()) {
+        showFormDialog(id);
+        }else{
+            showNotApplicableForEditMessage();
+        }
+
+    }
+
+    @UiThread
+    void showNotApplicableForEditMessage() {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("Oops!")
+                .setContentText("The quantity of this donation was uploaded to donation's record. Your not allow to do any further.")
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+
+                .show();
     }
 
     @Background

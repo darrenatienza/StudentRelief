@@ -1,7 +1,5 @@
 package com.example.studentrelief.ui.donner_donation;
 
-import com.example.studentrelief.MainActivity;
-import com.example.studentrelief.MainActivity_;
 import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.interfaces.DonnerDonationClient;
@@ -22,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.studentrelief.R;
 
-import com.example.studentrelief.ui.dialogs.AlertDialogFragment;
 import com.example.studentrelief.ui.dialogs.DatePickerFragment;
 import com.github.thunder413.datetimeutils.DateTimeStyle;
 import com.github.thunder413.datetimeutils.DateTimeUtils;
@@ -41,7 +38,6 @@ import org.springframework.web.client.RestClientException;
 
 import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -75,7 +71,7 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     @ViewById
     EditText etQuantity;
 
-    private DonnerDonationModel model;
+    private DonnerDonationModel donnerDonationModel;
     private ArrayAdapter<DonnerModel> donnerArrayAdapter;
 
     private ArrayAdapter<DonationModel> donationArrayAdapter;
@@ -99,7 +95,7 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
                 getFormData();
 
             }else{
-                model = new DonnerDonationModel();
+                donnerDonationModel = new DonnerDonationModel();
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
@@ -113,11 +109,12 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     void btnSave(){
         try {
             String quantity = etQuantity.getText().toString();
-            model.setDonation_id(donationID);
-            model.setDonner_id(donnerID);
-            model.setDonation_date(donationDate);
-            model.setQuantity(Integer.valueOf(quantity));
-            saveAsync(model);
+            donnerDonationModel.setDonation_id(donationID);
+            donnerDonationModel.setDonner_id(donnerID);
+            donnerDonationModel.setDonation_date(donationDate);
+            donnerDonationModel.setQuantity_uploaded(true);
+            donnerDonationModel.setQuantity(Integer.valueOf(quantity));
+            saveAsync(donnerDonationModel);
 
         }catch (RestClientException ex){
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
@@ -128,15 +125,36 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     }
 
     @Click
+    void imgUpload(){
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Are you sure?")
+                .setContentText("Won't be able to modify or remove this record after uploading the quantity.")
+                .setConfirmText("Yes,upload it!")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        uploadQuantityAsync();
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+    }
+
+
+
+    @Click
     void imgCalendar(){
         DatePickerFragment mDatePickerDialogFragment;
         mDatePickerDialogFragment = new DatePickerFragment();
         mDatePickerDialogFragment.show(getSupportFragmentManager(), "DATE PICK");
     }
-    @Click
-    void etDate(){
 
-    }
     @Click
     void btnDelete(){
         try {
@@ -178,7 +196,19 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     }
 
     /** Background Task **/
+    @Background
+    void uploadQuantityAsync() {
+        // updates the quantity of the donation
+        DonationModel donationModel = donationClient.get(donnerDonationModel.getDonation_id());
+        donationModel.setQuantity(donationModel.getQuantity() + donnerDonationModel.getQuantity());
+        // updates the quantity uploaded property of donners donations;
+        donnerDonationModel.setQuantity_uploaded(true);
+        // commit changes
+        client.edit(id, donnerDonationModel);
+        donationClient.edit(donationModel.getDonation_id(),donationModel);
 
+        updateUIAfterUploadQuantity();
+    }
     @Background
     void loadDonnerListAsync() {
         donnerModels = donnerClient.getAll("").getRecords();
@@ -194,9 +224,8 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     @Background
     void getFormData() {
         if (id > 0){
-            model   = client.get(id);
-
-            updateUIFormData(model);
+            donnerDonationModel = client.get(id);
+            updateUIFormData(donnerDonationModel);
         }
     }
     @Background
@@ -218,6 +247,12 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     }
 
     /** UI threads */
+    @UiThread
+    void updateUIAfterUploadQuantity() {
+        // close the form
+        setResult(RESULT_OK);
+        finish();
+    }
     @UiThread
     void updateUIAfterSave() {
         // close the form
@@ -248,7 +283,7 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
         // setting value of selected model from list
         donnerPos = getDonnerPosition(model.getDonner_id());
         donationPos = getDonationPosition(model.getDonation_id());
-
+        donationDate =  DateTimeUtils.formatWithPattern(model.getDonation_date(),"YYYY-M-d hh:mm:ss", Locale.ENGLISH);
         etDate.setText(DateTimeUtils.formatWithStyle(model.getDonation_date(), DateTimeStyle.MEDIUM));
         etQuantity.setText(String.valueOf(model.getQuantity()));
     }
@@ -281,6 +316,7 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     }
 
 
+    /** method from DatePickerDialog */
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
         Calendar mCalender = Calendar.getInstance();

@@ -40,5 +40,11 @@ public class DonnerDonationItemView extends RelativeLayout {
         donationNameView.setText("Donation: " + model.getDonation_name());
         donationDateView.setText("Date: " + model.getDonation_medium_dateFormat());
         quantityView.setText("Quantity: " + model.getQuantity());
+        if(model.isQuantity_uploaded()){
+            quantityView.setTextColor(getResources().getColor(R.color.main_green_color));
+        }else{
+            quantityView.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+
     }
 }
