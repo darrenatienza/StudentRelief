@@ -41,4 +41,7 @@
     <string name="title_activity_donner_donation_form">Donner\'s Donation\'s</string>
     <string name="menu_donner_donation_list">Donner\'s Donation\'s</string>
     <string name="date">Date</string>
+    <string name="menu_student_relief_list">Student Relief\'s</string>
+    <string name="request_date">Request Date</string>
+    <string name="title_student_relief">Student Relief\'s</string>
 </resources>

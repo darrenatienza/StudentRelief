@@ -16,7 +16,24 @@ public class StudentReliefModel {
     int quantity;
     String date_release;
     String request_date;
+    String code;
+    String create_time_stamp;
 
+    public String getCreate_time_stamp() {
+        return create_time_stamp;
+    }
+
+    public void setCreate_time_stamp(String create_time_stamp) {
+        this.create_time_stamp = create_time_stamp;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public int getStudent_relief_id() {
         return student_relief_id;
@@ -88,5 +105,13 @@ public class StudentReliefModel {
 
     public void setRequest_date(String request_date) {
         this.request_date = request_date;
+    }
+
+    public String getRequest_medium_dateFormat() {
+        return DateTimeUtils.formatWithStyle(DateTimeUtils.formatDate(request_date), DateTimeStyle.MEDIUM);
+    }
+
+    public String getRelease_medium_dateFormat() {
+        return DateTimeUtils.formatWithStyle(DateTimeUtils.formatDate(date_release), DateTimeStyle.MEDIUM);
     }
 }

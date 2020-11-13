@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@color/cardview_light_background"
+    >
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginLeft="10dp">
+
+       /**Id */
+       <TextView
+           android:id="@+id/idView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:visibility="gone"
+           />
+
+       <TextView
+           android:id="@+id/fullNameView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="10dp"
+           android:textSize="18dp"
+           android:textStyle="bold"
+           android:text="Full Name" />
+       <TextView
+           android:id="@+id/requestCodeView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/fullNameView"
+           android:textSize="16dp"
+
+           android:layout_marginLeft="10dp"
+           android:layout_marginTop="5dp"
+           android:text="Request Code" />
+       <TextView
+           android:id="@+id/donationNameView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/requestCodeView"
+           android:textSize="16dp"
+
+           android:layout_marginLeft="10dp"
+           android:layout_marginTop="5dp"
+           android:text="Donation Name" />
+
+       <TextView
+           android:id="@+id/requestDateView"
+           android:layout_width="match_parent"
+           android:layout_height="26dp"
+           android:layout_marginLeft="10dp"
+           android:gravity="center_vertical"
+           android:textSize="14dp"
+           android:layout_below="@+id/donationNameView"
+           android:text="Request Date" />
+       <TextView
+           android:id="@+id/releaseDateView"
+           android:layout_width="match_parent"
+           android:layout_height="26dp"
+           android:layout_marginLeft="10dp"
+           android:gravity="center_vertical"
+           android:textSize="14dp"
+           android:layout_below="@+id/requestDateView"
+           android:text="Release Date" />
+       <TextView
+           android:id="@+id/quantityView"
+           android:layout_width="match_parent"
+           android:layout_height="26dp"
+           android:layout_marginLeft="10dp"
+           android:gravity="center_vertical"
+           android:textSize="14dp"
+           android:layout_below="@+id/releaseDateView"
+           android:text="Quantity:0" />
+   </RelativeLayout>
+
+
+
+</RelativeLayout>

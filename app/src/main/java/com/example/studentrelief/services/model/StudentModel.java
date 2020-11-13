@@ -1,5 +1,7 @@
 package com.example.studentrelief.services.model;
 
+import androidx.annotation.NonNull;
+
 public class StudentModel {
 
     int student_id;
@@ -62,6 +64,15 @@ public class StudentModel {
     String password;
     Boolean is_requesting_relief;
     String create_time_stamp;
+    String request_date;
+
+    public String getRequest_date() {
+        return request_date;
+    }
+
+    public void setRequest_date(String request_date) {
+        this.request_date = request_date;
+    }
 
     public String getSr_code() {
         return sr_code;
@@ -101,5 +112,12 @@ public class StudentModel {
 
     public void setStudent_id(int student_id) {
         this.student_id = student_id;
+    }
+
+
+    @NonNull
+    @Override
+    public String toString() {
+        return full_name;
     }
 }

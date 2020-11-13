@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_donners_donation_list">
+    app:startDestination="@+id/nav_student_request_list">
 
     <fragment
         android:id="@+id/nav_home"
@@ -36,4 +36,9 @@
         android:name="com.example.studentrelief.ui.donner_donation.DonnerDonationListFragment_"
         android:label="@string/menu_donner_donation_list"
         tools:layout="@layout/fragment_donner_donation_list" />
+    <fragment
+        android:id="@+id/nav_student_request_list"
+        android:name="com.example.studentrelief.ui.student_relief.StudentReliefListFragment_"
+        android:label="@string/menu_student_relief_list"
+        tools:layout="@layout/fragment_student_relief_list" />
 </navigation>

@@ -1,34 +1,32 @@
-package com.example.studentrelief.ui.donner_donation;
+package com.example.studentrelief.ui.student_relief;
 
-import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
-import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.interfaces.DonnerDonationClient;
-import com.example.studentrelief.services.model.DonationModel;
+import com.example.studentrelief.services.interfaces.StudentClient;
+import com.example.studentrelief.services.interfaces.StudentReliefClient;
 import com.example.studentrelief.services.model.DonnerDonationModel;
-import com.example.studentrelief.ui.adapters.DonationAdapter;
+import com.example.studentrelief.services.model.StudentReliefModel;
 import com.example.studentrelief.ui.adapters.DonnerDonationAdapter;
-import com.example.studentrelief.ui.donation.DonationFormActivity_;
+import com.example.studentrelief.ui.adapters.StudentReliefAdapter;
+import com.example.studentrelief.ui.donner_donation.DonnerDonationFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
-import com.example.studentrelief.ui.student_relief.StudentReliefFormActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
@@ -42,24 +40,25 @@ import java.util.List;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-@EFragment(R.layout.fragment_donner_donation_list)
-public class DonnerDonationListFragment extends Fragment {
+@EFragment(R.layout.fragment_student_relief_list)
+public class StudentReliefListFragment extends Fragment {
 
     @RestService
-    DonnerClient donnerClient;
+    StudentClient studentClient;
     @RestService
     DonationClient donationClient;
     @RestService
-    DonnerDonationClient client;
+    StudentReliefClient client;
 
     static  final int SHOW_FORM = 101;
     @ViewById
     RecyclerView recyclerView;
     @ViewById
     TextView tvSearch;
-
+    @ViewById
+    CheckBox chkRelease;
     @Bean
-    DonnerDonationAdapter adapter;
+    StudentReliefAdapter adapter;
 
     @AfterViews
     void afterViews() {
@@ -75,7 +74,10 @@ public class DonnerDonationListFragment extends Fragment {
     }
 
 
-
+    @CheckedChange
+    void chkRelease(){
+        loadList();
+    }
     private void initItemClick() {
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
@@ -90,12 +92,12 @@ public class DonnerDonationListFragment extends Fragment {
     @UiThread
     void showFormDialog(int id) {
 
-        DonnerDonationFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        StudentReliefFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
     }
     @Background
     void validateItemForEdit(int id) {
-        DonnerDonationModel donnerDonationModel = client.get(id);
-        if(!donnerDonationModel.isQuantity_uploaded()) {
+        StudentReliefModel model = client.get(id);
+        if(!model.isIs_release()) {
         showFormDialog(id);
         }else{
             showNotApplicableForEditMessage();
@@ -107,7 +109,7 @@ public class DonnerDonationListFragment extends Fragment {
     void showNotApplicableForEditMessage() {
         new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                 .setTitleText("Oops!")
-                .setContentText("The quantity of this donation was uploaded to donation's record. Your not allow to do any further.")
+                .setContentText("The relief for this student was released. Your not allow to do any further.")
                 .setConfirmText("OK")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -124,26 +126,27 @@ public class DonnerDonationListFragment extends Fragment {
         try {
             /** Model is modified to provide values on other fields*/
             String criteria = tvSearch.getText().toString();
-            List<DonnerDonationModel> models = client.getAll(criteria).getRecords();
-            List<DonnerDonationModel> newModels = new ArrayList<>();
-            for (DonnerDonationModel model: models
+            int release = chkRelease.isChecked()? 1 : 0;
+            List<StudentReliefModel> models = client.getAll(release).getRecords();
+            List<StudentReliefModel> newModels = new ArrayList<>();
+            for (StudentReliefModel model: models
                  ) {
-                DonnerDonationModel newModel = new DonnerDonationModel();
+                StudentReliefModel newModel = new StudentReliefModel();
                 newModel = model;
                 String donationName = donationClient.get(model.getDonation_id()).getName();
-                String donnerFullName = donnerClient.getDonner(model.getDonner_id()).getFull_name();
+                String fullName = studentClient.getDonner(model.getStudent_id()).getFull_name();
                 newModel.setDonation_name(donationName);
-                newModel.setDonner_full_name(donnerFullName);
+                newModel.setStudent_fullName(fullName);
                 newModels.add(newModel);
             }
-            /** New models (modified model) must be pass not the original models*/
+            /** New models (modified model) must be pass not the original models from api*/
             updateList(newModels);
         }catch (Exception e){
             Log.e("Error",e.getMessage());
         }
     }
     @UiThread
-    void updateList(List<DonnerDonationModel> models) {
+    void updateList(List<StudentReliefModel> models) {
         adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
