@@ -44,4 +44,5 @@
     <string name="menu_student_relief_list">Student Relief\'s</string>
     <string name="request_date">Request Date</string>
     <string name="title_student_relief">Student Relief\'s</string>
+    <string name="menu_donation_task_list">Donation Tasks</string>
 </resources>

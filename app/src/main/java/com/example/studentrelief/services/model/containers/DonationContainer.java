@@ -1,6 +1,8 @@
-package com.example.studentrelief.services.model;
+package com.example.studentrelief.services.model.containers;
 
 
+
+import com.example.studentrelief.services.model.DonationModel;
 
 import java.util.List;
 

@@ -1,8 +1,6 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
-import com.example.studentrelief.services.model.DonationContainer;
-import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.DonnerDonationContainer;
 import com.example.studentrelief.services.model.DonnerDonationModel;
 

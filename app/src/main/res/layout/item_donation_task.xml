@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@color/cardview_light_background"
+    >
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginLeft="10dp">
+
+       /**Id */
+       <TextView
+           android:id="@+id/tvID"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:visibility="gone"
+           />
+       <TextView
+           android:id="@+id/tvCode"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/idView"
+           android:textSize="16dp"
+
+           android:layout_marginLeft="10dp"
+           android:layout_marginTop="5dp"
+           android:text="Code" />
+       <TextView
+           android:id="@+id/tvTitle"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/tvCode"
+           android:layout_marginLeft="10dp"
+           android:textSize="18dp"
+           android:textStyle="bold"
+           android:text="Title" />
+       <TextView
+           android:id="@+id/tvStatus"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/tvTitle"
+           android:layout_marginLeft="10dp"
+           android:textSize="16dp"
+           android:text="Status" />
+       <TextView
+           android:id="@+id/tvAffectedAreas"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/tvStatus"
+           android:textSize="16dp"
+
+           android:layout_marginLeft="10dp"
+
+           android:text="Aftected Areas" />
+
+
+   </RelativeLayout>
+
+
+
+</RelativeLayout>
