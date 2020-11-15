@@ -1,4 +1,4 @@
-package com.example.studentrelief.ui.donation_task;
+package com.example.studentrelief.ui.relief_task;
 
 import android.util.Log;
 import android.view.View;
@@ -10,16 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.interfaces.DonationClient;
-import com.example.studentrelief.services.interfaces.DonationTaskClient;
-import com.example.studentrelief.services.interfaces.DonnerClient;
-import com.example.studentrelief.services.interfaces.DonnerDonationClient;
-import com.example.studentrelief.services.model.DonationTaskModel;
-import com.example.studentrelief.services.model.DonnerDonationModel;
-import com.example.studentrelief.ui.adapters.DonationTaskAdapter;
-import com.example.studentrelief.ui.adapters.DonnerDonationAdapter;
-import com.example.studentrelief.ui.donner_donation.DonnerDonationFormActivity_;
+import com.example.studentrelief.services.interfaces.ReliefTaskClient;
+import com.example.studentrelief.services.model.ReliefTaskModel;
+import com.example.studentrelief.ui.adapters.ReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.RecyclerViewClickListener;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -32,17 +27,16 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-@EFragment(R.layout.fragment_donation_task_list)
-public class DonationTaskListFragment extends Fragment {
+@EFragment(R.layout.fragment_relief_task_list)
+public class ReliefTaskListFragment extends Fragment {
 
     @RestService
-    DonationTaskClient client;
+    ReliefTaskClient client;
 
     static  final int SHOW_FORM = 101;
     @ViewById
@@ -51,7 +45,7 @@ public class DonationTaskListFragment extends Fragment {
     TextView tvSearch;
 
     @Bean
-    DonationTaskAdapter adapter;
+    ReliefTaskAdapter adapter;
 
     @AfterViews
     void afterViews() {
@@ -73,7 +67,7 @@ public class DonationTaskListFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 // do it
-                TextView t = v.findViewById(R.id.idView);
+                TextView t = v.findViewById(R.id.tvID);
                 int id = Integer.parseInt(t.getText().toString());
                validateItemForEdit(id);
             }
@@ -82,12 +76,12 @@ public class DonationTaskListFragment extends Fragment {
     @UiThread
     void showFormDialog(int id) {
         /**TODO update this*/
-        //DonnerDonationFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        ReliefTaskFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
     }
     @Background
     void validateItemForEdit(int id) {
-        DonationTaskModel donationTaskModel = client.get(id);
-        if(donationTaskModel.getActive()) {
+        ReliefTaskModel reliefTaskModel = client.get(id);
+        if(reliefTaskModel.getActive()) {
         showFormDialog(id);
         }else{
             showNotApplicableForEditMessage();
@@ -116,7 +110,7 @@ public class DonationTaskListFragment extends Fragment {
         try {
             /** Model is modified to provide values on other fields*/
             String criteria = tvSearch.getText().toString();
-            List<DonationTaskModel> models = client.getAll(criteria).getRecords();
+            List<ReliefTaskModel> models = client.getAll(criteria).getRecords();
 
             /** New models (modified model) must be pass not the original models*/
             updateList(models);
@@ -125,7 +119,7 @@ public class DonationTaskListFragment extends Fragment {
         }
     }
     @UiThread
-    void updateList(List<DonationTaskModel> models) {
+    void updateList(List<ReliefTaskModel> models) {
         adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
@@ -144,5 +138,6 @@ public class DonationTaskListFragment extends Fragment {
         loadList();
         Log.d("Result",String.valueOf(resultCode));
     }
+
 
 }

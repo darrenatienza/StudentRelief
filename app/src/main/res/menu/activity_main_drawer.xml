@@ -36,8 +36,8 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_student_relief_list" />
         <item
-            android:id="@+id/nav_donation_task_list"
+            android:id="@+id/nav_relief_task_list"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_donation_task_list" />
+            android:title="@string/menu_relief_task_list" />
     </group>
 </menu>

@@ -1,19 +1,17 @@
 package com.example.studentrelief.ui.itemviews;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.model.DonationModel;
-import com.example.studentrelief.services.model.DonationTaskModel;
+import com.example.studentrelief.services.model.ReliefTaskModel;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
-@EViewGroup(R.layout.item_donation_task)
-public class DonationTaskItemView extends RelativeLayout {
+@EViewGroup(R.layout.item_student_relief_task)
+public class ReliefTaskItemView extends RelativeLayout {
 
     @ViewById
     TextView tvID;
@@ -27,12 +25,12 @@ public class DonationTaskItemView extends RelativeLayout {
     TextView tvStatus;
 
 
-    public DonationTaskItemView(Context context) {
+    public ReliefTaskItemView(Context context) {
         super(context);
     }
 
-    public void bind(DonationTaskModel model) {
-        tvID.setText(String.valueOf(model.getDonation_task_id()));
+    public void bind(ReliefTaskModel model) {
+        tvID.setText(String.valueOf(model.getRelief_task_id()));
         tvCode.setText(model.getCode());
         tvTitle.setText("Title: " + model.getTitle());
         tvAffectedAreas.setText(model.getAffected_areas());

@@ -2,20 +2,13 @@ package com.example.studentrelief;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.example.studentrelief.services.model.DonnerModel;
-import com.example.studentrelief.ui.dialogs.AlertDialogFragment;
-
 
 import com.github.thunder413.datetimeutils.DateTimeUtils;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,15 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OnActivityResult;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.springframework.web.client.RestClientException;
-
-import java.util.List;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -70,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_student_list,R.id.nav_donners_list,R.id.nav_volunteer_list,
-                R.id.nav_donation_list, R.id.nav_donners_donation_list, R.id.nav_student_request_list, R.id.nav_donation_task_list)
+                R.id.nav_donation_list, R.id.nav_donners_donation_list, R.id.nav_student_request_list, R.id.nav_relief_task_list)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

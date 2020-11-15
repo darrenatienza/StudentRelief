@@ -31,5 +31,5 @@ public interface StudentClient  {
     Integer delete(@Path int id);
 
     @Get("/records/students/{id}")
-    StudentModel getDonner(@Path int id);
+    StudentModel get(@Path int id);
 }

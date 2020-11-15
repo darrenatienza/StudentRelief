@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.studentrelief">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,17 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+
+        tools:replace="android:icon,android:label">
 
         <activity
             android:name=".MainActivity_"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.donner_donation.DonnerDonationFormActivity_"
@@ -44,6 +43,20 @@
             android:name=".ui.student_relief.StudentReliefFormActivity_"
             android:label="@string/title_student_relief"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.relief_task.ReliefTaskFormActivity_"
+            android:label="@string/title_relief_task"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.student.StudentPanelActivity_"
+            android:label="@string/title_student_panel"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

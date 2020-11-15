@@ -2,8 +2,8 @@ package com.example.studentrelief.services.model;
 
 import androidx.annotation.NonNull;
 
-public class DonationTaskModel {
-    int donation_task_id;
+public class ReliefTaskModel {
+    int relief_task_id;
     String code;
     String title;
     String affected_areas;
@@ -18,12 +18,12 @@ public class DonationTaskModel {
         this.active = active;
     }
 
-    public int getDonation_task_id() {
-        return donation_task_id;
+    public int getRelief_task_id() {
+        return relief_task_id;
     }
 
-    public void setDonation_task_id(int donation_task_id) {
-        this.donation_task_id = donation_task_id;
+    public void setRelief_task_id(int relief_task_id) {
+        this.relief_task_id = relief_task_id;
     }
 
     public String getCode() {

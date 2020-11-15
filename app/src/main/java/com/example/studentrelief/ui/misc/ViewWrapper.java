@@ -4,7 +4,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ViewWrapper<V extends View> extends RecyclerView.ViewHolder {
+public class ViewWrapper<V extends View> extends RecyclerView.ViewHolder   {
 
     private V view;
 
@@ -16,4 +16,5 @@ public class ViewWrapper<V extends View> extends RecyclerView.ViewHolder {
     public V getView() {
         return view;
     }
+
 }

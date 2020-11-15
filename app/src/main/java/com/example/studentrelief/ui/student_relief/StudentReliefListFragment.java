@@ -12,14 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
-import com.example.studentrelief.services.interfaces.DonnerDonationClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.StudentReliefClient;
-import com.example.studentrelief.services.model.DonnerDonationModel;
 import com.example.studentrelief.services.model.StudentReliefModel;
-import com.example.studentrelief.ui.adapters.DonnerDonationAdapter;
 import com.example.studentrelief.ui.adapters.StudentReliefAdapter;
-import com.example.studentrelief.ui.donner_donation.DonnerDonationFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
@@ -134,7 +130,7 @@ public class StudentReliefListFragment extends Fragment {
                 StudentReliefModel newModel = new StudentReliefModel();
                 newModel = model;
                 String donationName = donationClient.get(model.getDonation_id()).getName();
-                String fullName = studentClient.getDonner(model.getStudent_id()).getFull_name();
+                String fullName = studentClient.get(model.getStudent_id()).getFull_name();
                 newModel.setDonation_name(donationName);
                 newModel.setStudent_fullName(fullName);
                 newModels.add(newModel);

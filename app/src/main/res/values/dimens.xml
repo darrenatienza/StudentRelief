@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">10dp</dimen>
     <dimen name="dialog_title_size">20dp</dimen>
+    <dimen name="panel_text">20dp</dimen>
 </resources>
