@@ -3,7 +3,6 @@ package com.example.studentrelief.ui.student;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.ReliefRequestClient;
 import com.example.studentrelief.services.interfaces.ReliefTaskClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
-import com.example.studentrelief.services.model.AddEditDonnerModel;
+import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.StudentModel;
-import com.example.studentrelief.ui.adapters.ReliefTaskAdapter;
 import com.example.studentrelief.ui.adapters.StudentReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.RecyclerViewClickListener;
@@ -28,24 +27,29 @@ import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 @EActivity(R.layout.activity_student_panel)
-public class StudentPanelActivity extends AppCompatActivity implements RecyclerViewClickListener {
+public class StudentPanelActivity extends AppCompatActivity implements RecyclerViewClickListener<ReliefTaskModel> {
 
     @RestService
     StudentClient studentClient;
     @RestService
     ReliefTaskClient reliefTaskClient;
-
+    @RestService
+    ReliefRequestClient reliefRequestClient;
 
     @Extra
     int id = 1;
@@ -86,7 +90,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 recyclerView.setAdapter(adapter);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 loadList();
-                initItemClick();
+                //initItemClick();
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
@@ -95,19 +99,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     }
 
-    private void initItemClick() {
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                // do it
-                TextView t = v.findViewById(R.id.tvID);
 
-
-                int id = Integer.parseInt(t.getText().toString());
-                validateItemForEdit(id);
-            }
-        });
-    }
     @Background
     void getFormData() {
         if (id > 0){
@@ -115,16 +107,45 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             updateUIFormData(model);
         }
     }
+
+    void validateItemForReliefRequest(final ReliefTaskModel model) {
+
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Are you sure?")
+                .setContentText("You must be a resident of the "+ model.getAffected_areas() +
+                        " to be qualify for receiving relief.")
+                .setConfirmText("Yes,I am qualify.")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        ReliefRequestModel _model = new ReliefRequestModel();
+                        _model.setStudent_id(id);
+                        _model.setRelief_task_id(model.getRelief_task_id());
+                        _model.setReleased(false);
+                        addNewReliefRequest(_model);
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+
+    }
     @Background
-    void validateItemForEdit(int id) {
-        ReliefTaskModel reliefTaskModel = reliefTaskClient.get(id);
-        if(reliefTaskModel.getActive()) {
-            //showFormDialog(id);
-        }else{
-            //showNotApplicableForEditMessage();
+    void addNewReliefRequest(ReliefRequestModel model) {
+        try {
+            reliefRequestClient.addNew(model);
+        }catch (RestClientException ex){
+            Log.e("title",ex.toString());
         }
 
     }
+
+
     @UiThread
     void updateUIFormData(StudentModel model) {
         tvSrCode.setText(model.getSr_code());
@@ -155,9 +176,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     /**Use to get on click event of button from recycler view*/
     @Override
-    public void onClick(View view, int position) {
-
-
-        Log.d("ID", position +"");
+    public void onClick(ReliefTaskModel model) {
+        validateItemForReliefRequest(model);
     }
 }

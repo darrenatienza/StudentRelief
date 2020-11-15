@@ -1,6 +1,8 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
+import com.example.studentrelief.services.model.ReliefRequestContainer;
+import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.containers.ReliefTaskContainer;
 
@@ -15,24 +17,21 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 
 @Rest(rootUrl = BuildConfig.BASE_URL,converters = { MappingJackson2HttpMessageConverter.class })
 
-public interface ReliefTaskClient {
-    @Get("/records/relief_tasks?filter=title,cs,{criteria}")
-    ReliefTaskContainer getAll(@Path String criteria);
-
-    @Get("/records/relief_tasks?filter=active,cs,1")
-    ReliefTaskContainer getAllActive();
+public interface ReliefRequestClient {
+    @Get("/records/relief_requests?filter=title,cs,{criteria}")
+    ReliefRequestContainer getAll(@Path String criteria);
 
     /** excludes auto generated column */
-    @Post("/records/relief_tasks?exclude=relief_task_id,create_time_stamp")
-    Integer addNew(@Body ReliefTaskModel model);
+    @Post("/records/relief_requests?exclude=relief_request_id,date_release,create_time_stamp")
+    Integer addNew(@Body ReliefRequestModel model);
 
     /** excludes auto generated column */
-    @Put("/records/relief_tasks/{id}?exclude=relief_task_id,create_time_stamp")
-    Integer edit(@Path int id, @Body ReliefTaskModel model);
+    @Put("/records/relief_requests/{id}?exclude=relief_request_id,create_time_stamp")
+    Integer edit(@Path int id, @Body ReliefRequestModel model);
 
-    @Delete("/records/relief_tasks/{id}")
+    @Delete("/records/relief_requests/{id}")
     Integer delete(@Path int id);
 
-    @Get("/records/relief_tasks/{id}")
-    ReliefTaskModel get(@Path int id);
+    @Get("/records/relief_requests/{id}")
+    ReliefRequestModel get(@Path int id);
 }

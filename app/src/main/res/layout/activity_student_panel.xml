@@ -20,6 +20,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_donner_form" />
+    <include layout="@layout/content_student_panel" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,6 +2,6 @@ package com.example.studentrelief.ui.misc;
 
 import android.view.View;
 
-public interface RecyclerViewClickListener {
-    void onClick(View view, int position);
+public interface RecyclerViewClickListener<T> {
+    void onClick(T model);
 }

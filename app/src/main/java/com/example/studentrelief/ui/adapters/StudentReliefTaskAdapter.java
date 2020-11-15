@@ -24,9 +24,9 @@ public class StudentReliefTaskAdapter extends RecyclerViewAdapterBase<ReliefTask
 
     @RootContext
     Context context;
-    private RecyclerViewClickListener mClickListener;
+    private RecyclerViewClickListener<ReliefTaskModel> mClickListener;
 
-    public void setList(List<ReliefTaskModel> list, RecyclerViewClickListener clickListener) {
+    public void setList(List<ReliefTaskModel> list, RecyclerViewClickListener<ReliefTaskModel> clickListener) {
         mClickListener = clickListener;
         items = list;
     }
@@ -45,7 +45,7 @@ public class StudentReliefTaskAdapter extends RecyclerViewAdapterBase<ReliefTask
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                mClickListener.onClick(view,model.getRelief_task_id());
+                mClickListener.onClick(model);
             }
         });
         view.bind(model);
