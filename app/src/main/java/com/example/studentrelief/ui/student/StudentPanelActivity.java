@@ -31,6 +31,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemSelect;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
@@ -40,7 +42,7 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-
+@OptionsMenu(R.menu.menu_panel)
 @EActivity(R.layout.activity_student_panel)
 public class StudentPanelActivity extends AppCompatActivity implements RecyclerViewClickListener<ReliefTaskModel> {
 
@@ -52,7 +54,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     ReliefRequestClient reliefRequestClient;
 
     @Extra
-    int id = 1;
+    int id = 2;
 
 
     @ViewById
@@ -98,7 +100,10 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
 
     }
-
+    @OptionsItem(R.id.action_edit)
+    void menuPanel(){
+       StudentFormActivity_.intent(this).id(id).start();
+    }
 
     @Background
     void getFormData() {
@@ -139,10 +144,42 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     void addNewReliefRequest(ReliefRequestModel model) {
         try {
             reliefRequestClient.addNew(model);
+            showReliefRequestSaveConfirmation();
         }catch (RestClientException ex){
-            Log.e("title",ex.toString());
+            showErrorAlert(ex.getMessage());
         }
 
+    }
+    @UiThread
+    void showErrorAlert(String message) {
+        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("Oops!")
+                .setContentText("An error occured! \n" + message)
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+    }
+
+
+    @UiThread
+    void showReliefRequestSaveConfirmation() {
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Success")
+                .setContentText("Your new relief request has been submitted!")
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+
+                .show();
     }
 
 

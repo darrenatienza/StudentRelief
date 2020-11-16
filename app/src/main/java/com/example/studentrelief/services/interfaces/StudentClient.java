@@ -21,10 +21,10 @@ public interface StudentClient  {
     @Get("/records/students?filter=full_name,cs,{criteria}")
     StudentContainer getAll(@Path String criteria);
 
-    @Post("/records/students")
+    @Post("/records/students?exclude=student_id,create_time_stamp")
     Integer addNew(@Body StudentModel model);
 
-    @Put("/records/students/{id}")
+    @Put("/records/students/{id}?exclude=student_id,create_time_stamp")
     Integer edit(@Path int id, @Body StudentModel model);
 
     @Delete("/records/students/{id}")

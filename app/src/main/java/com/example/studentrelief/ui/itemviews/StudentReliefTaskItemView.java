@@ -10,8 +10,8 @@ import com.example.studentrelief.services.model.ReliefTaskModel;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
-@EViewGroup(R.layout.item_relief_task)
-public class ReliefTaskItemView extends RelativeLayout {
+@EViewGroup(R.layout.item_student_relief_task)
+public class StudentReliefTaskItemView extends RelativeLayout {
 
     @ViewById
     TextView tvID;
@@ -25,7 +25,7 @@ public class ReliefTaskItemView extends RelativeLayout {
     TextView tvStatus;
 
 
-    public ReliefTaskItemView(Context context) {
+    public StudentReliefTaskItemView(Context context) {
         super(context);
     }
 

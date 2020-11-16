@@ -47,4 +47,10 @@
     <string name="menu_relief_task_list">Donation Tasks</string>
     <string name="title_relief_task">Relief Task Form</string>
     <string name="title_student_panel">Student Panel</string>
+    <string name="title_activity_student_form">Student Form</string>
+    <string name="campus">Campus</string>
+    <string name="course">Course</string>
+    <string name="sr_code">Sr Code</string>
+    <string name="action_edit_profile">Edit Profile</string>
+    <string name="title_activity_volunteer_panel">VolunteerPanelActivity</string>
 </resources>
