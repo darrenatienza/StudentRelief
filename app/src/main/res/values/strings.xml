@@ -53,4 +53,6 @@
     <string name="sr_code">Sr Code</string>
     <string name="action_edit_profile">Edit Profile</string>
     <string name="title_activity_volunteer_panel">VolunteerPanelActivity</string>
+    <string name="title_activity_student_relief_request_list">StudentReliefRequestListActivity
+    </string>
 </resources>

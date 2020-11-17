@@ -1,7 +1,9 @@
-package com.example.studentrelief.ui.volunteer;
+package com.example.studentrelief.ui.student_relief_request;
 
-import com.example.studentrelief.services.interfaces.ReliefTaskClient;
+import com.example.studentrelief.services.interfaces.ReliefRequestClient;
+import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
+import com.example.studentrelief.ui.adapters.ReliefRequestAdapter;
 import com.example.studentrelief.ui.adapters.ReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
@@ -12,31 +14,28 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.ui.student_relief_request.StudentReliefRequestListActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
 
-import static androidx.navigation.Navigation.findNavController;
-@OptionsMenu(R.menu.menu_panel)
-@EActivity(R.layout.activity_volunteer_panel)
-public class VolunteerPanelActivity extends AppCompatActivity {
+@EActivity(R.layout.activity_student_relief_request_list)
+public class StudentReliefRequestListActivity extends AppCompatActivity {
+
     @RestService
-    ReliefTaskClient reliefTaskClient;
+    ReliefRequestClient reliefRequestClient;
 
     @ViewById
     Toolbar toolbar;
@@ -45,7 +44,12 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     @Bean
-    ReliefTaskAdapter adapter;
+    ReliefRequestAdapter adapter;
+
+    @Extra
+    int reliefTaskID;
+
+
     @AfterViews
     void afterViews(){
         setSupportActionBar(toolbar);
@@ -58,9 +62,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadList();
         initItemClick();
-
     }
-
     private void initItemClick() {
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
@@ -68,7 +70,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
                 // do it
                 TextView t = v.findViewById(R.id.tvID);
                 int id = Integer.parseInt(t.getText().toString());
-               showReliefRequestList(id);
+                showReliefRequestList(id);
             }
         });
     }
@@ -81,7 +83,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     void loadList(){
         try {
             /** Model is modified to provide values on other fields*/
-            List<ReliefTaskModel> models = reliefTaskClient.getAllActive().getRecords();
+            List<ReliefRequestModel> models = reliefRequestClient.getAllByID(reliefTaskID).getRecords();
 
             /** New models (modified model) must be pass not the original models*/
             updateList(models);
@@ -90,7 +92,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
         }
     }
     @UiThread
-    void updateList(List<ReliefTaskModel> models) {
+    void updateList(List<ReliefRequestModel> models) {
         adapter.setList(models);
         adapter.notifyDataSetChanged();
     }

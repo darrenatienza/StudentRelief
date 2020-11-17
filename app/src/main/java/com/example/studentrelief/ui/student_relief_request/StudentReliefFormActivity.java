@@ -1,4 +1,4 @@
-package com.example.studentrelief.ui.student_relief;
+package com.example.studentrelief.ui.student_relief_request;
 
 import android.app.DatePickerDialog;
 import android.widget.ArrayAdapter;
@@ -18,7 +18,6 @@ import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.StudentReliefClient;
 import com.example.studentrelief.services.model.DonationModel;
-import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.services.model.StudentReliefModel;
 import com.example.studentrelief.ui.dialogs.DatePickerFragment;

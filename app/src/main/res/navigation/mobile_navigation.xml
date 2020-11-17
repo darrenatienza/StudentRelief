@@ -38,7 +38,7 @@
         tools:layout="@layout/fragment_donner_donation_list" />
     <fragment
         android:id="@+id/nav_student_request_list"
-        android:name="com.example.studentrelief.ui.student_relief.StudentReliefListFragment_"
+        android:name="com.example.studentrelief.ui.student_relief_request.StudentReliefListFragment_"
         android:label="@string/menu_student_relief_list"
         tools:layout="@layout/fragment_student_relief_list" />
     <fragment

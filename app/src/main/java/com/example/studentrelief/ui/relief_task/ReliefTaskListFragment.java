@@ -14,7 +14,6 @@ import com.example.studentrelief.services.interfaces.ReliefTaskClient;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.ui.adapters.ReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
-import com.example.studentrelief.ui.misc.RecyclerViewClickListener;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -36,7 +35,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class ReliefTaskListFragment extends Fragment {
 
     @RestService
-    ReliefTaskClient client;
+    ReliefTaskClient reliefTaskClient;
 
     static  final int SHOW_FORM = 101;
     @ViewById
@@ -80,7 +79,7 @@ public class ReliefTaskListFragment extends Fragment {
     }
     @Background
     void validateItemForEdit(int id) {
-        ReliefTaskModel reliefTaskModel = client.get(id);
+        ReliefTaskModel reliefTaskModel = reliefTaskClient.get(id);
         if(reliefTaskModel.getActive()) {
         showFormDialog(id);
         }else{
@@ -110,7 +109,7 @@ public class ReliefTaskListFragment extends Fragment {
         try {
             /** Model is modified to provide values on other fields*/
             String criteria = tvSearch.getText().toString();
-            List<ReliefTaskModel> models = client.getAll(criteria).getRecords();
+            List<ReliefTaskModel> models = reliefTaskClient.getAll(criteria).getRecords();
 
             /** New models (modified model) must be pass not the original models*/
             updateList(models);

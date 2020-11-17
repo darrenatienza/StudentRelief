@@ -1,4 +1,4 @@
-package com.example.studentrelief.ui.student_relief;
+package com.example.studentrelief.ui.student_relief_request;
 
 import android.util.Log;
 import android.view.View;

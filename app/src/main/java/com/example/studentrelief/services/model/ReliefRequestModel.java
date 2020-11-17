@@ -8,6 +8,63 @@ public class ReliefRequestModel {
     int relief_request_id;
    int student_id;
    int relief_task_id;
+    boolean released;
+    String date_release;
+    String create_time_stamp;
+    String student_full_name;
+    String student_address;
+    String student_contact_number;
+    String student_campus;
+    String student_course;
+    String request_task_title;
+
+    public String getRequest_task_title() {
+        return request_task_title;
+    }
+
+    public void setRequest_task_title(String request_task_title) {
+        this.request_task_title = request_task_title;
+    }
+
+    public String getStudent_full_name() {
+        return student_full_name;
+    }
+
+    public void setStudent_full_name(String student_full_name) {
+        this.student_full_name = student_full_name;
+    }
+
+    public String getStudent_address() {
+        return student_address;
+    }
+
+    public void setStudent_address(String student_address) {
+        this.student_address = student_address;
+    }
+
+    public String getStudent_contact_number() {
+        return student_contact_number;
+    }
+
+    public void setStudent_contact_number(String student_contact_number) {
+        this.student_contact_number = student_contact_number;
+    }
+
+    public String getStudent_campus() {
+        return student_campus;
+    }
+
+    public void setStudent_campus(String student_campus) {
+        this.student_campus = student_campus;
+    }
+
+    public String getStudent_course() {
+        return student_course;
+    }
+
+    public void setStudent_course(String student_course) {
+        this.student_course = student_course;
+    }
 
     public boolean isReleased() {
         return released;
@@ -17,9 +74,7 @@ public class ReliefRequestModel {
         this.released = released;
     }
 
-    boolean released;
-    String date_release;
-    String create_time_stamp;
+
 
     public int getRelief_request_id() {
         return relief_request_id;

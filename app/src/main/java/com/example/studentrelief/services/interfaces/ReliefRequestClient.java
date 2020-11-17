@@ -1,6 +1,7 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
+import com.example.studentrelief.services.model.DonnerContainer;
 import com.example.studentrelief.services.model.ReliefRequestContainer;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
@@ -34,4 +35,7 @@ public interface ReliefRequestClient {
 
     @Get("/records/relief_requests/{id}")
     ReliefRequestModel get(@Path int id);
+
+    @Get("/records/relief_requests_view?filter=relief_task_id,eq,{reliefTaskID}")
+    ReliefRequestContainer getAllByID(@Path int reliefTaskID);
 }

@@ -5,7 +5,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.services.model.StudentModel;
 
 import org.androidannotations.annotations.EViewGroup;
@@ -17,11 +16,11 @@ public class StudentItemView extends RelativeLayout {
     @ViewById
     TextView idView;
     @ViewById
-    TextView tvFullName;
+    TextView tvStudentFullName;
     @ViewById
     TextView tvCourse;
     @ViewById
-    TextView tvCampus;
+    TextView tvStudentCampus;
     @ViewById
     TextView addressView;
     @ViewById
@@ -37,10 +36,10 @@ public class StudentItemView extends RelativeLayout {
     public void bind(StudentModel model) {
         idView.setText(String.valueOf(model.getStudent_id()));
         tvSrCode.setText(model.getSr_code());
-        tvFullName.setText(model.getFull_name());
+        tvStudentFullName.setText(model.getFull_name());
         tvCourse.setText(model.getCourse());
         addressView.setText(model.getAddress());
         contactNumberView.setText(model.getContact_number());
-        tvCampus.setText(model.getCampus());
+        tvStudentCampus.setText(model.getCampus());
     }
 }

@@ -1,30 +1,22 @@
 package com.example.studentrelief.ui.donner_donation;
 
-import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.interfaces.DonnerDonationClient;
-import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.DonnerDonationModel;
-import com.example.studentrelief.ui.adapters.DonationAdapter;
 import com.example.studentrelief.ui.adapters.DonnerDonationAdapter;
-import com.example.studentrelief.ui.donation.DonationFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
-import com.example.studentrelief.ui.student_relief.StudentReliefFormActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;

@@ -2,7 +2,6 @@ package com.example.studentrelief.ui.student;
 
 
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +19,6 @@ import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.adapters.StudentReliefTaskAdapter;
-import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.RecyclerViewClickListener;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
@@ -29,8 +27,6 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
@@ -64,13 +60,13 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     TextView tvSrCode;
 
     @ViewById
-    TextView tvFullName;
+    TextView tvStudentFullName;
     @ViewById
     TextView tvAddress;
     @ViewById
     TextView tvContactNumber;
     @ViewById
-    TextView tvCampus;
+    TextView tvStudentCampus;
 
     @Bean
     StudentReliefTaskAdapter adapter;
@@ -186,10 +182,10 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     @UiThread
     void updateUIFormData(StudentModel model) {
         tvSrCode.setText(model.getSr_code());
-        tvFullName.setText(model.getFull_name());
+        tvStudentFullName.setText(model.getFull_name());
         tvAddress.setText(model.getAddress());
         tvContactNumber.setText(model.getContact_number());
-        tvCampus.setText(model.getCampus());
+        tvStudentCampus.setText(model.getCampus());
 
     }
 
