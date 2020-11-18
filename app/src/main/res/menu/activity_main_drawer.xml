@@ -32,10 +32,6 @@
             android:title="@string/menu_donner_donation_list" />
 
         <item
-            android:id="@+id/nav_student_request_list"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_student_relief_list" />
-        <item
             android:id="@+id/nav_relief_task_list"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_relief_task_list" />

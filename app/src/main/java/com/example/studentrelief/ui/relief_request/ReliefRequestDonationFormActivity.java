@@ -1,9 +1,8 @@
-package com.example.studentrelief.ui.student_relief_request;
+package com.example.studentrelief.ui.relief_request;
 
 import android.app.DatePickerDialog;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -15,13 +14,12 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
+import com.example.studentrelief.services.interfaces.ReliefRequestDonationClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
-import com.example.studentrelief.services.interfaces.StudentReliefClient;
 import com.example.studentrelief.services.model.DonationModel;
+import com.example.studentrelief.services.model.ReliefRequestDonationModel;
 import com.example.studentrelief.services.model.StudentModel;
-import com.example.studentrelief.services.model.StudentReliefModel;
 import com.example.studentrelief.ui.dialogs.DatePickerFragment;
-import com.github.thunder413.datetimeutils.DateTimeStyle;
 import com.github.thunder413.datetimeutils.DateTimeUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -41,18 +39,20 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
-@EActivity(R.layout.activity_student_relief_form)
-public class StudentReliefFormActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+/**shows the form for updating or adding the donations for every relief request list */
+@EActivity(R.layout.activity_relief_request_donation_form)
+public class ReliefRequestDonationFormActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     @RestService
-    StudentReliefClient client;
+    ReliefRequestDonationClient client;
     @RestService
     StudentClient donnerClient;
     @RestService
     DonationClient donationClient;
     @Extra
-    int id;
+    int reliefRequestDonationID;
+    @Extra
+    int reliefRequestID;
 
     @ViewById
     Toolbar toolbar;
@@ -62,18 +62,16 @@ public class StudentReliefFormActivity extends AppCompatActivity implements Date
 
     @ViewById
     EditText etDate;
-    @ViewById
-    Spinner spStudent;
+
     @ViewById
     Spinner spDonation;
     @ViewById
     EditText etQuantity;
-    @ViewById
-    CheckBox chkIsRelease;
+
     @ViewById
     TextView tvCode;
 
-    private StudentReliefModel studentReliefModel;
+    private ReliefRequestDonationModel reliefRequestDonationModel;
     private ArrayAdapter<StudentModel> studentModelArrayAdapter;
     private ArrayAdapter<DonationModel> donationArrayAdapter;
 
@@ -89,15 +87,13 @@ public class StudentReliefFormActivity extends AppCompatActivity implements Date
     void afterViews(){
 
         try{
-            etDate.setEnabled(false);
-            loadStudentListAsync();
-            loadDonationListAsync();
             setSupportActionBar(toolbar);
-            if(id > 0){
+            loadDonationListAsync();
+            if(reliefRequestDonationID > 0){
                 getFormData();
 
             }else{
-                studentReliefModel = new StudentReliefModel();
+                reliefRequestDonationModel = new ReliefRequestDonationModel();
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
@@ -111,14 +107,12 @@ public class StudentReliefFormActivity extends AppCompatActivity implements Date
     void btnSave(){
         try {
             String quantity = etQuantity.getText().toString();
-            boolean isRelease = chkIsRelease.isChecked();
-            studentReliefModel.setStudent_id(studentID);
-            studentReliefModel.setDonation_id(donationID);
-            studentReliefModel.setRequest_date(requestDate);
-            studentReliefModel.setIs_release(isRelease);
-            studentReliefModel.setQuantity(Integer.valueOf(quantity));
+            reliefRequestDonationModel.setRelief_request_id(reliefRequestID);
+            reliefRequestDonationModel.setDonation_id(donationID);
 
-            saveAsync(studentReliefModel);
+            reliefRequestDonationModel.setQuantity(Integer.valueOf(quantity));
+
+            saveAsync(reliefRequestDonationModel);
 
         }catch (RestClientException ex){
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
@@ -169,10 +163,6 @@ public class StudentReliefFormActivity extends AppCompatActivity implements Date
 
     }
 
-    @ItemSelect(R.id.spStudent)
-    void spStudentSelect(boolean selected, StudentModel model){
-        studentID = model.getStudent_id();
-    }
     @ItemSelect(R.id.spDonation)
     void spDonationSelect(boolean selected, DonationModel model){
         donationID = model.getDonation_id();
@@ -180,11 +170,6 @@ public class StudentReliefFormActivity extends AppCompatActivity implements Date
 
     /** Background Task **/
 
-    @Background
-    void loadStudentListAsync() {
-        studentModels = donnerClient.getAll("").getRecords();
-        UpdateStudentSpinnerUI(studentModels);
-    }
 
     @Background
     void loadDonationListAsync() {
@@ -194,15 +179,22 @@ public class StudentReliefFormActivity extends AppCompatActivity implements Date
 
     @Background
     void getFormData() {
-        if (id > 0){
-            studentReliefModel = client.get(id);
-            updateUIFormData(studentReliefModel);
+        try {
+            if (reliefRequestDonationID > 0) {
+                reliefRequestDonationModel = client.get(reliefRequestDonationID);
+                updateUIFormData(reliefRequestDonationModel);
+            }
         }
+                catch(RestClientException ex){
+            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
+
+        }
+
     }
     @Background
-    void saveAsync(StudentReliefModel model){
-        if (id > 0){
-            client.edit(id,model);
+    void saveAsync(ReliefRequestDonationModel model){
+        if (reliefRequestDonationID > 0){
+            client.edit(reliefRequestDonationID,model);
         }else{
             client.addNew(model);
         }
@@ -211,8 +203,8 @@ public class StudentReliefFormActivity extends AppCompatActivity implements Date
     }
     @Background
     void delete() {
-        if (id > 0){
-            client.delete(id);
+        if (reliefRequestDonationID > 0){
+            client.delete(reliefRequestDonationID);
         }
         updateUIAfterSave();
     }
@@ -239,30 +231,21 @@ public class StudentReliefFormActivity extends AppCompatActivity implements Date
         // set the default value (pos)
         spDonation.setSelection(donationPos,true);
     }
-    @UiThread
-    void UpdateStudentSpinnerUI(List<StudentModel> studentModels) {
-        studentModelArrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item,studentModels);
-        studentModelArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spStudent.setAdapter(studentModelArrayAdapter);
-        // set the default value (pos)
-        spStudent.setSelection(studentPos,true);
-    }
+
 
     @UiThread
-    void updateUIFormData(StudentReliefModel model) {
+    void updateUIFormData(ReliefRequestDonationModel model) {
         /**TODO
          * Student Name must be text view only
          * Request date must be text view only
          * data for those fields will pull from student table
          * */
         // setting value of selected model from list
-        studentPos = getStudentPosition(model.getStudent_id());
+
         donationPos = getDonationPosition(model.getDonation_id());
-        requestDate =  DateTimeUtils.formatWithPattern(model.getRequest_date(),"YYYY-M-d hh:mm:ss", Locale.ENGLISH);
-        etDate.setText(DateTimeUtils.formatWithStyle(model.getRequest_date(), DateTimeStyle.MEDIUM));
+        //requestDate =  DateTimeUtils.formatWithPattern(model.getRequest_date(),"YYYY-M-d hh:mm:ss", Locale.ENGLISH);
+        //etDate.setText(DateTimeUtils.formatWithStyle(model.getRequest_date(), DateTimeStyle.MEDIUM));
         etQuantity.setText(String.valueOf(model.getQuantity()));
-        tvCode.setText("Request Code " + model.getCode());
     }
 
     /** miscellaneous */

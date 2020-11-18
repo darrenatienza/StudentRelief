@@ -15,9 +15,13 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:label">
         <activity
-            android:name=".ui.student_relief_request.StudentReliefRequestListActivity_"
+            android:name=".ui.relief_request.ReliefRequestDonationListActivity_"
+            android:label="@string/title_relief_request_donation_list_activity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.relief_request.ReliefRequestListActivity_"
             android:label="@string/title_activity_student_relief_request_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.volunteer.VolunteerPanelActivity_"
             android:label="@string/title_activity_volunteer_panel"
@@ -31,7 +35,7 @@
         <activity
             android:name=".ui.student.StudentFormActivity_"
             android:label="@string/title_activity_student_form"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity_"
             android:label="@string/app_name"
@@ -59,7 +63,7 @@
             android:label="@string/title_donner"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.student_relief_request.StudentReliefFormActivity_"
+            android:name=".ui.relief_request.ReliefRequestDonationFormActivity_"
             android:label="@string/title_student_relief"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.ui.student_relief_request.StudentReliefRequestListActivity_;
+import com.example.studentrelief.ui.relief_request.ReliefRequestListActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -74,7 +74,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     }
 
     private void showReliefRequestList(int id) {
-        StudentReliefRequestListActivity_.intent(this).reliefTaskID(id).start();
+        ReliefRequestListActivity_.intent(this).reliefTaskID(id).start();
     }
 
     @Background

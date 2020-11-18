@@ -1,10 +1,8 @@
-package com.example.studentrelief.ui.student_relief_request;
+package com.example.studentrelief.ui.relief_request;
 
 import com.example.studentrelief.services.interfaces.ReliefRequestClient;
 import com.example.studentrelief.services.model.ReliefRequestModel;
-import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.ui.adapters.ReliefRequestAdapter;
-import com.example.studentrelief.ui.adapters.ReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
@@ -31,8 +29,8 @@ import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
 
-@EActivity(R.layout.activity_student_relief_request_list)
-public class StudentReliefRequestListActivity extends AppCompatActivity {
+@EActivity(R.layout.activity_relief_request_list)
+public class ReliefRequestListActivity extends AppCompatActivity {
 
     @RestService
     ReliefRequestClient reliefRequestClient;
@@ -76,7 +74,7 @@ public class StudentReliefRequestListActivity extends AppCompatActivity {
     }
 
     private void showReliefRequestList(int id) {
-        StudentReliefRequestListActivity_.intent(this).reliefTaskID(id).start();
+        ReliefRequestDonationListActivity_.intent(this).reliefRequestID(id).start();
     }
 
     @Background
