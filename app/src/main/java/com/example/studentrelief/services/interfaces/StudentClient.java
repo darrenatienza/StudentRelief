@@ -1,8 +1,6 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
-import com.example.studentrelief.services.model.AddEditDonnerModel;
-import com.example.studentrelief.services.model.DonnerContainer;
 import com.example.studentrelief.services.model.StudentContainer;
 import com.example.studentrelief.services.model.StudentModel;
 
@@ -32,4 +30,7 @@ public interface StudentClient  {
 
     @Get("/records/students/{id}")
     StudentModel get(@Path int id);
+
+    @Get("/records/students?filter=full_name,eq,{full_name}")
+    StudentContainer getByFullName(@Path String full_name);
 }

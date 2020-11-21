@@ -1,8 +1,6 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
-import com.example.studentrelief.services.model.StudentContainer;
-import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.services.model.VolunteerContainer;
 import com.example.studentrelief.services.model.VolunteerModel;
 
@@ -33,4 +31,7 @@ public interface VolunteerClient {
 
     @Get("/records/volunteers/{id}")
     VolunteerModel get(@Path int id);
+
+    @Get("/records/volunteers??filter=full_name,cs,{full_name}")
+    VolunteerContainer getByFullName(@Path String full_name);
 }

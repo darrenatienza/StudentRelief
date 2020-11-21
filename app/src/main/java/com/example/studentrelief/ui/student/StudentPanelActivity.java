@@ -50,7 +50,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     ReliefRequestClient reliefRequestClient;
 
     @Extra
-    int id = 2;
+    int id;
 
 
     @ViewById
@@ -193,9 +193,11 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     void loadList(){
         try {
             List<ReliefTaskModel> models = reliefTaskClient.getAllActive().getRecords();
+            if(models.toArray().length > 0){
+                /** New models (modified model) must be pass not the original models*/
+                updateList(models);
+            }
 
-            /** New models (modified model) must be pass not the original models*/
-            updateList(models);
         }catch (Exception e){
             Log.e("Error",e.getMessage());
         }

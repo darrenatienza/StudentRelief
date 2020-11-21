@@ -84,3 +84,15 @@ create or replace view  relief_request_donation_view as
 	inner join donations d
 		on d.donation_id = rrd.donation_id;
 
+create table if not exists users(
+	user_id int not null auto_increment,
+	username varchar(250) not null,
+	password VARCHAR(250) not null,
+	user_type varchar(250) not null,
+	full_name varchar(250) not null,
+	identity_id int not null default 0,
+	active boolean not null default false,
+	create_time_stamp datetime default  current_timestamp(),
+	primary key(user_id)
+
+)
