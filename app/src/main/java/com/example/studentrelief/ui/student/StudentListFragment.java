@@ -11,10 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.StudentClient;
-import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.adapters.StudentAdapter;
-import com.example.studentrelief.ui.donner.DonnerFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
@@ -98,7 +96,7 @@ public class StudentListFragment extends Fragment {
 
     @Click(R.id.fab)
     void click(View view){
-        DonnerFormActivity_.intent(getContext()).startForResult(SHOW_FORM);
+        StudentFormActivity_.intent(getContext()).startForResult(SHOW_FORM);
     }
 
     // action after save or delete click on dialog form

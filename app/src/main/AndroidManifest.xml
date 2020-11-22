@@ -13,7 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:icon,android:label">
+        tools:replace="icon,label">
+        <activity
+            android:name=".RegisterActivity_"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.login.LoginActivity_"
             android:label="@string/title_activity_login">
@@ -34,9 +38,7 @@
         <activity
             android:name=".ui.volunteer.VolunteerPanelActivity_"
             android:label="@string/title_activity_volunteer_panel"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.student.StudentFormActivity_"
             android:label="@string/title_activity_student_form"

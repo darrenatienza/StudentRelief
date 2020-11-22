@@ -1,198 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiSrCode"
-        android:layout_width="0dp"
-        android:layout_height="76dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:hint="@string/sr_code"
-        android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/etSrCode"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiSrCode"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/secondary_text_light"
-            android:textColor="@android:color/primary_text_light"
-            android:textSize="16dp" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiFullName"
-        android:layout_width="0dp"
-        android:layout_height="76dp"
-
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:hint="@string/full_name"
-        android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tiSrCode">
-
-        <EditText
-            android:id="@+id/etFullName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/secondary_text_light"
-            android:textColor="@android:color/primary_text_light"
-            android:textSize="16dp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiAddress"
-        android:layout_width="0dp"
-        android:layout_height="76dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:hint="@string/address"
-        android:paddingBottom="0dp"
-        android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tiFullName">
-
-        <EditText
-            android:id="@+id/etAddress"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:backgroundTint="@android:color/secondary_text_light"
-            android:textColor="@android:color/primary_text_light"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:hint="@string/sr_code"
             android:textColorHint="@android:color/secondary_text_light"
-            android:textSize="16dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etSrCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/secondary_text_light"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="16dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiContactNumber"
-        android:layout_width="0dp"
-        android:layout_height="76dp"
+        </com.google.android.material.textfield.TextInputLayout>
 
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:hint="@string/contact_number"
-        android:paddingBottom="0dp"
-        android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tiAddress">
-
-        <EditText
-            android:id="@+id/etContactNumber"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiFullName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/secondary_text_light"
-            android:textColor="@android:color/primary_text_light"
+
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:hint="@string/full_name"
             android:textColorHint="@android:color/secondary_text_light"
-            android:textSize="16dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiSrCode">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/secondary_text_light"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="16dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tiCampus"
-        android:layout_width="0dp"
-        android:layout_height="76dp"
+        </com.google.android.material.textfield.TextInputLayout>
 
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:hint="@string/campus"
-        android:paddingBottom="0dp"
-        android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tiContactNumber">
-
-        <EditText
-            android:id="@+id/etCampus"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiAddress"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/secondary_text_light"
-            android:textColor="@android:color/primary_text_light"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:hint="@string/address"
+            android:paddingBottom="0dp"
             android:textColorHint="@android:color/secondary_text_light"
-            android:textSize="16dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiFullName">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:backgroundTint="@android:color/secondary_text_light"
+                android:textColor="@android:color/primary_text_light"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:textSize="16dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/itCourse"
-        android:layout_width="0dp"
-        android:layout_height="76dp"
+        </com.google.android.material.textfield.TextInputLayout>
 
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:hint="@string/course"
-        android:paddingBottom="0dp"
-        android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tiCampus">
-
-        <EditText
-            android:id="@+id/etCourse"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiContactNumber"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/secondary_text_light"
-            android:textColor="@android:color/primary_text_light"
+
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:hint="@string/contact_number"
+            android:paddingBottom="0dp"
             android:textColorHint="@android:color/secondary_text_light"
-            android:textSize="16dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiAddress">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/etContactNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/secondary_text_light"
+                android:textColor="@android:color/primary_text_light"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:textSize="16dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiCampus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:hint="@string/campus"
+            android:paddingBottom="0dp"
+            android:textColorHint="@android:color/secondary_text_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiContactNumber">
+
+            <EditText
+                android:id="@+id/etCampus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/secondary_text_light"
+                android:textColor="@android:color/primary_text_light"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:textSize="16dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/itCourse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:hint="@string/course"
+            android:paddingBottom="0dp"
+            android:textColorHint="@android:color/secondary_text_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiCampus">
+
+            <EditText
+                android:id="@+id/etCourse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/secondary_text_light"
+                android:textColor="@android:color/primary_text_light"
+                android:textColorHint="@android:color/secondary_text_light"
+                android:textSize="16dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/delete_button"
-        android:text="Delete"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/btnSave"
-        app:layout_constraintTop_toBottomOf="@+id/itCourse" />
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/delete_button"
+            android:text="Delete"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/btnSave"
+            app:layout_constraintTop_toBottomOf="@+id/itCourse" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:background="@color/save_button"
-        android:text="Save"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itCourse" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@color/save_button"
+            android:text="Save"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itCourse" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

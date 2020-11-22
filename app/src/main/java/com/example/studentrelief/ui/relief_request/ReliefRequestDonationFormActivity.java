@@ -135,6 +135,7 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
     @Click
     void btnDelete(){
         try {
+            final int currentQuantity = Integer.parseInt( etQuantity.getText().toString());
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Are you sure?")
                     .setContentText("Won't be able to recover this record!")
@@ -142,7 +143,7 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
-                            delete();
+                            delete(currentQuantity);
                             sDialog.dismissWithAnimation();
                         }
                     })
@@ -193,8 +194,15 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
     }
     @Background
     void saveAsync(ReliefRequestDonationModel model){
+        int donationID = model.getDonation_id();
+        DonationModel donationModel = donationClient.get(donationID);
+        int quantity = donationModel.getQuantity() - model.getQuantity();
+        donationModel.setQuantity(quantity);
+        donationClient.edit(donationID,donationModel);
         if (reliefRequestDonationID > 0){
+
             client.edit(reliefRequestDonationID,model);
+
         }else{
             client.addNew(model);
         }
@@ -202,8 +210,14 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
 
     }
     @Background
-    void delete() {
+    void delete(int currentQuantity) {
         if (reliefRequestDonationID > 0){
+            // add the quantity to delete to current donation quantity
+            DonationModel donationModel = donationClient.get(donationID);
+            int quantity = donationModel.getQuantity() + currentQuantity;
+            donationModel.setQuantity(quantity);
+            donationClient.edit(donationID,donationModel);
+            // delete the donation on relief
             client.delete(reliefRequestDonationID);
         }
         updateUIAfterSave();
@@ -229,6 +243,7 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDonation.setAdapter(arrayAdapter);
         // set the default value (pos)
+        donationPos = getDonationPosition(donationID);
         spDonation.setSelection(donationPos,true);
     }
 
@@ -241,8 +256,8 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
          * data for those fields will pull from student table
          * */
         // setting value of selected model from list
+        donationID = model.getDonation_id();
 
-        donationPos = getDonationPosition(model.getDonation_id());
         //requestDate =  DateTimeUtils.formatWithPattern(model.getRequest_date(),"YYYY-M-d hh:mm:ss", Locale.ENGLISH);
         //etDate.setText(DateTimeUtils.formatWithStyle(model.getRequest_date(), DateTimeStyle.MEDIUM));
         etQuantity.setText(String.valueOf(model.getQuantity()));

@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.studentrelief.MainActivity_;
 import com.example.studentrelief.R;
+import com.example.studentrelief.RegisterActivity_;
 import com.example.studentrelief.services.interfaces.LoginClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
@@ -111,14 +113,27 @@ public class LoginActivity extends AppCompatActivity {
     void onLoginSuccess(UserModel logUser) {
         String userType = logUser.getUser_type();
         if(userType.contains("student")){
+            clear();
             StudentPanelActivity_.intent(this).id(logUser.getIdentity_id()).start();
         }else if (userType.contains("volunteer")){
-           VolunteerPanelActivity_.intent(this).start();
+            clear();
+           VolunteerPanelActivity_.intent(this).id(logUser.getIdentity_id()).start();
+        }else if (userType.contains("eso")){
+            clear();
+            MainActivity_.intent(this).start();
         }
 
         loadingProgressBar.setVisibility(View.INVISIBLE);
 
 
+    }
+    @Click
+    void btnRegister(){
+        RegisterActivity_.intent(this).start();
+    }
+    void clear(){
+        username.setText("");
+        password.setText("");
     }
     @Background
     void processVolunteerUI(String fullName) {
