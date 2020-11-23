@@ -30,8 +30,8 @@ android {
         debug {
             // note that to define a string you need to escape it
             //buildConfigField "String", 'BASE_URL', "\"http://192.168.1.100/api.php\""
-           //buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
+           buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
+            //buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
         }
         release {
             minifyEnabled false
@@ -62,7 +62,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'

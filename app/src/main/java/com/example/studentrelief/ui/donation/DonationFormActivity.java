@@ -1,37 +1,30 @@
 package com.example.studentrelief.ui.donation;
 
-import android.os.Bundle;
-
-import com.example.studentrelief.services.interfaces.DonationClient;
-import com.example.studentrelief.services.interfaces.VolunteerClient;
-import com.example.studentrelief.services.model.DonationModel;
-import com.example.studentrelief.services.model.VolunteerModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.DonationClient;
+import com.example.studentrelief.services.model.DonationModel;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
+@OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_donation_form)
 public class DonationFormActivity extends AppCompatActivity {
 
@@ -56,26 +49,20 @@ public class DonationFormActivity extends AppCompatActivity {
 
     private DonationModel model;
 
-    @Click
+    @OptionsItem(R.id.action_save)
     void btnSave(){
-        try {
-            String fullName = etName.getText().toString();
-            String quantity = etQuantity.getText().toString();
 
+            String fullName = etName.getText().toString();
             model.setName(fullName);
-            model.setQuantity(Integer.valueOf(quantity));
+            model.setQuantity(0);
             save(model);
 
-        }catch (RestClientException ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
-        }
+
 
     }
-    @Click
+    @OptionsItem(R.id.action_delete)
     void btnDelete(){
-        try {
+
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Are you sure?")
                     .setContentText("Won't be able to recover this record!")
@@ -94,33 +81,38 @@ public class DonationFormActivity extends AppCompatActivity {
                         }
                     })
                     .show();
-
-
-        }catch (RestClientException ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }
-
     }
     @Background
     void delete() {
-        if (id > 0){
-            client.delete(id);
-
+        try{
+            if (id > 0){
+                client.delete(id);
+            }
+            updateUIAfterSave();
+        }catch (RestClientException e){
+            showError(e.getMessage());
         }
-        updateUIAfterSave();
+
+    }
+    @UiThread
+    void showError(String message) {
+       Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
     @Background
     void save(DonationModel model){
+        try {
         if (id > 0){
             client.edit(id,model);
         }else{
             client.addNew(model);
         }
         updateUIAfterSave();
-
+        }catch (RestClientException ex){
+            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
+        }catch (Exception ex){
+            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
     @UiThread
     void updateUIAfterSave() {
@@ -133,6 +125,7 @@ public class DonationFormActivity extends AppCompatActivity {
     void afterViews(){
 
         try{
+            etQuantity.setEnabled(false);
             setSupportActionBar(toolbar);
             if(id > 0){
                 getFormData();
