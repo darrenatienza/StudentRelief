@@ -74,4 +74,5 @@
     <string name="app_name_2">Student Relief</string>
     <string name="tab_volunteer">Volunteer</string>
     <string name="tab_student">Student</string>
+    <string name="title_activity_register_panel">Register Panel</string>
 </resources>

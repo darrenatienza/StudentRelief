@@ -1,4 +1,7 @@
 
+/** Add code column to student_reliefs */
+alter table student_reliefs add column if not exists code varchar(50) not null default "";
+
 /** Add request date column to students */
 alter table students add column if not exists request_date datetime null;
 
