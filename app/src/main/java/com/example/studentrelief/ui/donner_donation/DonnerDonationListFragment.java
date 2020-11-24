@@ -1,13 +1,13 @@
 package com.example.studentrelief.ui.donner_donation;
 
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
@@ -18,6 +18,7 @@ import com.example.studentrelief.ui.adapters.DonnerDonationAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -50,7 +51,8 @@ public class DonnerDonationListFragment extends Fragment {
     RecyclerView recyclerView;
     @ViewById
     TextView tvSearch;
-
+    @ViewById
+    TextInputLayout tiSearch;
     @Bean
     DonnerDonationAdapter adapter;
 
@@ -65,8 +67,14 @@ public class DonnerDonationListFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadList();
         initItemClick();
+        initSearch();
     }
 
+    private void initSearch() {
+        tiSearch.setEndIconOnClickListener(view -> {
+            loadList();
+        });
+    }
 
 
     private void initItemClick() {

@@ -1,31 +1,22 @@
 package com.example.studentrelief.ui.donation;
 
-import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.example.studentrelief.MainActivity;
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
-import com.example.studentrelief.services.interfaces.VolunteerClient;
 import com.example.studentrelief.services.model.DonationModel;
-import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.adapters.DonationAdapter;
-import com.example.studentrelief.ui.adapters.VolunteerAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
-
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
-import com.example.studentrelief.ui.volunteer.VolunteerFormActivity_;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -33,7 +24,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
-import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
@@ -51,6 +41,8 @@ public class DonationListFragment extends Fragment {
     RecyclerView recyclerView;
     @ViewById
     TextView tvSearch;
+    @ViewById
+    TextInputLayout tiSearch;
     @Bean
     DonationAdapter adapter;
 
@@ -65,8 +57,14 @@ public class DonationListFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadList();
         initItemClick();
+        initSearch();
     }
 
+    private void initSearch() {
+        tiSearch.setEndIconOnClickListener(v ->{
+            loadList();
+        });
+    }
 
 
     private void initItemClick() {
@@ -100,10 +98,7 @@ public class DonationListFragment extends Fragment {
         adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
-    @Click(R.id.btnSearch)
-    void search(){
-        loadList();
-    }
+
     @Click(R.id.fab)
     void click(View view){
         showFormDialog(0);

@@ -30,8 +30,8 @@ android {
         debug {
             // note that to define a string you need to escape it
             //buildConfigField "String", 'BASE_URL', "\"http://192.168.1.100/api.php\""
-           //buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
+           buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
+            //buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
         }
         release {
             minifyEnabled false
@@ -52,6 +52,10 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
         exclude("META-INF/*.kotlin_module")
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
