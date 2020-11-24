@@ -28,6 +28,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemSelect;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
@@ -40,6 +42,7 @@ import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 /**shows the form for updating or adding the donations for every relief request list */
+@OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_relief_request_donation_form)
 public class ReliefRequestDonationFormActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -57,8 +60,6 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
     @ViewById
     Toolbar toolbar;
 
-    @ViewById
-    Button btnSave;
 
     @ViewById
     EditText etDate;
@@ -103,7 +104,7 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
     }
 
     /** UI Actions */
-    @Click
+    @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
             String quantity = etQuantity.getText().toString();
@@ -125,14 +126,14 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
 
 
 
-    @Click
+    @Click(R.id.etDate)
     void imgCalendar(){
         DatePickerFragment mDatePickerDialogFragment;
         mDatePickerDialogFragment = new DatePickerFragment();
         mDatePickerDialogFragment.show(getSupportFragmentManager(), "DATE PICK");
     }
 
-    @Click
+    @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
             final int currentQuantity = Integer.parseInt( etQuantity.getText().toString());

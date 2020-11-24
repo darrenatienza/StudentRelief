@@ -38,8 +38,7 @@ public class DonationFormActivity extends AppCompatActivity {
     @ViewById
     Toolbar toolbar;
 
-    @ViewById
-    Button btnSave;
+
 
     @ViewById
     TextView etName;

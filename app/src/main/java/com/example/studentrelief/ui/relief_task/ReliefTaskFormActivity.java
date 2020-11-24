@@ -31,6 +31,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemSelect;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
@@ -42,7 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
+@OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_relief_task_form)
 public class ReliefTaskFormActivity extends AppCompatActivity{
 
@@ -68,8 +70,6 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
     CheckBox chkActive;
 
 
-    @ViewById
-    Button btnSave;
     private ReliefTaskModel reliefTaskModel;
 
 
@@ -94,7 +94,7 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
     }
 
     /** UI Actions */
-    @Click
+    @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
             String code = etCode.getText().toString();
@@ -115,7 +115,7 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
 
     }
 
-    @Click
+    @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)

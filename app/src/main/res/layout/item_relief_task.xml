@@ -9,58 +9,71 @@
     android:layout_marginRight="10dp"
     android:background="@color/cardview_light_background"
     >
-   <RelativeLayout
+   <androidx.constraintlayout.widget.ConstraintLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
+       android:padding="8dp"
        android:layout_marginLeft="10dp">
 
        /**Id */
+
        <TextView
            android:id="@+id/tvID"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:visibility="gone"
-           />
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
        <TextView
            android:id="@+id/tvCode"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_below="@+id/idView"
-           android:textSize="16dp"
+           android:text="Code"
 
-           android:layout_marginLeft="10dp"
-           android:layout_marginTop="5dp"
-           android:text="Code" />
+
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
        <TextView
            android:id="@+id/tvTitle"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_below="@+id/tvCode"
-           android:layout_marginLeft="10dp"
-           android:textSize="18dp"
-           android:textStyle="bold"
-           android:text="Title" />
+           android:layout_marginTop="8dp"
+           android:text="Title"
+
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/tvCode" />
+
        <TextView
            android:id="@+id/tvStatus"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_below="@+id/tvTitle"
-           android:layout_marginLeft="10dp"
-           android:textSize="16dp"
-           android:text="Status" />
+           android:layout_marginTop="8dp"
+           android:text="Status"
+
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
        <TextView
            android:id="@+id/tvAffectedAreas"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_below="@+id/tvStatus"
-           android:textSize="16dp"
+           android:layout_marginTop="8dp"
+           android:text="Aftected Areas"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
 
-           android:layout_marginLeft="10dp"
 
-           android:text="Aftected Areas" />
-
-
-   </RelativeLayout>
+   </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

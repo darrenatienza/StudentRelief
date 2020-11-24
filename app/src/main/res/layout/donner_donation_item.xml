@@ -9,57 +9,87 @@
     android:layout_marginRight="10dp"
     android:background="@color/cardview_light_background"
     >
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginLeft="10dp">
 
-       /**Id */
-       <TextView
-           android:id="@+id/idView"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:visibility="gone"
-           />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-       <TextView
-           android:id="@+id/donnerFullNameView"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:textSize="18dp"
-           android:textStyle="bold"
-           android:text="Full Name" />
+        >
 
-       <TextView
-           android:id="@+id/donationNameView"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_below="@+id/donnerFullNameView"
-           android:textSize="16dp"
+        /**Id */
 
-           android:layout_marginLeft="10dp"
-           android:layout_marginTop="5dp"
-           android:text="Donation Name" />
+        <TextView
+            android:id="@+id/idView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-       <TextView
-           android:id="@+id/donationDateView"
-           android:layout_width="match_parent"
-           android:layout_height="26dp"
-           android:layout_marginLeft="10dp"
-           android:textSize="14dp"
-           android:layout_below="@+id/donationNameView"
-           android:text="Donation Date" />
-       <TextView
-           android:id="@+id/quantityView"
-           android:layout_width="match_parent"
-           android:layout_height="26dp"
-           android:layout_marginLeft="10dp"
-           android:textSize="14dp"
-           android:layout_below="@+id/donationDateView"
-           android:text="Quantity:0" />
-   </RelativeLayout>
+        <TextView
+            android:id="@+id/donnerFullNameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Full Name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/donationNameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donnerFullNameView"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Donation Name"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/donnerFullNameView" />
+
+        <TextView
+            android:id="@+id/donationDateView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donationNameView"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Donation Date"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/donationNameView" />
+
+        <TextView
+            android:id="@+id/quantityView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donationDateView"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Quantity:0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/donationDateView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </RelativeLayout>

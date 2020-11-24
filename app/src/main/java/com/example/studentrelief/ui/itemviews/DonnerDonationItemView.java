@@ -43,7 +43,7 @@ public class DonnerDonationItemView extends RelativeLayout {
         if(model.isQuantity_uploaded()){
             quantityView.setTextColor(getResources().getColor(R.color.main_green_color));
         }else{
-            quantityView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            quantityView.setTextColor(getResources().getColor(R.color.error));
         }
 
     }

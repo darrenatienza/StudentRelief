@@ -18,6 +18,8 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
@@ -25,7 +27,7 @@ import org.springframework.web.client.RestClientException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-
+@OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_donner_form)
 public class DonnerFormActivity extends AppCompatActivity {
 
@@ -41,8 +43,7 @@ public class DonnerFormActivity extends AppCompatActivity {
     @ViewById
     Toolbar toolbar;
 
-    @ViewById
-    Button btnSave;
+
 
     @ViewById
     TextView etFullName;
@@ -52,7 +53,7 @@ public class DonnerFormActivity extends AppCompatActivity {
     @ViewById
     EditText etAddress;
 
-    @Click
+    @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
             String fullName = etFullName.getText().toString();
@@ -72,7 +73,7 @@ public class DonnerFormActivity extends AppCompatActivity {
         }
 
     }
-    @Click
+    @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)

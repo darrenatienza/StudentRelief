@@ -9,78 +9,97 @@
     android:layout_marginRight="10dp"
     android:background="@color/cardview_light_background"
     >
-   <RelativeLayout
+   <androidx.constraintlayout.widget.ConstraintLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
+       android:padding="8dp"
        android:layout_marginLeft="10dp">
 
        /**Id */
+
        <TextView
            android:id="@+id/idView"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:visibility="gone"
-           />
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
 
        <TextView
            android:id="@+id/tvStudentFullName"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:textSize="18dp"
-           android:textStyle="bold"
-           android:text="Full Name" />
+           android:text="Full Name"
+
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
        <TextView
            android:id="@+id/tvSrCode"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_below="@+id/tvStudentFullName"
-           android:textSize="16dp"
+           android:layout_marginTop="8dp"
 
-           android:layout_marginLeft="10dp"
-           android:layout_marginTop="5dp"
-           android:text="Sr Code" />
+
+           android:text="Sr Code"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/tvStudentFullName" />
+
        <TextView
            android:id="@+id/tvStudentCampus"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_below="@+id/tvSrCode"
-           android:textSize="16dp"
+           android:layout_marginTop="8dp"
 
-           android:layout_marginLeft="10dp"
-           android:layout_marginTop="5dp"
-           android:text="Campus" />
+
+           android:text="Campus"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/tvSrCode" />
 
        <TextView
            android:id="@+id/tvCourse"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_below="@+id/tvStudentCampus"
-           android:textSize="16dp"
+           android:layout_marginTop="8dp"
 
-           android:layout_marginLeft="10dp"
-           android:layout_marginTop="5dp"
-           android:text="Course" />
+           android:text="Course"
+
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/tvStudentCampus" />
+
+       <TextView
+           android:id="@+id/contactNumberView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/addressView"
+           android:layout_marginTop="8dp"
+           android:text="09xxxx"
+
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/addressView" />
+
        <TextView
            android:id="@+id/addressView"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_below="@+id/tvCourse"
-           android:textSize="16dp"
+           android:layout_marginTop="8dp"
 
-           android:layout_marginLeft="10dp"
-           android:layout_marginTop="5dp"
-           android:text="Address" />
+           android:text="Address"
 
-       <TextView
-           android:id="@+id/contactNumberView"
-           android:layout_width="match_parent"
-           android:layout_height="26dp"
-           android:layout_marginLeft="10dp"
-           android:textSize="14dp"
-           android:layout_below="@+id/addressView"
-           android:text="09xxxx" />
-   </RelativeLayout>
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/tvCourse" />
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

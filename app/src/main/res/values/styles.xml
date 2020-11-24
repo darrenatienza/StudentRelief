@@ -1,12 +1,36 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#9C27B0</item>
+        <item name="colorPrimary">@color/design_default_color_primary</item>
+        <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+        <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
     </style>
 
+    <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+        <item name="shapeAppearanceOverlay">
+           @style/ShapeAppearance.App.SmallComponent
+        </item>
+    </style>
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearance.App.SmallComponent
+        </item>
+    </style>
+    <style name="ThemeOverlay.App.FloatingActionButton" parent="">
+        <item name="colorSecondary">@color/design_default_color_primary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSurface">@color/design_default_color_primary</item>
+    </style>
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -16,35 +40,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="dialog" parent="Theme.AppCompat.Dialog">
-        <!-- title encapsulating main part (backgroud) of custom alertdialog -->
-
-        <item name="android:windowBackground">@color/white</item>
-        <!-- turn off any drawable used to draw a frame on the window -->
-        <item name="android:windowIsFloating">true</item>
-        <!-- float the window so it does not fill the screen -->
-
-        <item name="colorAccent">@android:color/secondary_text_light</item>
-        <!-- float the window so it does not fill the screen -->
-        <item name="android:windowNoTitle">true</item>
-        <!-- remove the title bar we make our own-->
-        <item name="android:layout_gravity">center</item>
-        <!-- remove the title bar we make our own-->
-    </style>
 
 
-    <color name="whiteSmoke">#DBDBDB</color>
-
-    <style name="DatePickerDialogStyle" parent="ThemeOverlay.AppCompat.Dialog">
-        <item name="colorAccent">@color/date_picker_dialog_header_background
-        </item>  <!--header background-->
-        <item name="android:windowBackground">@color/date_picker_dialog_background
-        </item>     <!--calendar background-->
-        <item name="android:colorControlActivated">@color/date_picker_dialog_selected_day
-        </item> <!--selected day-->
-        <item name="android:textColorPrimary">@color/date_picker_dialog_selected_month
-        </item> <!--days of the month-->
-        <item name="android:textColorSecondary">@color/date_picker_dialog_day_of_week
-        </item>    <!--days of the week-->
-    </style>
 </resources>

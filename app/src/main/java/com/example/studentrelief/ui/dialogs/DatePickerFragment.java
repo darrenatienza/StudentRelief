@@ -22,7 +22,7 @@ public class DatePickerFragment extends DialogFragment {
 
         // Create a new instance of DatePickerDialog and return it
         //style is required to avoid xml inflating errors
-        return new DatePickerDialog(getActivity(), R.style.DatePickerDialogStyle,(DatePickerDialog.OnDateSetListener)getActivity(),  year, month, day);
+        return new DatePickerDialog(getActivity(), R.style.alert_dialog_dark,(DatePickerDialog.OnDateSetListener)getActivity(),  year, month, day);
     }
 }
 

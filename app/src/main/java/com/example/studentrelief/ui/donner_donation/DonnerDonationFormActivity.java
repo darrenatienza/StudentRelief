@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import com.example.studentrelief.R;
 import com.example.studentrelief.ui.dialogs.DatePickerFragment;
 import com.github.thunder413.datetimeutils.DateTimeStyle;
 import com.github.thunder413.datetimeutils.DateTimeUtils;
+import com.google.android.material.textfield.TextInputLayout;
 
 
 import org.androidannotations.annotations.AfterViews;
@@ -31,6 +33,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemSelect;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
@@ -42,7 +46,7 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
+@OptionsMenu(R.menu.menu_donner_donation_form)
 @EActivity(R.layout.activity_donner_donation_form)
 public class DonnerDonationFormActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -56,18 +60,18 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     int id;
 
     @ViewById
+    TextInputLayout tiDonner;
+    @ViewById
     Toolbar toolbar;
 
-    @ViewById
-    Button btnSave;
 
     @ViewById
     EditText etDate;
 
+    //@ViewById
+    //Spinner spDonner;
     @ViewById
-    Spinner spDonner;
-    @ViewById
-    Spinner spDonation;
+    AutoCompleteTextView etDonation;
     @ViewById
     EditText etQuantity;
 
@@ -86,10 +90,13 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     @AfterViews
     void afterViews(){
 
+
         try{
             etDate.setEnabled(false);
-            loadDonnerListAsync();
+
+            //loadDonnerListAsync();
             loadDonationListAsync();
+            loadTest();
             setSupportActionBar(toolbar);
             if(id > 0){
                 getFormData();
@@ -104,8 +111,18 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
 
     }
 
+    private void loadTest() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, COUNTRIES);
+
+        etDonation.setAdapter(adapter);
+
+    }
+    private static final String[] COUNTRIES = new String[] {
+            "Belgium", "France", "Italy", "Germany", "Spain"
+    };
     /** UI Actions */
-    @Click
+    @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
             String quantity = etQuantity.getText().toString();
@@ -124,8 +141,8 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
 
     }
 
-    @Click
-    void imgUpload(){
+    @OptionsItem(R.id.action_upload)
+    void uploadQuantity(){
         new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Are you sure?")
                 .setContentText("Won't be able to modify or remove this record after uploading the quantity.")
@@ -148,14 +165,14 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
 
 
 
-    @Click
+    @Click(R.id.etDate)
     void imgCalendar(){
         DatePickerFragment mDatePickerDialogFragment;
         mDatePickerDialogFragment = new DatePickerFragment();
         mDatePickerDialogFragment.show(getSupportFragmentManager(), "DATE PICK");
     }
 
-    @Click
+    @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
@@ -186,14 +203,14 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
 
     }
 
-    @ItemSelect(R.id.spDonner)
+    /**@ItemSelect(R.id.spDonner)
     void spDonnerSelect(boolean selected, DonnerModel model){
         donnerID = model.getDonner_id();
     }
     @ItemSelect(R.id.spDonation)
     void spDonationSelect(boolean selected, DonationModel model){
         donationID = model.getDonation_id();
-    }
+    }*/
 
     /** Background Task **/
     @Background
@@ -262,20 +279,19 @@ public class DonnerDonationFormActivity extends AppCompatActivity implements Dat
     @UiThread
     void UpdateDonationSpinnerUI(List<DonationModel> models) {
         ArrayAdapter<DonationModel> arrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item,models);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spDonation.setAdapter(arrayAdapter);
+                android.R.layout.simple_dropdown_item_1line,models);
+        etDonation.setAdapter(arrayAdapter);
         // set the default value (pos)
-        spDonation.setSelection(donationPos,true);
+        etDonation.setSelection(donationPos);
     }
     @UiThread
     void UpdateDonnerSpinnerUI(List<DonnerModel> donnerArrayList) {
         donnerArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item,donnerArrayList);
         donnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spDonner.setAdapter(donnerArrayAdapter);
+        //spDonner.setAdapter(donnerArrayAdapter);
         // set the default value (pos)
-        spDonner.setSelection(donnerPos,true);
+        //spDonner.setSelection(donnerPos,true);
     }
 
     @UiThread

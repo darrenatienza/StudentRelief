@@ -1,6 +1,7 @@
 package com.example.studentrelief.ui.itemviews;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 

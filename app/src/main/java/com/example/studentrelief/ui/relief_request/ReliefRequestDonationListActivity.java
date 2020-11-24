@@ -17,6 +17,7 @@ import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.model.ReliefRequestDonationModel;
 import com.example.studentrelief.ui.adapters.StudentReliefAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -60,7 +61,7 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
     void afterViews() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

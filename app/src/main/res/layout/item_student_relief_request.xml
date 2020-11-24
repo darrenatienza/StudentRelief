@@ -30,7 +30,7 @@
 
             android:layout_below="@+id/tvID"
             android:text="FullName"
-            android:textSize="16dp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,8 +42,8 @@
             android:layout_below="@+id/tvCode"
             android:layout_marginTop="8dp"
             android:text="Address"
-            android:textSize="18dp"
-            android:textStyle="bold"
+
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvStudentFullName" />
@@ -55,7 +55,7 @@
             android:layout_below="@+id/tvAddress"
             android:layout_marginTop="8dp"
             android:text="Contact Number"
-            android:textSize="16dp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvStudentAddress" />
@@ -81,7 +81,7 @@
 
             android:layout_marginTop="8dp"
             android:text="Student Course"
-            android:textSize="16dp"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvStudentCampus" />
@@ -90,10 +90,8 @@
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="8dp"
             android:text="Status"
-            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvStudentCourse" />

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.studentrelief.MainActivity;
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.VolunteerClient;
@@ -21,6 +22,8 @@ import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.adapters.DonationAdapter;
 import com.example.studentrelief.ui.adapters.VolunteerAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+
+import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 import com.example.studentrelief.ui.volunteer.VolunteerFormActivity_;
 
@@ -30,6 +33,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
@@ -38,6 +42,7 @@ import java.util.List;
 
 @EFragment(R.layout.fragment_donation_list)
 public class DonationListFragment extends Fragment {
+
 
     static  final int SHOW_FORM = 101;
     @RestService
@@ -52,10 +57,9 @@ public class DonationListFragment extends Fragment {
     @AfterViews
     void afterViews() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
-        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setHasFixedSize(true);
-
+        VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

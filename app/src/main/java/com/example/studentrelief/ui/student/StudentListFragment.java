@@ -14,6 +14,7 @@ import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.adapters.StudentAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -45,7 +46,7 @@ public class StudentListFragment extends Fragment {
     void afterViews() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(layoutManager);

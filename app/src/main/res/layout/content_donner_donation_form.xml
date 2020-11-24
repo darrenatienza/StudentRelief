@@ -4,143 +4,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="24dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    <ImageView
-        android:id="@+id/imgUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/spDonation"
-        app:layout_constraintTop_toBottomOf="@+id/spDonation"
-        app:srcCompat="@drawable/ic_baseline_arrow_upward_24" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tiDate"
-        android:layout_width="0dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-
-        android:layout_marginTop="90dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
         android:hint="@string/date"
-        android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toStartOf="@+id/imgCalendar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_baseline_calendar_today_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/secondary_text_light"
-
-            android:textColor="@android:color/primary_text_light"
             android:textSize="16dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Donner"
-        app:layout_constraintStart_toStartOf="@+id/tiDate"
-        app:layout_constraintTop_toBottomOf="@+id/tiDate" />
-
-    <Spinner
-        android:id="@+id/spDonner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/imgCalendar"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="5dp"
-        android:text="Donation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spDonner" />
-
-    <Spinner
-        android:id="@+id/spDonation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/spDonner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tiQuantity"
         android:layout_width="0dp"
-        android:layout_height="76dp"
-
-        android:layout_marginStart="35dp"
-
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_baseline_calculate_24"
+        android:layout_marginTop="8dp"
         android:hint="@string/quantity"
-        android:textColorHint="@android:color/secondary_text_light"
-        app:layout_constraintEnd_toStartOf="@+id/imgUpload"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spDonation">
+        app:layout_constraintTop_toBottomOf="@+id/tiDonation">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etQuantity"
+
+            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/secondary_text_light"
-            android:textColor="@android:color/primary_text_light"
+
             android:textSize="16dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiDonner"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_baseline_people_24"
         android:layout_marginTop="8dp"
-        android:background="@color/save_button"
-        android:text="Save"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/imgUpload"
-        app:layout_constraintTop_toBottomOf="@+id/tiQuantity" />
-
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/delete_button"
-        android:text="Delete"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/btnSave"
-        app:layout_constraintTop_toTopOf="@+id/btnSave" />
-
-    <ImageView
-        android:id="@+id/imgCalendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:hint="@string/field_donner"
+        app:endIconMode="dropdown_menu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tiDate"
-        app:srcCompat="@drawable/ic_baseline_calendar_today_24"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tiDate">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/etDonner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_margin"
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiDonation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+app:endIconMode="dropdown_menu"
+        android:layout_marginTop="8dp"
+        app:startIconDrawable="@drawable/ic_baseline_medical_services_24"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:hint="@string/field_donation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tiDonner">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/etDonation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

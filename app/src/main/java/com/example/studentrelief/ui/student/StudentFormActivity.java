@@ -19,6 +19,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
@@ -27,9 +28,8 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
+@OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_student_form)
-
 public class StudentFormActivity extends AppCompatActivity {
 
     @RestService
@@ -41,8 +41,6 @@ public class StudentFormActivity extends AppCompatActivity {
     @ViewById
     Toolbar toolbar;
 
-    @ViewById
-    Button btnSave;
 
     @ViewById
     EditText etSrCode;
@@ -62,7 +60,7 @@ public class StudentFormActivity extends AppCompatActivity {
     @ViewById
     EditText etCourse;
 
-    @Click
+    @OptionsItem(R.id.action_save)
     void btnSave(){
 
             String srCode = etSrCode.getText().toString();
@@ -86,7 +84,7 @@ public class StudentFormActivity extends AppCompatActivity {
     }
 
 
-    @Click
+    @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)

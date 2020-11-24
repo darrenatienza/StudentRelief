@@ -4,6 +4,7 @@ import com.example.studentrelief.services.interfaces.ReliefRequestClient;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.ui.adapters.ReliefRequestAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,7 +54,7 @@ public class ReliefRequestListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

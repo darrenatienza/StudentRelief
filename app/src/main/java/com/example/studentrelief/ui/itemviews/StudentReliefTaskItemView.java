@@ -36,7 +36,7 @@ public class StudentReliefTaskItemView extends RelativeLayout {
         tvAffectedAreas.setText(model.getAffected_areas());
         String status =  model.getActive() ?"Active" : "Not Active";
         int green = getResources().getColor(R.color.main_green_color);
-        int red = getResources().getColor(R.color.colorPrimary);
+        int red = getResources().getColor(R.color.error);
         // change color depends on status
         tvStatus.setTextColor(model.getActive() ?  red: green);
         tvStatus.setText("Status: " + status);
