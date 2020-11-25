@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Toast;
 
-
-import com.github.thunder413.datetimeutils.DateTimeUtils;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -42,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // cannot include on annotation
         setContentView(R.layout.activity_main);
-        DateTimeUtils.setTimeZone("UTC");
+
 
     }
     public void doPositiveClick(){

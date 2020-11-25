@@ -19,6 +19,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.rest.spring.annotations.RestService;
 
+import java.text.ParseException;
 import java.util.List;
 
 @EBean
@@ -45,7 +46,13 @@ public class DonnerDonationAdapter extends RecyclerViewAdapterBase<DonnerDonatio
         DonnerDonationItemView view = viewHolder.getView();
         DonnerDonationModel model = items.get(position);
 
-        view.bind(model);
+
+        try {
+            view.bind(model);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

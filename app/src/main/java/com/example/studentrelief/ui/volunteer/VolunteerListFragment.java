@@ -11,13 +11,13 @@ import android.widget.TextView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.VolunteerClient;
-import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.adapters.VolunteerAdapter;
-import com.example.studentrelief.ui.donner.DonnerFormActivity_;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -41,7 +41,9 @@ public class VolunteerListFragment extends Fragment {
     @ViewById
     RecyclerView recyclerView;
     @ViewById
-    TextView tvSearch;
+    TextInputEditText etSearch;
+    @ViewById
+    TextInputLayout tiSearch;
     @Bean
     VolunteerAdapter adapter;
 
@@ -57,8 +59,14 @@ public class VolunteerListFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadList();
         initItemClick();
+        initSearch();
     }
 
+    private void initSearch() {
+        tiSearch.setEndIconOnClickListener(v ->{
+            loadList();
+        });
+    }
 
 
     private void initItemClick() {
@@ -80,7 +88,7 @@ public class VolunteerListFragment extends Fragment {
     @Background
     void loadList(){
         try {
-            String criteria = tvSearch.getText().toString();
+            String criteria = etSearch.getText().toString();
             List<VolunteerModel> models = client.getAll(criteria).getRecords();
             updateList(models);
         }catch (Exception e){

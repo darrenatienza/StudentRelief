@@ -11,6 +11,9 @@ alter table student_reliefs add column if not exists code varchar(50) not null d
 /** Add create_time_stamp column to student_reliefs */
 alter table student_reliefs add column if not exists create_time_stamp datetime not null default current_timestamp();
 
+/** Add quantity_uploaded column to donners_donations */
+alter table donners_donations add column if not exists quantity_uploaded boolean not null default false;
+
 /**add donation task table where will be the basis of all request by the student */
 create table if not exists relief_tasks (
 	relief_task_id int not null auto_increment,
@@ -97,5 +100,21 @@ create table if not exists users(
 	active boolean not null default false,
 	create_time_stamp datetime default  current_timestamp(),
 	primary key(user_id)
-
 )
+/** View for Donners donation */
+create or replace view  donners_donations_view
+	as
+		select 
+			dd.donners_donations_id,
+			dd.donation_date,
+			dd.donation_id,
+			dd.donner_id,
+			dd.create_time_stamp,
+			dd.quantity,
+			dnr.full_name donner_full_name,
+			dnt.name donation_name,
+			dd.quantity_uploaded
+		from 
+			donners_donations dd 
+		inner join donations dnt on dd.donation_id = dnt.donation_id
+		inner join donners dnr on dd.donner_id = dnr.donner_id;

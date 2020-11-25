@@ -1,5 +1,8 @@
 package com.example.studentrelief.ui.donner_donation;
 
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -15,8 +18,8 @@ import com.example.studentrelief.services.interfaces.DonnerDonationClient;
 import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.DonnerDonationModel;
 import com.example.studentrelief.services.model.DonnerModel;
-import com.github.thunder413.datetimeutils.DateTimeStyle;
-import com.github.thunder413.datetimeutils.DateTimeUtils;
+
+import com.example.studentrelief.ui.misc.DateFormatter;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,23 +29,28 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
+import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-@OptionsMenu(R.menu.menu_donner_donation_form)
+
 @EActivity(R.layout.activity_donner_donation_form)
+@OptionsMenu(R.menu.menu_donner_donation_form)
 public class DonnerDonationFormActivity extends AppCompatActivity{
 
     @RestService
@@ -73,6 +81,8 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
     TextInputEditText etQuantity;
     @ViewById
     TextInputLayout tiDate;
+
+
     private DonnerDonationModel donnerDonationModel;
     private ArrayAdapter<DonnerModel> donnerArrayAdapter;
 
@@ -103,21 +113,37 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
             initSettings();
             initDatePicker();
 
-            loadDonnerListAsync();
-            loadDonationListAsync();
+
 
             setSupportActionBar(toolbar);
+            loadDonnerListAsync();
+            loadDonationListAsync();
             if(id > 0){
+
                 getFormData();
 
+
             }else{
+
                 donnerDonationModel = new DonnerDonationModel();
             }
+
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+
+    // this will update the view state of upload menu like on OnCreateOptionsMenu
+    @OptionsMenuItem(R.id.action_upload)
+    void injectActionUploadMenu(MenuItem item){
+        item.setVisible(id > 0 ? true: false);
+    }
+    // this will update the view state of delete menu like on OnCreateOptionsMenu
+    @OptionsMenuItem(R.id.action_delete)
+    void injectActionDeleteMenu(MenuItem item){
+        item.setVisible(id > 0 ? true: false);
     }
     private static Calendar getClearedUtc() {
         Calendar utc = Calendar.getInstance(TimeZone.getTimeZone("UTC+8"));
@@ -166,10 +192,13 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
 
     private void addDatePickerListener(MaterialDatePicker<Long> datePicker) {
         datePicker.addOnPositiveButtonClickListener(v ->{
-            Long date = datePicker.getSelection();
             String dateForView = datePicker.getHeaderText();
-            DateFormat df = new SimpleDateFormat("YYYY-M-d hh:mm:ss");
-            dbDate = df.format(date);
+            DateFormat df = new SimpleDateFormat(DateFormatter.DB_PATTERN);
+            try {
+                donationDate = DateFormatter.convertDatePattern(dateForView,DateFormatter.MMM_DD_YYYY,DateFormatter.DB_PATTERN);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             etDate.setText(dateForView);
         });
     }
@@ -183,7 +212,7 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
             donnerDonationModel.setDonation_id(donationID);
             donnerDonationModel.setDonner_id(donnerID);
             donnerDonationModel.setDonation_date(donationDate);
-            donnerDonationModel.setQuantity_uploaded(true);
+            donnerDonationModel.setQuantity_uploaded(false);
             donnerDonationModel.setQuantity(Integer.valueOf(quantity));
             saveAsync(donnerDonationModel);
 
@@ -255,17 +284,26 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
     /** Background Task **/
     @Background
     void uploadQuantityAsync() {
-        // updates the quantity of the donation
-        DonationModel donationModel = donationClient.get(donnerDonationModel.getDonation_id());
-        donationModel.setQuantity(donationModel.getQuantity() + donnerDonationModel.getQuantity());
-        // updates the quantity uploaded property of donners donations;
-        donnerDonationModel.setQuantity_uploaded(true);
-        // commit changes
-        client.edit(id, donnerDonationModel);
-        donationClient.edit(donationModel.getDonation_id(),donationModel);
+        try{
+            // updates the quantity of the donation
+            DonationModel donationModel = donationClient.get(donnerDonationModel.getDonation_id());
+            donationModel.setQuantity(donationModel.getQuantity() + donnerDonationModel.getQuantity());
+            // updates the quantity uploaded property of donners donations;
+            donnerDonationModel.setQuantity_uploaded(true);
+            // commit changes
+            client.edit(id, donnerDonationModel);
+            donationClient.edit(donationModel.getDonation_id(),donationModel);
+            updateUIAfterUploadQuantity();
+        }catch (RestClientException e){
+            showError(e.getMessage());
+        }
 
-        updateUIAfterUploadQuantity();
     }
+    @UiThread
+    void showError(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
     @Background
     void loadDonnerListAsync() {
         donnerModels = donnerClient.getAll("").getRecords();
@@ -281,7 +319,8 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
     @Background
     void getFormData() {
         if (id > 0){
-            donnerDonationModel = client.get(id);
+            // get only the single record from view
+            donnerDonationModel = client.getByDonnersDonationID(id).getRecords().get(0);
             updateUIFormData(donnerDonationModel);
         }
     }
@@ -318,31 +357,78 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
     }
     @UiThread
     void UpdateDonationSpinnerUI(List<DonationModel> models) {
-        ArrayAdapter<DonationModel> arrayAdapter = new ArrayAdapter<>(this,
+        donationArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line,models);
-        etDonation.setAdapter(arrayAdapter);
-        // set the default value (pos)
-        etDonation.setSelection(donationPos);
+        etDonation.setAdapter(donationArrayAdapter);
+        donationArrayAdapter.setNotifyOnChange(true);
+
     }
+
     @UiThread
     void UpdateDonnerSpinnerUI(List<DonnerModel> donnerArrayList) {
         donnerArrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line,donnerArrayList);
-
         etDonner.setAdapter(donnerArrayAdapter);
-        // set the default value (pos)
-        etDonner.setSelection(donnerPos);
+        donnerArrayAdapter.setNotifyOnChange(true);
+
 
     }
-
+    @TextChange
+    void etDonation(){
+        String value = etDonation.getText().toString();
+        donationID = getDonationID(donationModels,value);
+        if(donationID == 0){
+            etDonation.setError("Please select valid donation");
+        }else{
+            etDonation.setError(null);
+        }
+    }
+    @TextChange
+    void etDonner(){
+        String value = etDonner.getText().toString();
+        donnerID = getDonnerID(donnerModels,value);
+    }
+    int getDonationID(List<DonationModel> donationModels, String value){
+        for (DonationModel model: donationModels
+             ) {
+            if(model.getName().contentEquals(value)){
+                return  model.getDonation_id();
+            }
+        }
+        return  0;
+    }
+    int getDonnerID(List<DonnerModel> models, String value){
+        for (DonnerModel model: models
+        ) {
+            if(model.getFull_name().contentEquals(value)){
+                return  model.getDonner_id();
+            }
+        }
+        return  0;
+    }
     @UiThread
     void updateUIFormData(DonnerDonationModel model) {
         // setting value of selected model from list
-        donationDate =  DateTimeUtils.formatWithPattern(model.getDonation_date(),"YYYY-M-d hh:mm:ss", Locale.ENGLISH);
-        etDate.setText(DateTimeUtils.formatWithStyle(model.getDonation_date(), DateTimeStyle.MEDIUM));
-        etQuantity.setText(String.valueOf(model.getQuantity()));
+
+        try {
+
+            donationDate = model.getDonation_date();
+            etDate.setText(DateFormatter.convertToSimpleDateString(model.getDonation_date()));
+            donationID = model.getDonation_id();
+            donnerID = model.getDonner_id();
+            etDonation.setText(model.getDonation_name());
+            etDonner.setText(model.getDonner_full_name());
+            etQuantity.setText(String.valueOf(model.getQuantity()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    /** miscellaneous */
-
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

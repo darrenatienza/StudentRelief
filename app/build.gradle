@@ -30,8 +30,8 @@ android {
         debug {
             // note that to define a string you need to escape it
             //buildConfigField "String", 'BASE_URL', "\"http://192.168.1.100/api.php\""
-           buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
-            //buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
+
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
         }
         release {
             minifyEnabled false
@@ -39,7 +39,21 @@ android {
             //need to make project for updating changes
             //buildConfigField "String", "BASE_URL",
         }
+        /**
+         * The `initWith` property allows you to copy configurations from other build types,
+         * then configure only the settings you want to change. This one copies the debug build
+         * type, and then changes the buildConfigField.
+         */
+        office{
+            initWith debug
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
 
+        }
+        home{
+            initWith debug
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
+
+        }
     }
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
@@ -75,5 +89,4 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
-    implementation 'com.github.thunder413:DateTimeUtils:3.0'
 }

@@ -20,7 +20,7 @@ import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.ReliefRequestDonationModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.dialogs.DatePickerFragment;
-import com.github.thunder413.datetimeutils.DateTimeUtils;
+
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -44,7 +44,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**shows the form for updating or adding the donations for every relief request list */
 @OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_relief_request_donation_form)
-public class ReliefRequestDonationFormActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class ReliefRequestDonationFormActivity extends AppCompatActivity{
 
     @RestService
     ReliefRequestDonationClient client;
@@ -292,16 +292,5 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity impleme
     }
 
 
-    /** method from DatePickerDialog */
-    @Override
-    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-        Calendar mCalender = Calendar.getInstance();
-        mCalender.set(Calendar.YEAR, year);
-        mCalender.set(Calendar.MONTH, month);
-        mCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String selectedDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(mCalender.getTime());
-        // required pattern for mysql database
-        requestDate = DateTimeUtils.formatWithPattern(mCalender.getTime(),"YYYY-M-d hh:mm:ss", Locale.ENGLISH);
-        etDate.setText(selectedDate);
-    }
+
 }

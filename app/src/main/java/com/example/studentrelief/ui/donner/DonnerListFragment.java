@@ -17,6 +17,8 @@ import com.example.studentrelief.ui.adapters.DonnerAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -42,9 +44,11 @@ public class DonnerListFragment extends Fragment {
     @ViewById
     RecyclerView recyclerView;
     @ViewById
-    TextView tvSearch;
+    TextInputEditText etSearch;
     @Bean
     DonnerAdapter adapter;
+    @ViewById
+    TextInputLayout tiSearch;
 
     @AfterViews
     void afterViews() {
@@ -58,8 +62,14 @@ public class DonnerListFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadList();
         initItemClick();
+        initSearch();
     }
 
+    private void initSearch() {
+        tiSearch.setEndIconOnClickListener(v -> {
+            loadList();
+        });
+    }
 
 
     private void initItemClick() {
@@ -81,7 +91,7 @@ public class DonnerListFragment extends Fragment {
     @Background
     void loadList(){
         try {
-            String criteria = tvSearch.getText().toString();
+            String criteria = etSearch.getText().toString();
             List<DonnerModel> donners = donnerClient.getAll(criteria).getRecords();
             updateList(donners);
         }catch (Exception e){
@@ -93,10 +103,7 @@ public class DonnerListFragment extends Fragment {
         adapter.setList(donners);
         adapter.notifyDataSetChanged();
     }
-    @Click(R.id.btnSearch)
-    void search(){
-        loadList();
-    }
+
     @Click(R.id.fab)
     void click(View view){
        showFormDialog(0);

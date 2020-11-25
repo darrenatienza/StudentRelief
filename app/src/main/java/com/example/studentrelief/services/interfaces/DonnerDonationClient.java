@@ -15,8 +15,12 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 
 @Rest(rootUrl = BuildConfig.BASE_URL,converters = { MappingJackson2HttpMessageConverter.class })
 public interface DonnerDonationClient {
-    @Get("/records/donners_donations?filter=donation_date,cs,{date}")
-    DonnerDonationContainer getAll(@Path String date);
+    @Get("/records/donners_donations_view?filter1=donner_full_name,cs,{criteria}&filter2=donation_name,cs,{criteria}")
+    DonnerDonationContainer getAll(@Path String criteria);
+
+    @Get("/records/donners_donations_view?filter=donners_donations_id,eq,{id}")
+    DonnerDonationContainer getByDonnersDonationID(@Path int id);
+
     /** excludes auto generated column */
     @Post("/records/donners_donations?exclude=donners_donations_id,create_time_stamp")
     Integer addNew(@Body DonnerDonationModel model);
@@ -30,5 +34,7 @@ public interface DonnerDonationClient {
 
     @Get("/records/donners_donations/{id}")
     DonnerDonationModel get(@Path int id);
+
+
 
 }

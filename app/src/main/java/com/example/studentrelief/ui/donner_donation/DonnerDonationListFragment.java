@@ -126,19 +126,8 @@ public class DonnerDonationListFragment extends Fragment {
             /** Model is modified to provide values on other fields*/
             String criteria = tvSearch.getText().toString();
             List<DonnerDonationModel> models = client.getAll(criteria).getRecords();
-            List<DonnerDonationModel> newModels = new ArrayList<>();
-            for (DonnerDonationModel model: models
-                 ) {
-                DonnerDonationModel newModel = new DonnerDonationModel();
-                newModel = model;
-                String donationName = donationClient.get(model.getDonation_id()).getName();
-                String donnerFullName = donnerClient.getDonner(model.getDonner_id()).getFull_name();
-                newModel.setDonation_name(donationName);
-                newModel.setDonner_full_name(donnerFullName);
-                newModels.add(newModel);
-            }
             /** New models (modified model) must be pass not the original models*/
-            updateList(newModels);
+            updateList(models);
         }catch (Exception e){
             Log.e("Error",e.getMessage());
         }
