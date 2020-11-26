@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studentrelief.MainActivity_;
 import com.example.studentrelief.R;
-import com.example.studentrelief.RegisterActivity_;
 import com.example.studentrelief.services.interfaces.LoginClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
@@ -21,7 +20,9 @@ import com.example.studentrelief.services.interfaces.VolunteerClient;
 import com.example.studentrelief.services.model.LoginModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.VolunteerModel;
+import com.example.studentrelief.ui.student.StudentFormActivity_;
 import com.example.studentrelief.ui.student.StudentPanelActivity_;
+import com.example.studentrelief.ui.volunteer.VolunteerFormActivity_;
 import com.example.studentrelief.ui.volunteer.VolunteerPanelActivity_;
 
 import org.androidannotations.annotations.AfterTextChange;
@@ -114,11 +115,11 @@ public class LoginActivity extends AppCompatActivity {
         String userType = logUser.getUser_type();
         if(userType.contains("student")){
             clear();
-            StudentPanelActivity_.intent(this).id(logUser.getIdentity_id()).start();
+            StudentPanelActivity_.intent(this).userID(logUser.getUser_id()).id(logUser.getIdentity_id()).start();
         }else if (userType.contains("volunteer")){
             clear();
            VolunteerPanelActivity_.intent(this).id(logUser.getIdentity_id()).start();
-        }else if (userType.contains("eso")){
+        }else if (userType.contains("admin")){
             clear();
             MainActivity_.intent(this).start();
         }
@@ -128,8 +129,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     @Click
-    void btnRegister(){
-        RegisterActivity_.intent(this).start();
+    void btnStudentRegister(){
+        StudentFormActivity_.intent(this).start();
+    }
+    @Click
+    void btnVolunteerRegister(){
+        VolunteerFormActivity_.intent(this).start();
     }
     void clear(){
         username.setText("");

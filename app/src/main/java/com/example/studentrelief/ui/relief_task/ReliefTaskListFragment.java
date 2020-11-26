@@ -2,6 +2,7 @@ package com.example.studentrelief.ui.relief_task;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.example.studentrelief.ui.adapters.ReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -42,8 +44,9 @@ public class ReliefTaskListFragment extends Fragment {
     @ViewById
     RecyclerView recyclerView;
     @ViewById
-    TextView tvSearch;
-
+    EditText tvSearch;
+    @ViewById
+    TextInputLayout tiSearch;
     @Bean
     ReliefTaskAdapter adapter;
 
@@ -58,8 +61,14 @@ public class ReliefTaskListFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadList();
         initItemClick();
+        initSearch();
     }
 
+    private void initSearch() {
+        tiSearch.setEndIconOnClickListener(v ->{
+            loadList();
+        });
+    }
 
 
     private void initItemClick() {

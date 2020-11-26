@@ -1,15 +1,8 @@
 
-/** Add code column to student_reliefs */
-alter table student_reliefs add column if not exists code varchar(50) not null default "";
 
 /** Add request date column to students */
 alter table students add column if not exists request_date datetime null;
 
-/** Add code column to student_reliefs */
-alter table student_reliefs add column if not exists code varchar(50) not null default "";
-
-/** Add create_time_stamp column to student_reliefs */
-alter table student_reliefs add column if not exists create_time_stamp datetime not null default current_timestamp();
 
 /** Add quantity_uploaded column to donners_donations */
 alter table donners_donations add column if not exists quantity_uploaded boolean not null default false;
@@ -39,26 +32,7 @@ create table if not exists relief_requests (
   CONSTRAINT `fk_students_student_id` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`),
   CONSTRAINT `fk_relief_tasks_relief_task_id` FOREIGN KEY (`relief_task_id`) REFERENCES `relief_tasks` (`relief_task_id`)
 );
-/** view for relief_requests_view*/
-create or replace view  relief_requests_view as
-	select 
-		rr.relief_request_id,
-		s.student_id,
-		s.full_name student_full_name,
-		s.address student_address,
-		s.contact_number student_contact_number,
-		s.campus student_campus,
-		s.course student_course,
-		rr.relief_task_id,
-		rt.title request_task_title,
-		rr.released,
-		rr.date_release,
-		rr.create_time_stamp
-	from relief_requests rr
-	inner join students s
-		on rr.student_id = s.student_id
-	inner join relief_tasks rt
-		on rt.relief_task_id = rr.relief_task_id;
+
 
 /** donations base on relief request */
 CREATE table if not exists  `relief_request_donations` (
@@ -74,8 +48,6 @@ CREATE table if not exists  `relief_request_donations` (
 alter table students drop column if exists is_requesting_relief;
 alter table students drop column if exists request_date;
 
-/** Add campus column to students  */
-alter table student_reliefs add column if not exists code varchar(50) not null default "";
 
 /** view for relief_requests_view*/
 create or replace view  relief_request_donation_view as
@@ -100,26 +72,8 @@ create table if not exists users(
 	active boolean not null default false,
 	create_time_stamp datetime default  current_timestamp(),
 	primary key(user_id)
-)
-/** View for Donners donation */
-create or replace view  donners_donations_view
-	as
-		select 
-			dd.donners_donations_id,
-			dd.donation_date,
-			dd.donation_id,
-			dd.donner_id,
-			dd.create_time_stamp,
-			dd.quantity,
-			dnr.full_name donner_full_name,
-			dnt.name donation_name,
-			dd.quantity_uploaded
-		from 
-			donners_donations dd 
-		inner join donations dnt on dd.donation_id = dnt.donation_id
-		inner join donners dnr on dd.donner_id = dnr.donner_id;
-		
-		
+);
+
 /** Add active column to students 
  *  use for validating newly enroll student account
  * */

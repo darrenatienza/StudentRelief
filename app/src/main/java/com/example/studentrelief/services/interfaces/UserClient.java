@@ -23,7 +23,7 @@ public interface UserClient {
     UserModel login(@Body UserModel model);
 
     /** excludes auto generated column */
-    @Post("/records/users")
+    @Post("/records/users?exclude=user_id,create_time_stamp")
     Integer addNew(@Body UserModel model);
 
     /** excludes auto generated column */

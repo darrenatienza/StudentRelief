@@ -20,6 +20,7 @@ import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.adapters.StudentReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.RecyclerViewClickListener;
+import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -51,7 +52,8 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     @Extra
     int id;
-
+    @Extra
+    int userID;
 
     @ViewById
     Toolbar toolbar;
@@ -82,7 +84,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 getFormData();
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this);
                 VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
-                recyclerView.addItemDecoration(dividerItemDecoration);
+                recyclerView.addItemDecoration((new SimpleDividerItemDecoration(this)));
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
@@ -96,11 +98,15 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
 
     }
+    //handles click menu
     @OptionsItem(R.id.action_edit)
     void menuPanel(){
-       StudentFormActivity_.intent(this).id(id).start();
+       StudentFormActivity_.intent(this).id(id).userID(userID).start();
     }
-
+    @OptionsItem(R.id.action_logout)
+    void menuLogout(){
+        finish();
+    }
     @Background
     void getFormData() {
         if (id > 0){

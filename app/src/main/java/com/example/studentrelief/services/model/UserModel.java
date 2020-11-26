@@ -8,6 +8,15 @@ public class UserModel {
     String full_name;
     int identity_id;
     boolean active;
+    String create_time_stamp;
+
+    public String getCreate_time_stamp() {
+        return create_time_stamp;
+    }
+
+    public void setCreate_time_stamp(String create_time_stamp) {
+        this.create_time_stamp = create_time_stamp;
+    }
 
     public boolean isActive() {
         return active;

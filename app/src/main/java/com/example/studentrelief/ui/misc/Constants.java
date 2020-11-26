@@ -1,7 +1,7 @@
 package com.example.studentrelief.ui.misc;
 
-import java.net.PortUnreachableException;
-
 public class Constants {
-    public static final String USER_TYPE_STUDENT = "Student";
+    public static final String USER_TYPE_STUDENT = "student";
+    public static final String VOLUNTEER_TYPE_STUDENT = "volunteer";
+    public static final String ADMIN_TYPE_STUDENT = "admin";
 }

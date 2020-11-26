@@ -1,22 +1,25 @@
 package com.example.studentrelief.ui.student;
 
+import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Menu;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.StudentClient;
-import com.example.studentrelief.services.model.AddEditDonnerModel;
+import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.model.StudentModel;
+import com.example.studentrelief.services.model.UserModel;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
@@ -34,10 +37,12 @@ public class StudentFormActivity extends AppCompatActivity {
 
     @RestService
     StudentClient studentClient;
-
+    @RestService
+    UserClient userClient;
     @Extra
     int id;
-
+    @Extra
+    int userID;
     @ViewById
     Toolbar toolbar;
 
@@ -59,6 +64,15 @@ public class StudentFormActivity extends AppCompatActivity {
 
     @ViewById
     EditText etCourse;
+    @ViewById
+    MaterialCheckBox chkPassword;
+    @ViewById
+    TextInputEditText etPassword;
+
+    @ViewById
+    TextInputLayout tiPassword;
+    private StudentModel model;
+    private UserModel userModel;
 
     @OptionsItem(R.id.action_save)
     void btnSave(){
@@ -83,7 +97,16 @@ public class StudentFormActivity extends AppCompatActivity {
 
     }
 
+    @CheckedChange
+    void chkPassword(CompoundButton c, boolean isChecked){
+        if(isChecked){
+            tiPassword.setEnabled(true);
 
+        }else{
+            tiPassword.setEnabled(false);
+        }
+        etPassword.setText("");
+    }
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
@@ -128,6 +151,10 @@ public class StudentFormActivity extends AppCompatActivity {
         try {
         if (id > 0){
             studentClient.edit(id,model);
+            if(chkPassword.isChecked() && etPassword.getText().toString() != ""){
+                userModel.setPassword(etPassword.getText().toString());
+                userClient.edit(userID,userModel);
+            }
         }else{
             studentClient.addNew(model);
         }
@@ -155,12 +182,19 @@ public class StudentFormActivity extends AppCompatActivity {
             if(id > 0){
                 getFormData();
 
+            }else{
+                model = new StudentModel();
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+    // initialization
+    @OptionsMenuItem(R.id.action_delete)
+    void onLoadDeleteMenu(MenuItem menuItem){
+        menuItem.setVisible(false);
     }
     @UiThread
     void showErrorAlert(String message) {
@@ -178,10 +212,19 @@ public class StudentFormActivity extends AppCompatActivity {
     }
     @Background
     void getFormData() {
-        if (id > 0){
-            StudentModel model   = studentClient.get(id);
-            updateUIFormData(model);
+        try{
+            if (id > 0){
+                model   = studentClient.get(id);
+                updateUIFormData(model);
+            }
+            if(userID > 0){
+                userModel = userClient.get(userID);
+
+            }
+        }catch (RestClientException e){
+            showErrorAlert(e.getMessage());
         }
+
     }
 
     @UiThread
