@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.student.StudentFormActivity_">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -21,9 +21,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include  layout="@layout/content_student_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"/>
+    <include  layout="@layout/content_student_form"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -31,7 +31,8 @@ android {
             // note that to define a string you need to escape it
             //buildConfigField "String", 'BASE_URL', "\"http://192.168.1.100/api.php\""
 
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
+            buildConfigField "String", 'BASE_URL', ""
+            buildConfigField "String", 'USER_URL', ""
         }
         release {
             minifyEnabled false
@@ -47,10 +48,14 @@ android {
         office{
             initWith debug
             buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
+            // special url for user end point
+            buildConfigField "String", 'USER_URL', "\"http://192.168.195.99:8080/student-relief-api/user.php\""
 
         }
         home{
             initWith debug
+            // special url for user end point
+            buildConfigField "String", 'USER_URL', "\"http://192.168.195.99:8080/student-relief-api/user.php\""
             buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/api.php\""
 
         }

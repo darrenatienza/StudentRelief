@@ -118,3 +118,9 @@ create or replace view  donners_donations_view
 			donners_donations dd 
 		inner join donations dnt on dd.donation_id = dnt.donation_id
 		inner join donners dnr on dd.donner_id = dnr.donner_id;
+		
+		
+/** Add active column to students 
+ *  use for validating newly enroll student account
+ * */
+alter table students add column if not exists active boolean not null default false;

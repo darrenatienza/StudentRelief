@@ -13,7 +13,7 @@ import org.androidannotations.rest.spring.annotations.Put;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-@Rest(rootUrl = BuildConfig.BASE_URL,converters = { MappingJackson2HttpMessageConverter.class })
+@Rest(rootUrl = BuildConfig.USER_URL,converters = { MappingJackson2HttpMessageConverter.class })
 public interface UserClient {
     @Get("/records/users?filter=name,cs,{criteria}")
     DonationContainer getAll(@Path String criteria);
@@ -23,7 +23,7 @@ public interface UserClient {
     UserModel login(@Body UserModel model);
 
     /** excludes auto generated column */
-    @Post("/records/users?exclude=donation_id,create_time_stamp")
+    @Post("/records/users")
     Integer addNew(@Body UserModel model);
 
     /** excludes auto generated column */

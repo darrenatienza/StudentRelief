@@ -10,6 +10,15 @@ public class StudentModel {
     String course;
     String address;
     String contact_number;
+    boolean active;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public String getIs_requesting_releif() {
         return is_requesting_releif;
