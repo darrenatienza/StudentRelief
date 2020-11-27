@@ -58,6 +58,7 @@ public class DonationListFragment extends Fragment {
     }
     @AfterViews
     void afterViews() {
+        initAuthCookies();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setHasFixedSize(true);
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);

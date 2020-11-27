@@ -1,24 +1,21 @@
 package com.example.studentrelief.ui.donner;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.model.AddEditDonnerModel;
 import com.example.studentrelief.ui.misc.Constants;
-import com.example.studentrelief.ui.misc.MyPrefs;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
@@ -163,7 +160,7 @@ public class DonnerFormActivity extends AppCompatActivity {
     @Background
     void getFormData() {
         if (id > 0){
-            AddEditDonnerModel model   = donnerClient.getDonner(id);
+            model   = donnerClient.getDonner(id);
             updateUIFormData(model);
         }
     }

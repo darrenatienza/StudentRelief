@@ -1,6 +1,5 @@
 package com.example.studentrelief.ui.donation;
 
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,7 +63,11 @@ public class DonationFormActivity extends AppCompatActivity {
 
             String fullName = etName.getText().toString();
             model.setName(fullName);
-            model.setQuantity(0);
+            // always 0 for new record
+            if(id == 0){
+                model.setQuantity(0);
+            }
+
             save(model);
 
 
@@ -133,7 +136,7 @@ public class DonationFormActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews(){
-
+        initAuthCookies();
         try{
             etQuantity.setEnabled(false);
             setSupportActionBar(toolbar);

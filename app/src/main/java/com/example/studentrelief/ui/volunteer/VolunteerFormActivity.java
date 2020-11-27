@@ -1,24 +1,26 @@
 package com.example.studentrelief.ui.volunteer;
 
-import com.example.studentrelief.services.interfaces.VolunteerClient;
-import com.example.studentrelief.services.model.AddEditDonnerModel;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.UserClient;
+import com.example.studentrelief.services.interfaces.VolunteerClient;
+import com.example.studentrelief.services.model.UserAddModel;
 import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
@@ -35,31 +37,54 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class VolunteerFormActivity extends AppCompatActivity {
 
     @RestService
-    VolunteerClient client;
-
+    VolunteerClient volunteerClient;
+    @RestService
+    UserClient userClient;
     @Extra
     int id;
-
+    @Extra
+    int userID;
     @ViewById
     Toolbar toolbar;
 
 
     @ViewById
-    TextView etFullName;
+    TextInputEditText etFullName;
 
     @ViewById
-    EditText etContactNumber;
+    TextInputEditText etContactNumber;
     @ViewById
-    EditText etAddress;
-    private VolunteerModel model;
+    TextInputEditText etAddress;
+    @ViewById
+    TextInputEditText tietPassword;
+    @ViewById
+    MaterialCheckBox chkPassword;
+    @ViewById
+    TextInputLayout tilPassword;
+
+    private VolunteerModel volunteerModel;
 
     @Pref
     MyPrefs_ myPrefs;
+    private UserAddModel userAddModel;
+
     private void initAuthCookies() {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
-        client.setCookie(name,session);
+        volunteerClient.setCookie(name,session);
     }
+
+    @CheckedChange
+    void chkPassword(CompoundButton c, boolean isChecked){
+        if(isChecked){
+            tietPassword.setEnabled(true);
+
+        }else{
+            tietPassword.setEnabled(false);
+        }
+        tietPassword.setText("");
+    }
+
     @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
@@ -67,10 +92,10 @@ public class VolunteerFormActivity extends AppCompatActivity {
             String address = etAddress.getText().toString();
             String contactNumber = etContactNumber.getText().toString();
 
-            model.setFull_name(fullName);
-            model.setAddress(address);
-            model.setContact_number(contactNumber);
-            save(model);
+            volunteerModel.setFull_name(fullName);
+            volunteerModel.setAddress(address);
+            volunteerModel.setContact_number(contactNumber);
+            save();
 
         }catch (RestClientException ex){
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
@@ -112,18 +137,24 @@ public class VolunteerFormActivity extends AppCompatActivity {
     @Background
     void delete() {
         if (id > 0){
-            client.delete(id);
+            volunteerClient.delete(id);
 
         }
         updateUIAfterSave();
     }
 
     @Background
-    void save(VolunteerModel model){
+    void save(){
         if (id > 0){
-            client.edit(id,model);
+            volunteerClient.edit(id, volunteerModel);
         }else{
-            client.addNew(model);
+            volunteerClient.addNew(volunteerModel);
+        }
+        if (userID > 0){
+            userClient.edit(userID,userModel);
+
+        }else{
+           userClient.addNew(userModel);
         }
         updateUIAfterSave();
 
@@ -145,7 +176,9 @@ public class VolunteerFormActivity extends AppCompatActivity {
                 getFormData();
 
             }else{
-                model = new VolunteerModel();
+                volunteerModel = new VolunteerModel();
+                tilPassword.setVisibility(View.INVISIBLE);
+                chkPassword.setVisibility(View.INVISIBLE);
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
@@ -156,14 +189,35 @@ public class VolunteerFormActivity extends AppCompatActivity {
 
     @Background
     void getFormData() {
-        if (id > 0){
-            model   = client.get(id);
-            updateUIFormData(model);
-        }
-    }
+        try {
+            if (id > 0){
+                volunteerModel = volunteerClient.getVolunteerView(id).getRecords().get(0);
 
+            }
+            updateUIFormData(volunteerModel);
+        }catch (RestClientException e){
+            showErrorAlert(e.getMessage());
+        }
+
+    }
+    @UiThread
+    void showErrorAlert(String message) {
+        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("Oops!")
+                .setContentText("An error occured! \n" + message)
+                .setConfirmText("OK")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
+    }
     @UiThread
     void updateUIFormData(VolunteerModel model) {
+        userID =model.getUser_id();
+
         etAddress.setText(model.getAddress());
         etContactNumber.setText(model.getContact_number());
         etFullName.setText(model.getFull_name());

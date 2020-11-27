@@ -21,6 +21,7 @@ public interface VolunteerClient {
     @Get("/records/volunteers?filter=full_name,cs,{criteria}")
     @RequiresCookie(Constants.SESSION_NAME)
     VolunteerContainer getAll(@Path String criteria);
+
     /** excludes auto generated column */
     @Post("/records/volunteers?exclude=volunteer_id,create_time_stamp")
     @RequiresCookie(Constants.SESSION_NAME)
@@ -42,6 +43,10 @@ public interface VolunteerClient {
     @Get("/records/volunteers??filter=full_name,cs,{full_name}")
     @RequiresCookie(Constants.SESSION_NAME)
     VolunteerContainer getByFullName(@Path String full_name);
+
+    @Get("/records/volunteer_view?filter=volunteer_id,eq,{volunteer_id}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    VolunteerContainer getVolunteerView(@Path int volunteerID);
 
     void setCookie(String name, String value);
     String getCookie(String name);

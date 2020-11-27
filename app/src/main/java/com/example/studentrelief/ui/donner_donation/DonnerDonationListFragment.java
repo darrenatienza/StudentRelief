@@ -33,7 +33,6 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -66,6 +65,8 @@ public class DonnerDonationListFragment extends Fragment {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
         donnerClient.setCookie(name,session);
+        client.setCookie(name,session);
+        donationClient.setCookie(name,session);
     }
     @AfterViews
     void afterViews() {

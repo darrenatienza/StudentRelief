@@ -78,3 +78,26 @@ create table if not exists users(
  *  use for validating newly enroll student account
  * */
 alter table students add column if not exists active boolean not null default false;
+
+/** Set default quanity of donation to 0
+ * */
+alter table donations modify column donations.quantity int not null default 0;
+
+/** add code column to volunteer
+ * */
+alter table volunteers add column if not exists code varchar(50) not null default '';
+
+
+/** view for volunteer_view*/
+create or replace view  volunteer_view as
+	select 
+		v.volunteer_id,
+		v.code,
+		v.full_name,
+		v.address,
+		v.contact_number,
+		u.user_id,
+		u.active
+	from volunteers v
+	inner join users u
+		on v.volunteer_id = u.identity_id and u.user_type = 'volunteer';

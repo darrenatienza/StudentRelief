@@ -1,7 +1,5 @@
 package com.example.studentrelief.services.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class VolunteerModel {
 
     public int getVolunteer_id() {
@@ -17,8 +15,42 @@ public class VolunteerModel {
     String  address;
     String contact_number;
     String create_time_stamp;
+    String code;
+    int user_id;
+    String password;
+    String active;
 
+    public int getUser_id() {
+        return user_id;
+    }
 
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getFull_name() {
         return full_name;
