@@ -3,7 +3,9 @@ package com.example.studentrelief.ui.relief_request;
 import com.example.studentrelief.services.interfaces.ReliefRequestClient;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.ui.adapters.ReliefRequestAdapter;
+import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
@@ -26,6 +28,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
@@ -48,9 +51,18 @@ public class ReliefRequestListActivity extends AppCompatActivity {
     @Extra
     int reliefTaskID;
 
+    @Pref
+    MyPrefs_ myPrefs;
+
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        reliefRequestClient.setCookie(name,session);
+    }
 
     @AfterViews
     void afterViews(){
+        initAuthCookies();
         setSupportActionBar(toolbar);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);

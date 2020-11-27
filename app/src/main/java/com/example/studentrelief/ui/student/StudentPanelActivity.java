@@ -15,10 +15,13 @@ import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.ReliefRequestClient;
 import com.example.studentrelief.services.interfaces.ReliefTaskClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
+import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.adapters.StudentReliefTaskAdapter;
+import com.example.studentrelief.ui.misc.Constants;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.RecyclerViewClickListener;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
@@ -32,6 +35,7 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -49,7 +53,8 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     ReliefTaskClient reliefTaskClient;
     @RestService
     ReliefRequestClient reliefRequestClient;
-
+    @RestService
+    UserClient userClient;
     @Extra
     int id;
     @Extra
@@ -74,14 +79,17 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     StudentReliefTaskAdapter adapter;
     @ViewById
     RecyclerView recyclerView;
-
+    @Pref
+    MyPrefs_ myPrefs;
     @AfterViews
     void afterViews(){
 
         try{
             setSupportActionBar(toolbar);
             if(id > 0){
+                initAuthCookies();
                 getFormData();
+                loadList();
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this);
                 VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
                 recyclerView.addItemDecoration((new SimpleDividerItemDecoration(this)));
@@ -89,7 +97,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
-                loadList();
+
                 //initItemClick();
             }
         }catch (Exception ex){
@@ -98,6 +106,16 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
 
     }
+
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        reliefTaskClient.setCookie(name,session);
+        studentClient.setCookie(name,session);
+        reliefRequestClient.setCookie(name,session);
+        userClient.setCookie(name,session);
+    }
+
     //handles click menu
     @OptionsItem(R.id.action_edit)
     void menuPanel(){
@@ -105,11 +123,31 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     }
     @OptionsItem(R.id.action_logout)
     void menuLogout(){
+        logOutCurrentUser();
+    }
+    @Background
+    void logOutCurrentUser() {
+        try {
+            userClient.logout();
+            updateUIAfterLogout();
+        }catch (RestClientException ex){
+            showErrorAlert(ex.getMessage());
+        }catch (Exception ex) {
+            showErrorAlert(ex.toString());
+        }
+
+    }
+    @UiThread
+     void updateUIAfterLogout() {
         finish();
     }
+
     @Background
     void getFormData() {
         if (id > 0){
+            String session = myPrefs.session().get();
+            String name = Constants.SESSION_NAME;
+            studentClient.setCookie(name,session);
             StudentModel model   = studentClient.get(id);
             updateUIFormData(model);
         }
@@ -198,6 +236,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     @Background
     void loadList(){
         try {
+
             List<ReliefTaskModel> models = reliefTaskClient.getAllActive().getRecords();
             if(models.toArray().length > 0){
                 /** New models (modified model) must be pass not the original models*/

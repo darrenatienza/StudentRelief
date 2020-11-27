@@ -19,7 +19,9 @@ import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.DonnerDonationModel;
 import com.example.studentrelief.services.model.DonnerModel;
 
+import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.DateFormatter;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,6 +39,7 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -105,11 +108,20 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
     private Calendar calendar;
     private String dbDate;
 
+    @Pref
+    MyPrefs_ myPrefs;
+
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        donnerClient.setCookie(name,session);
+    }
     @AfterViews
     void afterViews(){
 
 
         try{
+            initAuthCookies();
             initSettings();
             initDatePicker();
 

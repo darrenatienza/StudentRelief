@@ -16,7 +16,9 @@ import com.example.studentrelief.services.interfaces.ReliefRequestDonationClient
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.model.ReliefRequestDonationModel;
 import com.example.studentrelief.ui.adapters.StudentReliefAdapter;
+import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 
@@ -29,6 +31,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
@@ -56,9 +59,18 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
     CheckBox chkRelease;
     @Bean
     StudentReliefAdapter adapter;
-
+    @Pref
+    MyPrefs_ myPrefs;
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        reliefRequestDonationClient.setCookie(name,session);
+        donationClient.setCookie(name,session);
+        studentClient.setCookie(name,session);
+    }
     @AfterViews
     void afterViews() {
+        initAuthCookies();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));

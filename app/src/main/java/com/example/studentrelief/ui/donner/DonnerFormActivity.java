@@ -12,6 +12,9 @@ import android.widget.Toast;
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.model.AddEditDonnerModel;
+import com.example.studentrelief.ui.misc.Constants;
+import com.example.studentrelief.ui.misc.MyPrefs;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -22,6 +25,7 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -52,7 +56,33 @@ public class DonnerFormActivity extends AppCompatActivity {
     EditText etContactNumber;
     @ViewById
     EditText etAddress;
+    @Pref
+    MyPrefs_ myPrefs;
+    private AddEditDonnerModel model;
 
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        donnerClient.setCookie(name,session);
+    }
+
+    @AfterViews
+    void afterViews(){
+
+        try{
+            initAuthCookies();
+            setSupportActionBar(toolbar);
+            if(id > 0) {
+                getFormData();
+            }else{
+                model = new AddEditDonnerModel();
+            }
+        }catch (Exception ex){
+            Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
     @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
@@ -60,7 +90,7 @@ public class DonnerFormActivity extends AppCompatActivity {
             String address = etAddress.getText().toString();
             String contactNumber = etContactNumber.getText().toString();
 
-            AddEditDonnerModel model = new AddEditDonnerModel();
+
             model.setFull_name(fullName);
             model.setAddress(address);
             model.setContact_number(contactNumber);
@@ -129,21 +159,6 @@ public class DonnerFormActivity extends AppCompatActivity {
     }
 
 
-    @AfterViews
-    void afterViews(){
-
-        try{
-            setSupportActionBar(toolbar);
-            if(id > 0){
-                getFormData();
-
-            }
-        }catch (Exception ex){
-            Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
 
     @Background
     void getFormData() {

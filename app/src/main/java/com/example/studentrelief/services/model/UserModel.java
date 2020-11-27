@@ -1,5 +1,9 @@
 package com.example.studentrelief.services.model;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotation;
+
+import org.androidannotations.rest.spring.annotations.Rest;
+
 public class UserModel {
     int user_id;
     String username;

@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.model.DonationModel;
+import com.example.studentrelief.ui.misc.Constants;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -20,6 +22,7 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -47,6 +50,14 @@ public class DonationFormActivity extends AppCompatActivity {
     EditText etQuantity;
 
     private DonationModel model;
+    @Pref
+    MyPrefs_ myPrefs;
+
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        client.setCookie(name,session);
+    }
 
     @OptionsItem(R.id.action_save)
     void btnSave(){

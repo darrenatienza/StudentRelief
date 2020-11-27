@@ -1,6 +1,8 @@
 package com.example.studentrelief.ui.student;
 
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,6 +15,8 @@ import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.services.model.UserModel;
+import com.example.studentrelief.ui.misc.Constants;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -27,6 +31,7 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -71,9 +76,10 @@ public class StudentFormActivity extends AppCompatActivity {
 
     @ViewById
     TextInputLayout tiPassword;
-    private StudentModel model;
+    private StudentModel studentModel;
     private UserModel userModel;
-
+    @Pref
+    MyPrefs_ myPrefs;
     @OptionsItem(R.id.action_save)
     void btnSave(){
 
@@ -84,14 +90,21 @@ public class StudentFormActivity extends AppCompatActivity {
             String campus = etCampus.getText().toString();
             String course = etCourse.getText().toString();
 
-            StudentModel model = new StudentModel();
-            model.setSr_code(srCode);
-            model.setFull_name(fullName);
-            model.setAddress(address);
-            model.setContact_number(contactNumber);
-            model.setCampus(campus);
-            model.setCourse(course);
-            save(model);
+            studentModel.setSr_code(srCode);
+            studentModel.setFull_name(fullName);
+            studentModel.setAddress(address);
+            studentModel.setContact_number(contactNumber);
+            studentModel.setCampus(campus);
+            studentModel.setCourse(course);
+
+            boolean isCheckedPassword = chkPassword.isChecked();
+            String newPassword = etPassword.getText().toString();
+
+            if(isCheckedPassword && newPassword != ""){
+                userModel.setPassword(newPassword);
+
+            }
+            save();
 
 
 
@@ -147,19 +160,23 @@ public class StudentFormActivity extends AppCompatActivity {
     }
 
     @Background
-    void save(StudentModel model){
+    void save(){
         try {
-        if (id > 0){
-            studentClient.edit(id,model);
-            if(chkPassword.isChecked() && etPassword.getText().toString() != ""){
-                userModel.setPassword(etPassword.getText().toString());
-                userClient.edit(userID,userModel);
+            if (id > 0){
+                studentClient.edit(id, studentModel);
+
+            }else{
+                studentClient.addNew(studentModel);
             }
-        }else{
-            studentClient.addNew(model);
-        }
+            if (userID > 0){
+                userClient.edit(userID,userModel);
+
+            }else{
+                // no adding new user, adding must be on student and volunteer activation
+            }
             updateUIAfterSave();
         }catch (RestClientException ex){
+            Log.e("Rest Error",ex.toString());
             showErrorAlert(ex.getMessage());
         }catch (Exception ex){
             showErrorAlert(ex.getMessage());
@@ -179,17 +196,29 @@ public class StudentFormActivity extends AppCompatActivity {
 
         try{
             setSupportActionBar(toolbar);
+            initAuthCookies();
             if(id > 0){
                 getFormData();
 
             }else{
-                model = new StudentModel();
+                studentModel = new StudentModel();
+                // do not show the password fields for new student
+                // registration
+                chkPassword.setVisibility(View.INVISIBLE);
+                tiPassword.setVisibility(View.INVISIBLE);
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        userClient.setCookie(name,session);
+        studentClient.setCookie(name,session);
     }
     // initialization
     @OptionsMenuItem(R.id.action_delete)
@@ -214,8 +243,8 @@ public class StudentFormActivity extends AppCompatActivity {
     void getFormData() {
         try{
             if (id > 0){
-                model   = studentClient.get(id);
-                updateUIFormData(model);
+                studentModel = studentClient.get(id);
+                updateUIFormData(studentModel);
             }
             if(userID > 0){
                 userModel = userClient.get(userID);

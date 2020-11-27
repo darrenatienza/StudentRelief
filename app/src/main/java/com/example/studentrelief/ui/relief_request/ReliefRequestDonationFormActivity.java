@@ -20,6 +20,8 @@ import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.ReliefRequestDonationModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.dialogs.DatePickerFragment;
+import com.example.studentrelief.ui.misc.Constants;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 
 
 import org.androidannotations.annotations.AfterViews;
@@ -32,6 +34,7 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -84,10 +87,20 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity{
     private int donationID;
     private String requestDate;
 
+    @Pref
+    MyPrefs_ myPrefs;
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        donnerClient.setCookie(name,session);
+        donationClient.setCookie(name,session);
+        client.setCookie(name,session);
+    }
     @AfterViews
     void afterViews(){
 
         try{
+            initAuthCookies();
             setSupportActionBar(toolbar);
             loadDonationListAsync();
             if(reliefRequestDonationID > 0){

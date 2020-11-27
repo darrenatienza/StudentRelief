@@ -20,6 +20,9 @@ import com.example.studentrelief.services.interfaces.VolunteerClient;
 import com.example.studentrelief.services.model.LoginModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.VolunteerModel;
+import com.example.studentrelief.ui.misc.Constants;
+import com.example.studentrelief.ui.misc.MyPrefs;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.student.StudentFormActivity_;
 import com.example.studentrelief.ui.student.StudentPanelActivity_;
 import com.example.studentrelief.ui.volunteer.VolunteerFormActivity_;
@@ -33,6 +36,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -57,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
     StudentClient studentClient;
     @RestService
     VolunteerClient volunteerClient;
+    @Pref
+    MyPrefs_ myPrefs;
     @AfterViews
     void afterViews(){
 
@@ -81,6 +87,8 @@ public class LoginActivity extends AppCompatActivity {
         model.setPassword(password);
         try{
             UserModel logUser = loginClient.login(model);
+            // put server session on shared preferences for later access
+            myPrefs.session().put(loginClient.getCookie(Constants.SESSION_NAME));
             onLoginSuccess(logUser);
         }catch (RestClientException e){
             String message = e.getMessage();

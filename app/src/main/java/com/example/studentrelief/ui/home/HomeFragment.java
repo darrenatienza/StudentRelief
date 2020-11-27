@@ -24,6 +24,7 @@ public class HomeFragment extends Fragment {
     TextView et;
     private int count;
 
+
     @AfterViews
     void Init(){
        et.setText("asdf");

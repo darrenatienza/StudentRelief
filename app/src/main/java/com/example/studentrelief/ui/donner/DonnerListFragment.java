@@ -14,7 +14,10 @@ import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.ui.adapters.DonnerAdapter;
+import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.MyPrefs;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 import com.google.android.material.textfield.TextInputEditText;
@@ -28,6 +31,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
@@ -49,9 +53,11 @@ public class DonnerListFragment extends Fragment {
     DonnerAdapter adapter;
     @ViewById
     TextInputLayout tiSearch;
-
+    @Pref
+    MyPrefs_ myPrefs;
     @AfterViews
     void afterViews() {
+        initAuthCookies();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
@@ -70,7 +76,11 @@ public class DonnerListFragment extends Fragment {
             loadList();
         });
     }
-
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        donnerClient.setCookie(name,session);
+    }
 
     private void initItemClick() {
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {

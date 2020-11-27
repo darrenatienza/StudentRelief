@@ -15,10 +15,12 @@ import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.model.StudentModel;
+import com.example.studentrelief.services.model.UserAddModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.ui.adapters.StudentAdapter;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -33,6 +35,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -54,9 +57,17 @@ public class StudentListFragment extends Fragment {
     TextInputLayout tiSearch;
     @Bean
     StudentAdapter adapter;
-
+    @Pref
+    MyPrefs_ myPrefs;
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        userClient.setCookie(name,session);
+        studentClient.setCookie(name,session);
+    }
     @AfterViews
     void afterViews() {
+        initAuthCookies();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
@@ -97,7 +108,7 @@ public class StudentListFragment extends Fragment {
             studentModel.setActive(true);
             studentClient.edit(id,studentModel);
             // create new user account for student
-            UserModel userModel = new UserModel();
+            UserAddModel userModel = new UserAddModel();
             userModel.setUsername(studentModel.getSr_code());
             userModel.setFull_name(studentModel.getFull_name());
             userModel.setActive(true);

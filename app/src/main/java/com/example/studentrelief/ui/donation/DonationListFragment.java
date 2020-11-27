@@ -13,7 +13,9 @@ import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.ui.adapters.DonationAdapter;
+import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 import com.google.android.material.textfield.TextInputLayout;
@@ -26,6 +28,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
@@ -46,6 +49,13 @@ public class DonationListFragment extends Fragment {
     @Bean
     DonationAdapter adapter;
 
+    @Pref
+    MyPrefs_ myPrefs;
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        client.setCookie(name,session);
+    }
     @AfterViews
     void afterViews() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

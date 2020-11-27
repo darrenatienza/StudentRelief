@@ -6,6 +6,7 @@ import com.example.studentrelief.services.model.ReliefRequestContainer;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.containers.ReliefTaskContainer;
+import com.example.studentrelief.ui.misc.Constants;
 
 import org.androidannotations.rest.spring.annotations.Body;
 import org.androidannotations.rest.spring.annotations.Delete;
@@ -13,6 +14,7 @@ import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Path;
 import org.androidannotations.rest.spring.annotations.Post;
 import org.androidannotations.rest.spring.annotations.Put;
+import org.androidannotations.rest.spring.annotations.RequiresCookie;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
@@ -24,18 +26,27 @@ public interface ReliefRequestClient {
 
     /** excludes auto generated column */
     @Post("/records/relief_requests?exclude=relief_request_id,date_release,create_time_stamp")
+    @RequiresCookie(Constants.SESSION_NAME)
     Integer addNew(@Body ReliefRequestModel model);
 
     /** excludes auto generated column */
     @Put("/records/relief_requests/{id}?exclude=relief_request_id,create_time_stamp")
+    @RequiresCookie(Constants.SESSION_NAME)
     Integer edit(@Path int id, @Body ReliefRequestModel model);
 
     @Delete("/records/relief_requests/{id}")
+    @RequiresCookie(Constants.SESSION_NAME)
     Integer delete(@Path int id);
 
     @Get("/records/relief_requests/{id}")
+    @RequiresCookie(Constants.SESSION_NAME)
     ReliefRequestModel get(@Path int id);
 
     @Get("/records/relief_requests_view?filter=relief_task_id,eq,{reliefTaskID}")
+    @RequiresCookie(Constants.SESSION_NAME)
     ReliefRequestContainer getAllByID(@Path int reliefTaskID);
+
+    // cookie handler authentication
+    void setCookie(String name, String value);
+    String getCookie(String name);
 }
