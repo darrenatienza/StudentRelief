@@ -101,3 +101,12 @@ create or replace view  volunteer_view as
 	from volunteers v
 	inner join users u
 		on v.volunteer_id = u.identity_id and u.user_type = 'volunteer';
+		
+alter table students add column if not exists user_id int null;
+alter table volunteers add column if not exists user_id int null;
+
+alter table students modify column if exists user_id int not null default 0;
+alter table volunteers modify column if  exists user_id int not null default 0;
+/**set identity_id to have default 0 value*/
+alter table users modify column if  exists users.identity_id int not null default 0;
+alter table users modify column if  exists users.user_type varchar(250) not null default 'student';

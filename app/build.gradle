@@ -59,6 +59,13 @@ android {
             buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/student-relief-api/api.php\""
 
         }
+        homelan{
+            initWith debug
+            // special url for user end point
+            buildConfigField "String", 'USER_URL', "\"http://192.168.1.100/student-relief-api/user.php\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.1.100/student-relief-api/api.php\""
+
+        }
     }
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'

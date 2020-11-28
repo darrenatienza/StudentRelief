@@ -15,8 +15,7 @@ import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.model.StudentModel;
-import com.example.studentrelief.services.model.UserAddModel;
-import com.example.studentrelief.services.model.UserModel;
+import com.example.studentrelief.services.model.UserAddEditModel;
 import com.example.studentrelief.ui.adapters.StudentAdapter;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
@@ -108,7 +107,7 @@ public class StudentListFragment extends Fragment {
             studentModel.setActive(true);
             studentClient.edit(id,studentModel);
             // create new user account for student
-            UserAddModel userModel = new UserAddModel();
+            UserAddEditModel userModel = new UserAddEditModel();
             userModel.setUsername(studentModel.getSr_code());
             userModel.setFull_name(studentModel.getFull_name());
             userModel.setActive(true);

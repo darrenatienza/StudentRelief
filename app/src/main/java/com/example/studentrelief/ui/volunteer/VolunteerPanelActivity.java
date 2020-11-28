@@ -148,6 +148,6 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     }
     @OptionsItem(R.id.action_edit)
     void menuPanel(){
-        VolunteerFormActivity_.intent(this).id(id).start();
+        VolunteerFormActivity_.intent(this).volunteerID(id).start();
     }
 }

@@ -1,13 +1,13 @@
 package com.example.studentrelief.ui.volunteer;
 
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.VolunteerClient;
@@ -93,7 +93,7 @@ public class VolunteerListFragment extends Fragment {
     }
 
     private void showFormDialog(int id) {
-        VolunteerFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        VolunteerFormActivity_.intent(this).volunteerID(id).startForResult(SHOW_FORM);
     }
 
     @Background

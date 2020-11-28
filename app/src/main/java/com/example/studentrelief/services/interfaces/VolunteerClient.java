@@ -1,6 +1,7 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
+import com.example.studentrelief.services.model.VolunteerAddEditModel;
 import com.example.studentrelief.services.model.VolunteerContainer;
 import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.misc.Constants;
@@ -28,9 +29,25 @@ public interface VolunteerClient {
     Integer addNew(@Body VolunteerModel model);
 
     /** excludes auto generated column */
+    @Post("/records/volunteers?exclude=volunteer_id,create_time_stamp")
+    @RequiresCookie(Constants.SESSION_NAME)
+    Integer addNew(@Body VolunteerAddEditModel model);
+
+
+    /** excludes auto generated column */
+    @Post("/records/volunteers?exclude=volunteer_id,create_time_stamp")
+    @RequiresCookie(Constants.SESSION_NAME)
+    Integer addNew2(@Body VolunteerAddEditModel model);
+
+    /** excludes auto generated column */
     @Put("/records/volunteers/{id}?exclude=volunteer_id,create_time_stamp")
     @RequiresCookie(Constants.SESSION_NAME)
     Integer edit(@Path int id, @Body VolunteerModel model);
+
+    /** excludes auto generated column */
+    @Put("/records/volunteers/{id}?exclude=volunteer_id,create_time_stamp")
+    @RequiresCookie(Constants.SESSION_NAME)
+    Integer edit(@Path int id, @Body VolunteerAddEditModel model);
 
     @Delete("/records/volunteers/{id}")
     @RequiresCookie(Constants.SESSION_NAME)
@@ -40,11 +57,15 @@ public interface VolunteerClient {
     @RequiresCookie(Constants.SESSION_NAME)
     VolunteerModel get(@Path int id);
 
+    @Get("/records/volunteers/{id}?exclude=volunteer_id,create_time_stamp")
+    @RequiresCookie(Constants.SESSION_NAME)
+    VolunteerAddEditModel getVolunteerAddEditModel(@Path int id);
+
     @Get("/records/volunteers??filter=full_name,cs,{full_name}")
     @RequiresCookie(Constants.SESSION_NAME)
     VolunteerContainer getByFullName(@Path String full_name);
 
-    @Get("/records/volunteer_view?filter=volunteer_id,eq,{volunteer_id}")
+    @Get("/records/volunteer_view?filter=volunteer_id,eq,{volunteerID}")
     @RequiresCookie(Constants.SESSION_NAME)
     VolunteerContainer getVolunteerView(@Path int volunteerID);
 

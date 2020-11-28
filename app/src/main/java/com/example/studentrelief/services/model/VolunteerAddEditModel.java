@@ -1,16 +1,7 @@
 package com.example.studentrelief.services.model;
 
-public class VolunteerModel {
+public class VolunteerAddEditModel {
 
-    public int getVolunteer_id() {
-        return volunteer_id;
-    }
-
-    public void setVolunteer_id(int volunteer_id) {
-        this.volunteer_id = volunteer_id;
-    }
-
-    int volunteer_id;
     String  full_name;
     String  address;
     String contact_number;

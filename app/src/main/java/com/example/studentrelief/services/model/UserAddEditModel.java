@@ -1,12 +1,13 @@
 package com.example.studentrelief.services.model;
 
-public class UserAddModel {
+public class UserAddEditModel {
     String username;
     String password;
     String user_type;
     String full_name;
     int identity_id;
     boolean active;
+
 
     public String getUsername() {
         return username;

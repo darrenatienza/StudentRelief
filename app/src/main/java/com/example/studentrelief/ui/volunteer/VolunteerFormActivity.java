@@ -10,7 +10,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.interfaces.VolunteerClient;
-import com.example.studentrelief.services.model.UserAddModel;
+import com.example.studentrelief.services.model.UserAddEditModel;
+import com.example.studentrelief.services.model.UserModel;
+import com.example.studentrelief.services.model.VolunteerAddEditModel;
 import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
@@ -41,8 +43,8 @@ public class VolunteerFormActivity extends AppCompatActivity {
     @RestService
     UserClient userClient;
     @Extra
-    int id;
-    @Extra
+    int volunteerID;
+
     int userID;
     @ViewById
     Toolbar toolbar;
@@ -66,7 +68,9 @@ public class VolunteerFormActivity extends AppCompatActivity {
 
     @Pref
     MyPrefs_ myPrefs;
-    private UserAddModel userAddModel;
+    private UserAddEditModel userAddEditModel;
+    private UserModel userModel;
+    private VolunteerAddEditModel volunteerAddEditModel;
 
     private void initAuthCookies() {
         String session = myPrefs.session().get();
@@ -77,10 +81,10 @@ public class VolunteerFormActivity extends AppCompatActivity {
     @CheckedChange
     void chkPassword(CompoundButton c, boolean isChecked){
         if(isChecked){
-            tietPassword.setEnabled(true);
+            tilPassword.setEnabled(true);
 
         }else{
-            tietPassword.setEnabled(false);
+            tilPassword.setEnabled(false);
         }
         tietPassword.setText("");
     }
@@ -88,13 +92,30 @@ public class VolunteerFormActivity extends AppCompatActivity {
     @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
+            boolean isPasswordChanged = chkPassword.isChecked();
+            String password = tietPassword.getText().toString();
             String fullName = etFullName.getText().toString();
             String address = etAddress.getText().toString();
             String contactNumber = etContactNumber.getText().toString();
-
+            // use fullname as code, user name and password
+            String code = fullName.replace(" ","");
+            volunteerModel.setCode(code);
             volunteerModel.setFull_name(fullName);
             volunteerModel.setAddress(address);
             volunteerModel.setContact_number(contactNumber);
+
+            userModel.setFull_name(fullName);
+            userModel.setActive(true);
+            userModel.setUsername(code);
+            userModel.setUser_type(Constants.USER_TYPE_VOLUNTEER);
+            // check for password changed, for edit volunteer
+            if(isPasswordChanged && password != ""){
+                userModel.setPassword(code);
+            }
+            // for new volunteer
+            if(userID == 0 && volunteerID == 0){
+                userModel.setPassword(code);
+            }
             save();
 
         }catch (RestClientException ex){
@@ -136,8 +157,8 @@ public class VolunteerFormActivity extends AppCompatActivity {
     }
     @Background
     void delete() {
-        if (id > 0){
-            volunteerClient.delete(id);
+        if (volunteerID > 0){
+            volunteerClient.delete(volunteerID);
 
         }
         updateUIAfterSave();
@@ -145,16 +166,19 @@ public class VolunteerFormActivity extends AppCompatActivity {
 
     @Background
     void save(){
-        if (id > 0){
-            volunteerClient.edit(id, volunteerModel);
-        }else{
-            volunteerClient.addNew(volunteerModel);
-        }
-        if (userID > 0){
-            userClient.edit(userID,userModel);
 
+        // edit the volunteer
+        if (volunteerID > 0){
+            userClient.edit(userID,userModel);
+            volunteerClient.edit(volunteerID, volunteerModel);
         }else{
-           userClient.addNew(userModel);
+            // add new volunteer
+           userModel = userClient.register(userModel);
+           if(userModel.getUser_id() > 0){
+               volunteerModel.setUser_id(userModel.getUser_id());
+               volunteerClient.addNew(volunteerModel);
+           }
+
         }
         updateUIAfterSave();
 
@@ -172,14 +196,17 @@ public class VolunteerFormActivity extends AppCompatActivity {
         try{
             initAuthCookies();
             setSupportActionBar(toolbar);
-            if(id > 0){
+            if(volunteerID > 0){
                 getFormData();
 
             }else{
                 volunteerModel = new VolunteerModel();
+                userAddEditModel = new UserAddEditModel();
+                userModel = new UserModel();
                 tilPassword.setVisibility(View.INVISIBLE);
                 chkPassword.setVisibility(View.INVISIBLE);
             }
+            tilPassword.setEnabled(false);
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
@@ -190,12 +217,19 @@ public class VolunteerFormActivity extends AppCompatActivity {
     @Background
     void getFormData() {
         try {
-            if (id > 0){
-                volunteerModel = volunteerClient.getVolunteerView(id).getRecords().get(0);
-
+            if (volunteerID > 0){
+                volunteerModel = volunteerClient.get(volunteerID);
+                userID = volunteerModel.getUser_id();
+                if(userID != 0){
+                    userModel = userClient.get(userID);
+                }
             }
+            // updates ui
             updateUIFormData(volunteerModel);
         }catch (RestClientException e){
+            showErrorAlert(e.getMessage());
+        }
+        catch (Exception e){
             showErrorAlert(e.getMessage());
         }
 
@@ -216,7 +250,6 @@ public class VolunteerFormActivity extends AppCompatActivity {
     }
     @UiThread
     void updateUIFormData(VolunteerModel model) {
-        userID =model.getUser_id();
 
         etAddress.setText(model.getAddress());
         etContactNumber.setText(model.getContact_number());
