@@ -15,19 +15,22 @@
         android:usesCleartextTraffic="true"
         tools:replace="icon,label">
         <activity
+            android:name=".ui.user.UserFormActivity_"
+            android:label="@string/title_activity_user_form"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
             android:name=".ui.register_panel.RegisterPanelActivity"
             android:label="@string/title_activity_register_panel"
-            android:theme="@style/AppTheme.NoActionBar">
-           </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".RegisterActivity_"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.login.LoginActivity_"
-            android:label="@string/title_activity_login">
-
-        </activity>
+            android:label="@string/title_activity_login"></activity>
         <activity
             android:name=".ui.relief_request.ReliefRequestDonationListActivity_"
             android:label="@string/title_relief_request_donation_list_activity"
@@ -57,9 +60,7 @@
         <activity
             android:name=".ui.donner_donation.DonnerDonationFormActivity_"
             android:label="@string/title_activity_donner_donation_form"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.donation.DonationFormActivity_"
             android:label="@string/title_activity_donation"

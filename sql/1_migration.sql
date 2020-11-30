@@ -110,3 +110,5 @@ alter table volunteers modify column if  exists user_id int not null default 0;
 /**set identity_id to have default 0 value*/
 alter table users modify column if  exists users.identity_id int not null default 0;
 alter table users modify column if  exists users.user_type varchar(250) not null default 'student';
+alter table users drop column if  exists users.full_name;
+alter table users drop column if  exists users.identity_id;

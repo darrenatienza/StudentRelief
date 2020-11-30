@@ -21,7 +21,6 @@ import com.example.studentrelief.services.model.LoginModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.misc.Constants;
-import com.example.studentrelief.ui.misc.MyPrefs;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.student.StudentFormActivity_;
 import com.example.studentrelief.ui.student.StudentPanelActivity_;
@@ -123,10 +122,10 @@ public class LoginActivity extends AppCompatActivity {
         String userType = logUser.getUser_type();
         if(userType.contains("student")){
             clear();
-            StudentPanelActivity_.intent(this).userID(logUser.getUser_id()).id(logUser.getIdentity_id()).start();
+            StudentPanelActivity_.intent(this).userID(logUser.getUser_id()).start();
         }else if (userType.contains("volunteer")){
             clear();
-           VolunteerPanelActivity_.intent(this).id(logUser.getIdentity_id()).start();
+           VolunteerPanelActivity_.intent(this).id(logUser.getUser_id()).start();
         }else if (userType.contains("admin")){
             clear();
             MainActivity_.intent(this).start();

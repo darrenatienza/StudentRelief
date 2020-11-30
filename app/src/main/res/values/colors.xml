@@ -6,4 +6,5 @@
     <color name="colorAccent">#F0F0F0</color>
     <color name="error">#E91E63</color>
     <color name="dark_gray">#616161</color>
+    <color name="required">#E53935</color>
 </resources>

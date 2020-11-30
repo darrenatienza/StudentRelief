@@ -1,18 +1,14 @@
 package com.example.studentrelief.services.model;
 
-import com.fasterxml.jackson.annotation.JacksonAnnotation;
-
-import org.androidannotations.rest.spring.annotations.Rest;
-
 public class UserModel {
     int user_id;
     String username;
     String password;
     String user_type;
-    String full_name;
-    int identity_id;
     boolean active;
     String create_time_stamp;
+
+
 
     public String getCreate_time_stamp() {
         return create_time_stamp;
@@ -30,21 +26,7 @@ public class UserModel {
         this.active = active;
     }
 
-    public int getIdentity_id() {
-        return identity_id;
-    }
 
-    public void setIdentity_id(int identity_id) {
-        this.identity_id = identity_id;
-    }
-
-    public String getFull_name() {
-        return full_name;
-    }
-
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
-    }
 
     public int getUser_id() {
         return user_id;

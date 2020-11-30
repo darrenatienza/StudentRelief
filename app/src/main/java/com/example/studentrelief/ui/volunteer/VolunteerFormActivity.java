@@ -1,7 +1,7 @@
 package com.example.studentrelief.ui.volunteer;
 
-import android.view.View;
-import android.widget.CompoundButton;
+import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,19 +14,18 @@ import com.example.studentrelief.services.model.UserAddEditModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.VolunteerAddEditModel;
 import com.example.studentrelief.services.model.VolunteerModel;
+import com.example.studentrelief.services.model.user.RegisterUserModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
-import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -34,7 +33,7 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-@OptionsMenu(R.menu.menu_form)
+@OptionsMenu(R.menu.menu_with_user_form)
 @EActivity(R.layout.activity_volunteer_form)
 public class VolunteerFormActivity extends AppCompatActivity {
 
@@ -57,12 +56,8 @@ public class VolunteerFormActivity extends AppCompatActivity {
     TextInputEditText etContactNumber;
     @ViewById
     TextInputEditText etAddress;
-    @ViewById
-    TextInputEditText tietPassword;
-    @ViewById
-    MaterialCheckBox chkPassword;
-    @ViewById
-    TextInputLayout tilPassword;
+    @ViewById(R.id.chk_active)
+    CheckBox active;
 
     private VolunteerModel volunteerModel;
 
@@ -71,6 +66,8 @@ public class VolunteerFormActivity extends AppCompatActivity {
     private UserAddEditModel userAddEditModel;
     private UserModel userModel;
     private VolunteerAddEditModel volunteerAddEditModel;
+    private boolean isPasswordChanged;
+    private RegisterUserModel registerUserModel;
 
     private void initAuthCookies() {
         String session = myPrefs.session().get();
@@ -78,48 +75,32 @@ public class VolunteerFormActivity extends AppCompatActivity {
         volunteerClient.setCookie(name,session);
     }
 
-    @CheckedChange
-    void chkPassword(CompoundButton c, boolean isChecked){
-        if(isChecked){
-            tilPassword.setEnabled(true);
 
-        }else{
-            tilPassword.setEnabled(false);
-        }
-        tietPassword.setText("");
-    }
 
     @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
-            boolean isPasswordChanged = chkPassword.isChecked();
-            String password = tietPassword.getText().toString();
+
             String fullName = etFullName.getText().toString();
             String address = etAddress.getText().toString();
             String contactNumber = etContactNumber.getText().toString();
             // use fullname as code, user name and password
             String code = fullName.replace(" ","");
+            boolean isActive = active.isChecked();
+
             volunteerModel.setCode(code);
             volunteerModel.setFull_name(fullName);
             volunteerModel.setAddress(address);
             volunteerModel.setContact_number(contactNumber);
 
-            userModel.setFull_name(fullName);
-            userModel.setActive(true);
-            userModel.setUsername(code);
-            userModel.setUser_type(Constants.USER_TYPE_VOLUNTEER);
-            // check for password changed, for edit volunteer
-            if(isPasswordChanged && password != ""){
+            if(volunteerID == 0){
+                userModel.setUsername(code);
                 userModel.setPassword(code);
-            }
-            // for new volunteer
-            if(userID == 0 && volunteerID == 0){
-                userModel.setPassword(code);
+                userModel.setActive(isActive);
+                userModel.setUser_type(Constants.USER_TYPE_VOLUNTEER);
             }
             save();
 
-        }catch (RestClientException ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
         }catch (Exception ex){
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
         }
@@ -167,20 +148,25 @@ public class VolunteerFormActivity extends AppCompatActivity {
     @Background
     void save(){
 
-        // edit the volunteer
-        if (volunteerID > 0){
-            userClient.edit(userID,userModel);
-            volunteerClient.edit(volunteerID, volunteerModel);
-        }else{
-            // add new volunteer
-           userModel = userClient.register(userModel);
-           if(userModel.getUser_id() > 0){
-               volunteerModel.setUser_id(userModel.getUser_id());
-               volunteerClient.addNew(volunteerModel);
-           }
-
+        try {
+            // edit the volunteer
+            if (volunteerID > 0){
+                volunteerClient.edit(volunteerID, volunteerModel);
+            }else{
+                // add new user and volunteer
+                userID = userClient.add(userModel);
+                if(userID > 0){
+                    volunteerModel.setUser_id(userID);
+                    volunteerClient.addNew(volunteerModel);
+                }
+            }
+            updateUIAfterSave();
+        }catch (RestClientException e){
+            showErrorAlert(e.getMessage());
+        }catch (Exception e){
+            showErrorAlert(e.getMessage());
         }
-        updateUIAfterSave();
+
 
     }
     @UiThread
@@ -203,10 +189,8 @@ public class VolunteerFormActivity extends AppCompatActivity {
                 volunteerModel = new VolunteerModel();
                 userAddEditModel = new UserAddEditModel();
                 userModel = new UserModel();
-                tilPassword.setVisibility(View.INVISIBLE);
-                chkPassword.setVisibility(View.INVISIBLE);
+
             }
-            tilPassword.setEnabled(false);
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
@@ -255,5 +239,17 @@ public class VolunteerFormActivity extends AppCompatActivity {
         etContactNumber.setText(model.getContact_number());
         etFullName.setText(model.getFull_name());
 
+    }
+    @OptionsMenuItem(R.id.action_open_user_account)
+    void openUserAccountMenu(MenuItem menuItem){
+        if(volunteerID == 0){
+          menuItem.setVisible(false);
+        }
+    }
+    @OptionsMenuItem(R.id.action_delete)
+    void openDeleteMenu(MenuItem menuItem){
+        if(volunteerID == 0){
+            menuItem.setVisible(false);
+        }
     }
 }

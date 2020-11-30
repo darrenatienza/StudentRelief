@@ -4,6 +4,7 @@ import com.example.studentrelief.BuildConfig;
 import com.example.studentrelief.services.model.UserAddEditModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.containers.DonationContainer;
+import com.example.studentrelief.services.model.user.RegisterUserModel;
 import com.example.studentrelief.ui.misc.Constants;
 
 import org.androidannotations.rest.spring.annotations.Body;
@@ -30,6 +31,12 @@ public interface UserClient {
     @Post("/records/users?exclude=user_id,create_time_stamp")
     @RequiresCookie(Constants.SESSION_NAME)
     Integer addNew(@Body UserAddEditModel model);
+
+    /** excludes auto generated column */
+    @Post("/records/users?exclude=user_id,create_time_stamp")
+    @RequiresCookie(Constants.SESSION_NAME)
+    Integer add(@Body UserModel model);
+
 
     /** excludes auto generated column */
     @Put("/records/users/{id}?exclude=user_id,create_time_stamp")
@@ -63,5 +70,5 @@ public interface UserClient {
 
     @Post("/register")
     @RequiresCookie(Constants.SESSION_NAME)
-    UserModel register(@Body UserModel userModel);
+    UserModel register(@Body RegisterUserModel model);
 }
