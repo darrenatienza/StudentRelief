@@ -1,8 +1,10 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
+import com.example.studentrelief.services.model.JsonArrayHolder;
 import com.example.studentrelief.services.model.StudentContainer;
 import com.example.studentrelief.services.model.StudentModel;
+import com.example.studentrelief.services.model.StudentListModel;
 import com.example.studentrelief.ui.misc.Constants;
 
 import org.androidannotations.rest.spring.annotations.Body;
@@ -18,9 +20,12 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 @Rest(rootUrl = BuildConfig.BASE_URL,converters = { MappingJackson2HttpMessageConverter.class })
 public interface StudentClient  {
 
-    @Get("/records/students?filter=full_name,cs,{criteria}")
+
+
+    @Get("/records/students_view?filter=full_name,cs,{criteria}")
     @RequiresCookie(Constants.SESSION_NAME)
-    StudentContainer getAll(@Path String criteria);
+    JsonArrayHolder<StudentListModel> getAll(@Path String criteria);
+
 
     @Post("/records/students?exclude=student_id,create_time_stamp")
     @RequiresCookie(Constants.SESSION_NAME)

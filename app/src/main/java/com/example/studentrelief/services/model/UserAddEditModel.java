@@ -8,7 +8,6 @@ public class UserAddEditModel {
     int identity_id;
     boolean active;
 
-
     public String getUsername() {
         return username;
     }

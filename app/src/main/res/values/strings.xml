@@ -88,9 +88,11 @@
     <string name="action_logout">Log out</string>
     <string name="prompt_old_password">Old Password</string>
     <string name="prompt_new_password">New Password</string>
-    <string name="text_please_fill_all_fields">Please fill all fields</string>
+    <string name="label_please_fill_all_fields">Please fill all fields</string>
     <string name="text_all_fields_required">All fields are required</string>
     <string name="action_open_user_account">Open User Account</string>
     <string name="title_activity_user_form">User Form</string>
     <string name="menu_user_main">User</string>
+    <string name="label_active">Active</string>
+    <string name="prompt_invalid_fields">Some fields have invalid values!</string>
 </resources>

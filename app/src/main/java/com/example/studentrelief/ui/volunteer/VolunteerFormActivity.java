@@ -2,6 +2,7 @@ package com.example.studentrelief.ui.volunteer;
 
 import android.view.MenuItem;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -57,7 +59,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
     @ViewById
     TextInputEditText etAddress;
     @ViewById(R.id.chk_active)
-    CheckBox active;
+    CheckBox chkActive;
 
     private VolunteerModel volunteerModel;
 
@@ -68,6 +70,9 @@ public class VolunteerFormActivity extends AppCompatActivity {
     private VolunteerAddEditModel volunteerAddEditModel;
     private boolean isPasswordChanged;
     private RegisterUserModel registerUserModel;
+    private boolean validFullName;
+    private boolean validAddress;
+    private boolean validContactNumber;
 
     private void initAuthCookies() {
         String session = myPrefs.session().get();
@@ -76,7 +81,24 @@ public class VolunteerFormActivity extends AppCompatActivity {
     }
 
 
-
+    @AfterTextChange(R.id.etFullName)
+    void fullNameAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validFullName = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etAddress)
+    void addressAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validAddress = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etContactNumber)
+    void contactNumberAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validContactNumber = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
     @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
@@ -86,7 +108,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
             String contactNumber = etContactNumber.getText().toString();
             // use fullname as code, user name and password
             String code = fullName.replace(" ","");
-            boolean isActive = active.isChecked();
+            boolean isActive = chkActive.isChecked();
 
             volunteerModel.setCode(code);
             volunteerModel.setFull_name(fullName);
@@ -238,6 +260,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
         etAddress.setText(model.getAddress());
         etContactNumber.setText(model.getContact_number());
         etFullName.setText(model.getFull_name());
+        /**Todo: Create model for volunteer view (active status included)*/
 
     }
     @OptionsMenuItem(R.id.action_open_user_account)

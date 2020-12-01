@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.example.studentrelief.services.model.DonnerModel;
+import com.example.studentrelief.services.model.StudentListModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.ui.itemviews.DonnerItemView;
 import com.example.studentrelief.ui.itemviews.DonnerItemView_;
@@ -18,12 +19,12 @@ import org.androidannotations.annotations.RootContext;
 import java.util.List;
 
 @EBean
-public class StudentAdapter extends RecyclerViewAdapterBase<StudentModel, StudentItemView> {
+public class StudentAdapter extends RecyclerViewAdapterBase<StudentListModel, StudentItemView> {
 
     @RootContext
     Context context;
 
-    public void setList(List<StudentModel> list) {
+    public void setList(List<StudentListModel> list) {
         items = list;
     }
 
@@ -36,7 +37,7 @@ public class StudentAdapter extends RecyclerViewAdapterBase<StudentModel, Studen
     @Override
     public void onBindViewHolder(ViewWrapper<StudentItemView> viewHolder, int position) {
         StudentItemView view = viewHolder.getView();
-        StudentModel person = items.get(position);
+        StudentListModel person = items.get(position);
 
         view.bind(person);
     }

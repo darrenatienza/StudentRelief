@@ -13,7 +13,9 @@ import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.model.AddEditDonnerModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
+import com.google.android.material.textfield.TextInputEditText;
 
+import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -47,7 +49,7 @@ public class DonnerFormActivity extends AppCompatActivity {
 
 
     @ViewById
-    TextView etFullName;
+    TextInputEditText etFullName;
 
     @ViewById
     EditText etContactNumber;
@@ -56,6 +58,9 @@ public class DonnerFormActivity extends AppCompatActivity {
     @Pref
     MyPrefs_ myPrefs;
     private AddEditDonnerModel model;
+    private boolean validFullName;
+    private boolean validContactNumber;
+    private boolean validAddress;
 
     private void initAuthCookies() {
         String session = myPrefs.session().get();
@@ -80,26 +85,51 @@ public class DonnerFormActivity extends AppCompatActivity {
 
 
     }
+    @AfterTextChange(R.id.etFullName)
+    void fullNameAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validFullName = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etAddress)
+    void addressAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validAddress = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etContactNumber)
+    void contactNumberAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validContactNumber = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+
     @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
-            String fullName = etFullName.getText().toString();
-            String address = etAddress.getText().toString();
-            String contactNumber = etContactNumber.getText().toString();
 
+            if(validAddress && validContactNumber && validFullName){
+                String fullName = etFullName.getText().toString();
+                String address = etAddress.getText().toString();
+                String contactNumber = etContactNumber.getText().toString();
 
-            model.setFull_name(fullName);
-            model.setAddress(address);
-            model.setContact_number(contactNumber);
-            save(model);
-
-        }catch (RestClientException ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
+                model.setFull_name(fullName);
+                model.setAddress(address);
+                model.setContact_number(contactNumber);
+                save(model);
+            }else{
+                showError(getResources().getString(R.string.prompt_invalid_fields));
+            }
         }catch (Exception ex){
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
         }
 
     }
+
+    private void showError(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+    }
+
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {

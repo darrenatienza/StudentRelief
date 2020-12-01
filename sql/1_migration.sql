@@ -88,22 +88,15 @@ alter table donations modify column donations.quantity int not null default 0;
 alter table volunteers add column if not exists code varchar(50) not null default '';
 
 
-/** view for volunteer_view*/
-create or replace view  volunteer_view as
-	select 
-		v.volunteer_id,
-		v.code,
-		v.full_name,
-		v.address,
-		v.contact_number,
-		u.user_id,
-		u.active
-	from volunteers v
-	inner join users u
-		on v.volunteer_id = u.identity_id and u.user_type = 'volunteer';
 		
 alter table students add column if not exists user_id int null;
+UPDATE relief.students
+set user_id=0;
+
 alter table volunteers add column if not exists user_id int null;
+
+UPDATE relief.volunteers
+set user_id=0 where user_id = 'NULL';
 
 alter table students modify column if exists user_id int not null default 0;
 alter table volunteers modify column if  exists user_id int not null default 0;
@@ -112,3 +105,20 @@ alter table users modify column if  exists users.identity_id int not null defaul
 alter table users modify column if  exists users.user_type varchar(250) not null default 'student';
 alter table users drop column if  exists users.full_name;
 alter table users drop column if  exists users.identity_id;
+alter table students drop column if exists  students.active;
+
+
+/** view for student list with user active status*/
+create or replace view  students_view as
+	select 
+		s.student_id,
+		s.sr_code,
+		s.full_name,
+		s.address,
+		s.course,
+		s.contact_number,
+		s.campus,
+		u.active
+	from students s
+	inner join users u
+		on s.user_id = u.user_id;

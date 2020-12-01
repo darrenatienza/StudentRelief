@@ -4,6 +4,7 @@ import com.example.studentrelief.BuildConfig;
 import com.example.studentrelief.services.model.UserAddEditModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.containers.DonationContainer;
+import com.example.studentrelief.services.model.user.ActivateUserModel;
 import com.example.studentrelief.services.model.user.RegisterUserModel;
 import com.example.studentrelief.ui.misc.Constants;
 
@@ -71,4 +72,8 @@ public interface UserClient {
     @Post("/register")
     @RequiresCookie(Constants.SESSION_NAME)
     UserModel register(@Body RegisterUserModel model);
+
+    @Put("/records/users/{id}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    Integer activate(@Path int id, @Body ActivateUserModel model);
 }

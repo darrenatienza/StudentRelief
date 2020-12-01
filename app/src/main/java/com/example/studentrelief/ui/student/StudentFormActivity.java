@@ -1,10 +1,12 @@
 package com.example.studentrelief.ui.student;
 
+import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.CheckedChange;
@@ -29,6 +32,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
+import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -36,7 +40,7 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-@OptionsMenu(R.menu.menu_form)
+@OptionsMenu(R.menu.menu_with_user_form)
 @EActivity(R.layout.activity_student_form)
 public class StudentFormActivity extends AppCompatActivity {
 
@@ -53,33 +57,38 @@ public class StudentFormActivity extends AppCompatActivity {
 
 
     @ViewById
-    EditText etSrCode;
+    TextInputEditText etSrCode;
 
     @ViewById
-    EditText etFullName;
+    TextInputEditText etFullName;
 
     @ViewById
-    EditText etAddress;
+    TextInputEditText etAddress;
 
     @ViewById
-    EditText etContactNumber;
+    TextInputEditText etContactNumber;
 
     @ViewById
-    EditText etCampus;
+    TextInputEditText etCampus;
 
     @ViewById
-    EditText etCourse;
-    @ViewById
-    MaterialCheckBox chkPassword;
-    @ViewById
-    TextInputEditText etPassword;
+    TextInputEditText etCourse;
 
-    @ViewById
-    TextInputLayout tiPassword;
     private StudentModel studentModel;
     private UserModel userModel;
     @Pref
     MyPrefs_ myPrefs;
+
+
+
+    @AfterTextChange(R.id.etSrCode)
+    void srCodeAfterTextChange(TextView et){
+       et.setError(et.getText() == "" ? "Required" : null);
+    }
+
+
+
+
     @OptionsItem(R.id.action_save)
     void btnSave(){
 
@@ -96,30 +105,12 @@ public class StudentFormActivity extends AppCompatActivity {
             studentModel.setContact_number(contactNumber);
             studentModel.setCampus(campus);
             studentModel.setCourse(course);
-
-            boolean isCheckedPassword = chkPassword.isChecked();
-            String newPassword = etPassword.getText().toString();
-
-            if(isCheckedPassword && newPassword != ""){
-                userModel.setPassword(newPassword);
-
-            }
             save();
 
 
 
     }
 
-    @CheckedChange
-    void chkPassword(CompoundButton c, boolean isChecked){
-        if(isChecked){
-            tiPassword.setEnabled(true);
-
-        }else{
-            tiPassword.setEnabled(false);
-        }
-        etPassword.setText("");
-    }
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
@@ -204,8 +195,6 @@ public class StudentFormActivity extends AppCompatActivity {
                 studentModel = new StudentModel();
                 // do not show the password fields for new student
                 // registration
-                chkPassword.setVisibility(View.INVISIBLE);
-                tiPassword.setVisibility(View.INVISIBLE);
             }
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();

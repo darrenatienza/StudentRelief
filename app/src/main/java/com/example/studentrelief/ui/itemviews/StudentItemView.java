@@ -1,10 +1,12 @@
 package com.example.studentrelief.ui.itemviews;
 
 import android.content.Context;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.model.StudentListModel;
 import com.example.studentrelief.services.model.StudentModel;
 
 import org.androidannotations.annotations.EViewGroup;
@@ -28,12 +30,13 @@ public class StudentItemView extends RelativeLayout {
 
     @ViewById
     TextView tvSrCode;
-
+    @ViewById(R.id.img_alert)
+    ImageView alert;
     public StudentItemView(Context context) {
         super(context);
     }
 
-    public void bind(StudentModel model) {
+    public void bind(StudentListModel model) {
         idView.setText(String.valueOf(model.getStudent_id()));
         tvSrCode.setText(model.getSr_code());
         tvStudentFullName.setText(model.getFull_name());
@@ -41,5 +44,6 @@ public class StudentItemView extends RelativeLayout {
         addressView.setText(model.getAddress());
         contactNumberView.setText(model.getContact_number());
         tvStudentCampus.setText(model.getCampus());
+        alert.setVisibility(model.isActive() ? INVISIBLE : VISIBLE);
     }
 }

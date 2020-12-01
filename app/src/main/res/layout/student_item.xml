@@ -26,24 +26,28 @@
 
        <TextView
            android:id="@+id/tvStudentFullName"
-           android:layout_width="match_parent"
+           android:layout_width="0dp"
            android:layout_height="wrap_content"
-           android:text="Full Name"
 
-           app:layout_constraintEnd_toEndOf="parent"
+           android:layout_marginEnd="8dp"
+           android:layout_marginRight="8dp"
+           android:text="Full Name"
+           app:layout_constraintEnd_toStartOf="@+id/imageView2"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
        <TextView
            android:id="@+id/tvSrCode"
-           android:layout_width="match_parent"
+           android:layout_width="0dp"
            android:layout_height="wrap_content"
            android:layout_below="@+id/tvStudentFullName"
            android:layout_marginTop="8dp"
 
 
+           android:layout_marginEnd="8dp"
+           android:layout_marginRight="8dp"
            android:text="Sr Code"
-           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintEnd_toStartOf="@+id/imageView2"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toBottomOf="@+id/tvStudentFullName" />
 
@@ -97,6 +101,17 @@
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toBottomOf="@+id/tvCourse" />
+
+       <ImageView
+           android:id="@+id/img_alert"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="8dp"
+           android:layout_marginEnd="8dp"
+           android:layout_marginRight="8dp"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:srcCompat="@drawable/ic_baseline_warning_24" />
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 

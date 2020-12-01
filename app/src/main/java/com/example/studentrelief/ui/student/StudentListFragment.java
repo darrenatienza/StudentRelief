@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
+import com.example.studentrelief.services.model.StudentListModel;
 import com.example.studentrelief.services.model.StudentModel;
-import com.example.studentrelief.services.model.UserAddEditModel;
+import com.example.studentrelief.services.model.UserModel;
+import com.example.studentrelief.services.model.user.ActivateUserModel;
 import com.example.studentrelief.ui.adapters.StudentAdapter;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
@@ -58,6 +60,9 @@ public class StudentListFragment extends Fragment {
     StudentAdapter adapter;
     @Pref
     MyPrefs_ myPrefs;
+    private int selectectStudentID;
+    private int userID;
+
     private void initAuthCookies() {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
@@ -79,15 +84,16 @@ public class StudentListFragment extends Fragment {
         initItemClick();
         initSearch();
     }
+    @UiThread
+    void showActivateDialog() {
 
-    private void showActivateDialog(final int id) {
         new MaterialAlertDialogBuilder(getActivity())
                 .setTitle(getResources().getString(R.string.dialog_student_activate_title))
                 .setMessage(getResources().getString(R.string.dialog_student_activate_content_text))
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        activateStudentAsync(id);
+                        activateStudentAsync();
                         dialog.dismiss();
                     }
                 })
@@ -100,29 +106,47 @@ public class StudentListFragment extends Fragment {
         .show();
     }
     @Background
-    void activateStudentAsync(int id) {
+    void activateStudentAsync() {
         try {
-            // set student as active
-            StudentModel studentModel = studentClient.get(id);
-            studentModel.setActive(true);
-            studentClient.edit(id,studentModel);
             // create new user account for student
-            UserAddEditModel userModel = new UserAddEditModel();
-            userModel.setUsername(studentModel.getSr_code());
-            userModel.setFull_name(studentModel.getFull_name());
-            userModel.setActive(true);
-            userModel.setIdentity_id(id);
-            userModel.setPassword(studentModel.getSr_code());
-            userModel.setUser_type(Constants.USER_TYPE_STUDENT);
-            userClient.addNew(userModel);
+            ActivateUserModel model = new ActivateUserModel();
+            model.setActive(true);
+            userClient.activate(userID,model);
             updateUIAfterActivate();
         }catch (RestClientException ex){
             showError(ex.getMessage());
+        }catch (Exception ex){
+            showError(ex.getMessage());
         }
     }
+    @Background
+    void checkForUserActiveStatus(){
+        try{
+            StudentModel studentModel = studentClient.get(selectectStudentID);
+            userID = studentModel.getUser_id();
+            UserModel userModel = userClient.get(userID);
+            boolean active = userModel.isActive();
+            if(!active){
+                showActivateDialog();
+            }else{
+                showAlreadyActivatedDialog();
+            }
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }
+        catch (Exception ex){
+            showError(ex.getMessage());
+        }
+
+    }
+    @UiThread
+    void showAlreadyActivatedDialog() {
+        Toast.makeText(getActivity(),"Student user account is already activated!",Toast.LENGTH_SHORT).show();
+    }
+
     @UiThread
     void updateUIAfterActivate() {
-        Log.i("Activated","Record activated");
+       loadList();
     }
 
     @UiThread
@@ -142,9 +166,11 @@ public class StudentListFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 // do it
+                // set student as active
+
                 TextView t = v.findViewById(R.id.idView);
-                int id = Integer.parseInt(t.getText().toString());
-                showActivateDialog(id);
+                selectectStudentID = Integer.parseInt(t.getText().toString());
+               checkForUserActiveStatus();
             }
         });
     }
@@ -155,14 +181,14 @@ public class StudentListFragment extends Fragment {
     void loadList(){
         try {
             String criteria = tvSearch.getText().toString();
-            List<StudentModel> models = studentClient.getAll(criteria).getRecords();
+            List<StudentListModel> models = studentClient.getAll(criteria).getRecords();
             updateList(models);
         }catch (Exception e){
             Log.e("Error",e.getMessage());
         }
     }
     @UiThread
-    void updateList(List<StudentModel> models) {
+    void updateList(List<StudentListModel> models) {
         adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
