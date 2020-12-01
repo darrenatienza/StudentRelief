@@ -1,7 +1,9 @@
 package com.example.studentrelief.ui.volunteer;
 
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.CheckBox;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,8 @@ import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.services.model.user.RegisterUserModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
+import com.example.studentrelief.ui.user.UserFormActivity_;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterTextChange;
@@ -58,8 +62,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
     TextInputEditText etContactNumber;
     @ViewById
     TextInputEditText etAddress;
-    @ViewById(R.id.chk_active)
-    CheckBox chkActive;
+
 
     private VolunteerModel volunteerModel;
 
@@ -99,35 +102,50 @@ public class VolunteerFormActivity extends AppCompatActivity {
         validContactNumber = !value.isEmpty() ? true : false;
         et.setError(value.isEmpty() ? "Required" : null);
     }
+    boolean validForm(){
+        return  validFullName && validContactNumber && validAddress;
+    }
     @OptionsItem(R.id.action_save)
     void btnSave(){
         try {
+            if(validForm()){
+                String fullName = etFullName.getText().toString();
+                String address = etAddress.getText().toString();
+                String contactNumber = etContactNumber.getText().toString();
+                // use fullname as code, user name and password
+                String code = fullName.replace(" ","");
 
-            String fullName = etFullName.getText().toString();
-            String address = etAddress.getText().toString();
-            String contactNumber = etContactNumber.getText().toString();
-            // use fullname as code, user name and password
-            String code = fullName.replace(" ","");
-            boolean isActive = chkActive.isChecked();
+                volunteerModel.setCode(code);
+                volunteerModel.setFull_name(fullName);
+                volunteerModel.setAddress(address);
+                volunteerModel.setContact_number(contactNumber);
 
-            volunteerModel.setCode(code);
-            volunteerModel.setFull_name(fullName);
-            volunteerModel.setAddress(address);
-            volunteerModel.setContact_number(contactNumber);
-
-            if(volunteerID == 0){
-                userModel.setUsername(code);
-                userModel.setPassword(code);
-                userModel.setActive(isActive);
-                userModel.setUser_type(Constants.USER_TYPE_VOLUNTEER);
+                if(volunteerID == 0){
+                    userModel.setUsername(code);
+                    userModel.setPassword(code);
+                    userModel.setActive(true);
+                    userModel.setUser_type(Constants.USER_TYPE_VOLUNTEER);
+                }
+                save();
+            }else{
+                showErrorAlert(getString(R.string.prompt_invalid_fields));
             }
-            save();
+
 
         }catch (Exception ex){
             Toast.makeText(this,ex.getMessage(),Toast.LENGTH_LONG).show();
         }
 
     }
+    @OptionsItem(R.id.action_open_user_account)
+    void menuUserForm(){
+        if(userID > 0){
+            UserFormActivity_.intent(this).userID(userID).start();
+        }else{
+            showErrorAlert("No user account for this record!");
+        }
+    }
+
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
@@ -200,7 +218,26 @@ public class VolunteerFormActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews(){
+        final View customLayout = getLayoutInflater().inflate(R.layout.dialog_password, null);
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
+                .setView(customLayout)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        TextInputEditText editText = customLayout.findViewById(R.id.passworView);
+                        Log.d("Password",editText.getText().toString());
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                        dialog.dismiss();
+                    }
+                })
+                .show();
         try{
             initAuthCookies();
             setSupportActionBar(toolbar);
@@ -242,17 +279,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
     }
     @UiThread
     void showErrorAlert(String message) {
-        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Oops!")
-                .setContentText("An error occured! \n" + message)
-                .setConfirmText("OK")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-                .show();
+       Toast.makeText(this,message,Toast.LENGTH_LONG).show();
     }
     @UiThread
     void updateUIFormData(VolunteerModel model) {

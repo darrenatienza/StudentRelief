@@ -5,11 +5,20 @@
         <item name="colorPrimary">@color/design_default_color_primary</item>
         <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
         <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
         <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+        <item name="checkboxStyle">@style/Widget.App.Checkbox</item>
     </style>
 
+
+    <style name="Widget.App.Checkbox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CheckBox</item>
+    </style>
+    <style name="ThemeOverlay.App.CheckBox" parent="">
+        <item name="colorOnSurface">@color/design_default_color_primary</item>
+        <item name="colorSecondary">@color/design_default_color_primary_dark</item>
+    </style>
     <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
         <item name="shapeAppearanceOverlay">
