@@ -1,6 +1,8 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
+import com.example.studentrelief.services.model.DonnerContainer;
+import com.example.studentrelief.services.model.JsonArrayHolder;
 import com.example.studentrelief.services.model.VolunteerAddEditModel;
 import com.example.studentrelief.services.model.VolunteerContainer;
 import com.example.studentrelief.services.model.VolunteerModel;
@@ -71,4 +73,8 @@ public interface VolunteerClient {
 
     void setCookie(String name, String value);
     String getCookie(String name);
+
+    @Get("/records/volunteer_list_view?filter=full_name,cs,{criteria}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    JsonArrayHolder<VolunteerModel> getAll2(@Path String criteria);
 }

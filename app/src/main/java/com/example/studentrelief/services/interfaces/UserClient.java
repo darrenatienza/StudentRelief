@@ -54,7 +54,7 @@ public interface UserClient {
     @RequiresCookie(Constants.SESSION_NAME)
     Integer delete(@Path int id);
 
-    @Get("/records/users/{id}")
+    @Get("/records/users/{id}?exclude=password")
     @RequiresCookie(Constants.SESSION_NAME)
     UserModel get(@Path int id);
 
@@ -76,4 +76,9 @@ public interface UserClient {
     @Put("/records/users/{id}")
     @RequiresCookie(Constants.SESSION_NAME)
     Integer activate(@Path int id, @Body ActivateUserModel model);
+
+    /** excludes auto generated column */
+    @Put("/records/users/{id}?exclude=user_id,create_time_stamp,password")
+    @RequiresCookie(Constants.SESSION_NAME)
+    Integer activate(@Path int id, @Body UserModel model);
 }

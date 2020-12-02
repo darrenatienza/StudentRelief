@@ -17,6 +17,15 @@ public class VolunteerModel {
     String create_time_stamp;
     String code;
     int user_id;
+    boolean active;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public int getUser_id() {
         return user_id;

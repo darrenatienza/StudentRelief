@@ -26,24 +26,24 @@
 
        <TextView
            android:id="@+id/fullNameView"
-           android:layout_width="match_parent"
+           android:layout_width="0dp"
            android:layout_height="wrap_content"
-           android:text="Full Name"
 
-           app:layout_constraintEnd_toEndOf="parent"
+           android:text="Full Name"
+           app:layout_constraintEnd_toStartOf="@+id/img_alert"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
        <TextView
            android:id="@+id/addressView"
-           android:layout_width="match_parent"
+           android:layout_width="0dp"
            android:layout_height="wrap_content"
            android:layout_below="@+id/fullNameView"
            android:layout_marginTop="8dp"
 
            android:text="Address"
 
-           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintEnd_toStartOf="@+id/img_alert"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toBottomOf="@+id/fullNameView" />
 
@@ -58,6 +58,16 @@
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toBottomOf="@+id/addressView" />
+       <ImageView
+           android:id="@+id/img_alert"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="8dp"
+           android:layout_marginEnd="8dp"
+           android:layout_marginRight="8dp"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:srcCompat="@drawable/ic_baseline_warning_24" />
    </androidx.constraintlayout.widget.ConstraintLayout>
 
 

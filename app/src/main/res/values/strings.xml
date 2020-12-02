@@ -84,6 +84,7 @@
     <string name="field_donner">Donner</string>
     <string name="field_donation">Donation</string>
     <string name="dialog_student_activate_title">Activate Selected Student</string>
+    <string name="dialog_student_deactivate_title">De activate Selected Student</string>
     <string name="dialog_student_activate_content_text">Do you want to activate this student?</string>
     <string name="action_logout">Log out</string>
     <string name="prompt_old_password">Old Password</string>
@@ -95,4 +96,11 @@
     <string name="menu_user_main">User</string>
     <string name="label_active">Active</string>
     <string name="prompt_invalid_fields">Some fields have invalid values!</string>
+    <string name="dialog_student_deactivate_content_text">Do you want to de activate this student?</string>
+    <string name="definition_activate_status">Activate User Account</string>
+    <string name="nofitication_success_user_account_activated">User Account has been activated!</string>
+    <string name="notification_success_user_account_deactivated">User Account has been de activated!</string>
+    <string name="dialog_title_password_reset">Reset Password</string>
+    <string name="dialog_message_password_reset">Do you want to reset password for this record?</string>
+    <string name="notification_success_password_reset">Password has been reset successfully!</string>
 </resources>

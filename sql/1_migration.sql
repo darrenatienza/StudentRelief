@@ -122,3 +122,18 @@ create or replace view  students_view as
 	from students s
 	inner join users u
 		on s.user_id = u.user_id;
+		
+/** view for volunteer list with user active status */
+create or replace view volunteer_list_view as
+	select
+	v.volunteer_id,
+	v.address,
+	v.code,
+	v.contact_number,
+	v.full_name,
+	u.active,
+	u.user_id
+	from volunteers v
+	inner join users u
+	on v.user_id = u.user_id
+	;

@@ -1,6 +1,7 @@
 package com.example.studentrelief.ui.itemviews;
 
 import android.content.Context;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ public class VolunteerItemView extends RelativeLayout {
     @ViewById
     TextView contactNumberView;
 
+    @ViewById(R.id.img_alert)
+    ImageView alertImage;
 
 
     public VolunteerItemView(Context context) {
@@ -35,7 +38,6 @@ public class VolunteerItemView extends RelativeLayout {
             fullNameView.setText(model.getFull_name());
             addressView.setText(model.getAddress());
             contactNumberView.setText(model.getContact_number());
-
-
+            alertImage.setVisibility(model.isActive() ?INVISIBLE: VISIBLE);
     }
 }

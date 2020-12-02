@@ -51,6 +51,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
     int volunteerID;
 
     int userID;
+
     @ViewById
     Toolbar toolbar;
 
@@ -140,7 +141,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
     @OptionsItem(R.id.action_open_user_account)
     void menuUserForm(){
         if(userID > 0){
-            UserFormActivity_.intent(this).userID(userID).start();
+            //UserFormActivity_.intent(this).userID(userID).start();
         }else{
             showErrorAlert("No user account for this record!");
         }
@@ -218,26 +219,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews(){
-        final View customLayout = getLayoutInflater().inflate(R.layout.dialog_password, null);
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
-                .setView(customLayout)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        TextInputEditText editText = customLayout.findViewById(R.id.passworView);
-                        Log.d("Password",editText.getText().toString());
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                        dialog.dismiss();
-                    }
-                })
-                .show();
         try{
             initAuthCookies();
             setSupportActionBar(toolbar);
