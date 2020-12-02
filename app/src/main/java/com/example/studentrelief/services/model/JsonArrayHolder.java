@@ -10,6 +10,10 @@ public class JsonArrayHolder<T> {
         return records;
     }
 
+    public T getSingleRecord(){
+        return records.get(0);
+    }
+
     public void setRecords(List<T> records) {
         this.records = records;
     }

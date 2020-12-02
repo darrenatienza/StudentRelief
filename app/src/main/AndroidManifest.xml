@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="icon,label">
         <activity
-            android:name=".ui.user.UserFormActivity_"
+            android:name=".ui.employee.UserFormActivity_"
             android:label="@string/title_activity_user_form"
             android:theme="@style/AppTheme.NoActionBar">
 

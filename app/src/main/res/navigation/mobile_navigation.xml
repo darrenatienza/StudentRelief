@@ -44,7 +44,7 @@
         tools:layout="@layout/fragment_relief_task_list" />
     <fragment
         android:id="@+id/nav_user_main"
-        android:name="com.example.studentrelief.ui.user.UserMainFragment_"
+        android:name="com.example.studentrelief.ui.employee.UserMainFragment_"
         android:label="@string/menu_user_main"
         tools:layout="@layout/fragment_user_main" />
 </navigation>

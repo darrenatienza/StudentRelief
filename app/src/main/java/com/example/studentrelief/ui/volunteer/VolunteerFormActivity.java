@@ -1,9 +1,6 @@
 package com.example.studentrelief.ui.volunteer;
 
-import android.content.DialogInterface;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +17,6 @@ import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.services.model.user.RegisterUserModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
-import com.example.studentrelief.ui.user.UserFormActivity_;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterTextChange;

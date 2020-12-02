@@ -137,3 +137,20 @@ create or replace view volunteer_list_view as
 	inner join users u
 	on v.user_id = u.user_id
 	;
+ALTER TABLE relief.students ADD CONSTRAINT students_users_fk FOREIGN KEY (user_id) REFERENCES relief.users(user_id) ON DELETE CASCADE;
+ALTER TABLE relief.relief_requests drop CONSTRAINT fk_students_student_id;
+ALTER TABLE relief.relief_requests ADD CONSTRAINT relief_requests_students_fk FOREIGN KEY (student_id) REFERENCES relief.students(student_id) ON DELETE CASCADE;
+
+CREATE TABLE  if not exists `employees` (
+  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
+  `full_name` varchar(250) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `contact_number` varchar(250) NOT NULL,
+  `create_time_stamp` datetime NOT NULL DEFAULT current_timestamp(),
+  `position` varchar(250) NOT NULL DEFAULT '',
+  `user_id` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`employee_id`),
+  KEY `employees_users_fk` (`user_id`),
+  CONSTRAINT `employees_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+

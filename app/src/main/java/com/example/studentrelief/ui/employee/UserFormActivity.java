@@ -1,4 +1,4 @@
-package com.example.studentrelief.ui.user;
+package com.example.studentrelief.ui.employee;
 
 import android.widget.CheckBox;
 import android.widget.TextView;

@@ -84,6 +84,148 @@ public class StudentListFragment extends Fragment {
         initItemClick();
         initSearch();
     }
+
+
+    @Background
+    void checkUserStatus(int volunteerID) {
+        try {
+            StudentModel volunteerModel = studentClient.get(volunteerID);
+            if(volunteerModel != null){
+                int userID = volunteerModel.getUser_id();
+                UserModel userModel = userClient.get(userID);
+                boolean active = userModel.isActive();
+                if(active){
+                    String actions[] = {"Remove","De activate user account","Reset Password"};
+                    showActionDialog(userID,volunteerID,actions);
+
+                }else{
+                    String actions[] = {"Remove","Activate user account","Reset Password"};
+                    showActionDialog(userID,volunteerID,actions);
+                }
+
+            }else{
+                showError("Volunteer not found!");
+            }
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }catch (Exception ex){
+            showError(ex.getMessage());
+        }
+    }
+
+    @UiThread()
+    void showActionDialog(int userID, int studentID, String[] actions) {
+
+
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
+                .setItems(actions, (dialog, which) -> {
+                    switch (which){
+                        case 0:
+                            delete(studentID);
+                            break;
+                        case 1:
+                            String value = actions[1];
+                            if(value.contentEquals("De activate user account")) {
+                                showDeActivateDialog(userID);
+                            }else{
+                                showActivateDialog(userID);
+                            }
+                            break;
+                        case 2:
+                            showResetPasswordDialog(userID);
+                            break;
+                    }
+                    dialog.dismiss();
+                }).show();
+    }
+    @Background
+    void delete(int studentID){
+        try{
+            StudentModel studentModel = studentClient.get(studentID);
+            if(studentModel != null){
+                int userId = studentModel.getUser_id();
+                userClient.delete(userId);
+                loadList();
+
+            }else{
+                showError("Student not found!");
+            }
+
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }catch (Exception ex){
+            showError(ex.getMessage());
+        }
+    }
+    private void showResetPasswordDialog(int userID) {
+        View v = getLayoutInflater().inflate(R.layout.dialog_password, null);
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getResources().getString(R.string.dialog_title_password_reset))
+                .setMessage(getString(R.string.dialog_message_password_reset))
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    resetPasswordAsync(userID);
+                    dialog.dismiss();})
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    @Background
+    void resetPasswordAsync(int userID) {
+        try {
+            UserModel model = userClient.get(userID);
+            String userName = model.getUsername();
+            model.setPassword(userName);
+            userClient.edit(userID,model);
+            showSuccessMessage(getString(R.string.notification_success_password_reset));
+
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }catch (Exception ex){
+            showError(ex.getMessage());
+        }
+    }
+    @UiThread
+    void showSuccessMessage(String message) {
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+    }
+    @Background
+    void updateUserAccountActiveStateAsync(int userID, boolean active) {
+        try{
+            UserModel userModel = userClient.get(userID);
+            userModel.setActive(active);
+            userClient.activate(userID,userModel);
+            String message = active ? getString(R.string.nofitication_success_user_account_activated) : getString(R.string.notification_success_user_account_deactivated);
+            showSuccessMessage(message);
+            loadList();
+
+        }catch (RestClientException e){
+            showError(e.getMessage());
+
+        }catch (Exception e){
+            showError(e.getMessage());
+        }
+    }
+    private void showDeActivateDialog(int volunteerID) {
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getResources().getString(R.string.dialog_student_deactivate_title))
+                .setMessage(getString(R.string.dialog_student_deactivate_content_text))
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    updateUserAccountActiveStateAsync(volunteerID, false);
+
+                    dialog.dismiss();})
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    private void showActivateDialog(int userID) {
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
+                .setMessage(getString(R.string.dialog_student_activate_content_text))
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    updateUserAccountActiveStateAsync(userID,true);
+                    dialog.dismiss();})
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
     @UiThread
     void showActivateDialog() {
 
@@ -170,7 +312,8 @@ public class StudentListFragment extends Fragment {
 
                 TextView t = v.findViewById(R.id.idView);
                 selectectStudentID = Integer.parseInt(t.getText().toString());
-               checkForUserActiveStatus();
+               //checkForUserActiveStatus();
+                checkUserStatus(selectectStudentID);
             }
         });
     }
