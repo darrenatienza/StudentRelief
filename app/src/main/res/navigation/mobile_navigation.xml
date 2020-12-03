@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_volunteer_list">
+    app:startDestination="@+id/nav_employee">
 
     <fragment
         android:id="@+id/nav_home"
@@ -43,8 +43,8 @@
         android:label="@string/menu_relief_task_list"
         tools:layout="@layout/fragment_relief_task_list" />
     <fragment
-        android:id="@+id/nav_user_main"
-        android:name="com.example.studentrelief.ui.employee.UserMainFragment_"
-        android:label="@string/menu_user_main"
-        tools:layout="@layout/fragment_user_main" />
+        android:id="@+id/nav_employee"
+        android:name="com.example.studentrelief.ui.employee.EmployeeFragment_"
+        android:label="@string/menu_employee"
+        tools:layout="@layout/fragment_employee" />
 </navigation>

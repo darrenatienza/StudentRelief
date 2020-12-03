@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void doPositiveClick(){
-        Toast.makeText(this,"message",Toast.LENGTH_SHORT).show();
-    }
 
     @AfterViews
     void afterViews(){
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_student_list,R.id.nav_donners_list,R.id.nav_volunteer_list,
-                R.id.nav_donation_list, R.id.nav_donners_donation_list, R.id.nav_relief_task_list,R.id.nav_user_main)
+                R.id.nav_donation_list, R.id.nav_donners_donation_list, R.id.nav_relief_task_list,R.id.nav_employee)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

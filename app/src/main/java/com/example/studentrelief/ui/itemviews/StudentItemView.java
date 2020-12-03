@@ -7,12 +7,11 @@ import android.widget.TextView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.model.StudentListModel;
-import com.example.studentrelief.services.model.StudentModel;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
-@EViewGroup(R.layout.student_item)
+@EViewGroup(R.layout.item_student)
 public class StudentItemView extends RelativeLayout {
 
     @ViewById

@@ -1,24 +1,30 @@
 package com.example.studentrelief.ui.employee;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.interfaces.DonnerClient;
-import com.example.studentrelief.services.model.DonnerModel;
-import com.example.studentrelief.ui.adapters.DonnerAdapter;
-import com.example.studentrelief.ui.donner.DonnerFormActivity_;
+import com.example.studentrelief.services.interfaces.EmployeeClient;
+import com.example.studentrelief.services.interfaces.UserClient;
+import com.example.studentrelief.services.model.EmployeeModel;
+import com.example.studentrelief.services.model.UserModel;
+import com.example.studentrelief.services.model.VolunteerModel;
+import com.example.studentrelief.ui.adapters.EmployeeAdapter;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -32,6 +38,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 
@@ -41,13 +48,15 @@ public class EmployeeListFragment extends Fragment {
 
     static  final int SHOW_FORM = 101;
     @RestService
-    DonnerClient donnerClient;
+    EmployeeClient employeeClient;
+    @RestService
+    UserClient userClient;
     @ViewById
     RecyclerView recyclerView;
     @ViewById
     TextInputEditText etSearch;
     @Bean
-    DonnerAdapter adapter;
+    EmployeeAdapter adapter;
     @ViewById
     TextInputLayout tiSearch;
     @Pref
@@ -76,7 +85,7 @@ public class EmployeeListFragment extends Fragment {
     private void initAuthCookies() {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
-        donnerClient.setCookie(name,session);
+        employeeClient.setCookie(name,session);
     }
 
     private void initItemClick() {
@@ -84,36 +93,168 @@ public class EmployeeListFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 // do it
-                TextView t = v.findViewById(R.id.idView);
+                TextView t = v.findViewById(R.id.tv_id);
                 int id = Integer.parseInt(t.getText().toString());
-                showFormDialog(id);
+                checkUserStatus(id);
             }
         });
     }
+    @Background
+    void checkUserStatus(int volunteerID) {
+        try {
+            EmployeeModel employeeModel = employeeClient.get(volunteerID);
+            if(employeeModel != null){
+                int userID = employeeModel.getUser_id();
+                UserModel userModel = userClient.get(userID);
+                boolean active = userModel.isActive();
+                if(active){
+                    String actions[] = {"Edit","De activate user account","Reset Password"};
+                    showActionDialog(userID,volunteerID,actions);
 
-    private void showFormDialog(int id) {
-        DonnerFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+                }else{
+                    String actions[] = {"Edit","Activate user account","Reset Password"};
+                    showActionDialog(userID,volunteerID,actions);
+                }
+
+            }else{
+                showError("Volunteer not found!");
+            }
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }catch (Exception ex){
+            showError(ex.getMessage());
+        }
+    }
+    @UiThread()
+    void showActionDialog(int userID, int volunteerID, String[] actions) {
+
+
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
+                .setItems(actions, (dialog, which) -> {
+                    switch (which){
+                        case 0:
+                            showForm(volunteerID);
+                            break;
+                        case 1:
+                            String value = actions[1];
+                            if(value.contentEquals("De activate user account")) {
+                                showDeActivateDialog(userID);
+                            }else{
+                                showActivateDialog(userID);
+                            }
+                            break;
+                        case 2:
+                            showResetPasswordDialog(userID);
+                            break;
+                    }
+                    dialog.dismiss();
+                }).show();
+    }
+    private void showActivateDialog(int userID) {
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
+                .setMessage(getString(R.string.dialog_student_activate_content_text))
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    updateUserAccountActiveStateAsync(userID,true);
+
+                    dialog.dismiss();})
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    private void showResetPasswordDialog(int userID) {
+        View v = getLayoutInflater().inflate(R.layout.dialog_password, null);
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getResources().getString(R.string.dialog_title_password_reset))
+                .setMessage(getString(R.string.dialog_message_password_reset))
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    resetPasswordAsync(userID);
+                    dialog.dismiss();})
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    @Background
+    void resetPasswordAsync(int userID) {
+        try {
+            UserModel model = userClient.get(userID);
+            String userName = model.getUsername();
+            model.setPassword(userName);
+            userClient.edit(userID,model);
+            showSuccessMessage(getString(R.string.notification_success_password_reset));
+
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }catch (Exception ex){
+            showError(ex.getMessage());
+        }
+    }
+    @UiThread
+    void showSuccessMessage(String message) {
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+    }
+    private void showDeActivateDialog(int volunteerID) {
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getResources().getString(R.string.dialog_student_deactivate_title))
+                .setMessage(getString(R.string.dialog_student_deactivate_content_text))
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    updateUserAccountActiveStateAsync(volunteerID, false);
+
+                    dialog.dismiss();})
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    @Background
+    void updateUserAccountActiveStateAsync(int userID, boolean active) {
+        try{
+            UserModel userModel = userClient.get(userID);
+            userModel.setActive(active);
+            userClient.activate(userID,userModel);
+            String message = active ? getString(R.string.nofitication_success_user_account_activated) : getString(R.string.notification_success_user_account_deactivated);
+            showSuccessMessage(message);
+            loadList();
+
+        }catch (RestClientException e){
+            showError(e.getMessage());
+
+        }catch (Exception e){
+            showError(e.getMessage());
+        }
+    }
+    private void showForm(int id) {
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("employeeID", id);
+        NavHostFragment.findNavController(EmployeeListFragment.this)
+                .navigate(R.id.action_fragment_employee_list_to_fragment_employee_form,bundle);
+
     }
 
     @Background
     void loadList(){
         try {
             String criteria = etSearch.getText().toString();
-            List<DonnerModel> donners = donnerClient.getAll(criteria).getRecords();
-            updateList(donners);
-        }catch (Exception e){
-            Log.e("Error",e.getMessage());
+            List<EmployeeModel> models = employeeClient.getAll(criteria).getRecords();
+            updateList(models);
+        }catch (RestClientException e){
+            showError(e.getMessage());
+
         }
     }
     @UiThread
-    void updateList(List<DonnerModel> donners) {
-        adapter.setList(donners);
+    void showError(String message) {
+        Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
+        Log.e("Error",message);
+    }
+
+    @UiThread
+    void updateList(List<EmployeeModel> models) {
+        adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
 
     @Click(R.id.fab)
     void click(View view){
-       showFormDialog(0);
+       showForm(0);
     }
 
     // action after save or delete click on dialog form

@@ -1,17 +1,46 @@
 package com.example.studentrelief.services.model;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotation;
+
 public class EmployeeModel {
     int employee_id;
     String full_name;
     String address;
     String contact_number;
+    String position;
+    boolean active;
     int user_id;
+    String create_time_stamp;
+
+    public String getCreate_time_stamp() {
+        return create_time_stamp;
+    }
+
+    private void setCreate_time_stamp(String create_time_stamp) {
+        this.create_time_stamp = create_time_stamp;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
     public int getEmployee_id() {
         return employee_id;
     }
 
-    public void setEmployee_id(int employee_id) {
+    private void setEmployee_id(int employee_id) {
         this.employee_id = employee_id;
     }
 

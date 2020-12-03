@@ -96,7 +96,7 @@ set user_id=0;
 alter table volunteers add column if not exists user_id int null;
 
 UPDATE relief.volunteers
-set user_id=0 where user_id = 'NULL';
+set user_id=0 where user_id = NULL;
 
 alter table students modify column if exists user_id int not null default 0;
 alter table volunteers modify column if  exists user_id int not null default 0;
@@ -137,9 +137,9 @@ create or replace view volunteer_list_view as
 	inner join users u
 	on v.user_id = u.user_id
 	;
-ALTER TABLE relief.students ADD CONSTRAINT students_users_fk FOREIGN KEY (user_id) REFERENCES relief.users(user_id) ON DELETE CASCADE;
-ALTER TABLE relief.relief_requests drop CONSTRAINT fk_students_student_id;
-ALTER TABLE relief.relief_requests ADD CONSTRAINT relief_requests_students_fk FOREIGN KEY (student_id) REFERENCES relief.students(student_id) ON DELETE CASCADE;
+ALTER TABLE relief.students ADD CONSTRAINT students_users_fk FOREIGN key if not exists (user_id) REFERENCES relief.users(user_id) ON DELETE CASCADE;
+ALTER TABLE relief.relief_requests drop constraint if exists fk_students_student_id;
+ALTER TABLE relief.relief_requests ADD constraint relief_requests_students_fk FOREIGN key if not exists (student_id) REFERENCES relief.students(student_id) ON DELETE CASCADE;
 
 CREATE TABLE  if not exists `employees` (
   `employee_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -154,3 +154,18 @@ CREATE TABLE  if not exists `employees` (
   CONSTRAINT `employees_users_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
+
+/** view for volunteer list with user active status */
+create or replace view employee_list_view as
+	select
+	e.employee_id,
+	e.address,
+	e.contact_number,
+	e.full_name,
+	e.`position`,
+	u.active,
+	u.user_id
+	from employees e
+	inner join users u
+	on e.user_id = u.user_id
+	;

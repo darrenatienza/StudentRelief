@@ -36,8 +36,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_relief_task_list" />
         <item
-            android:id="@+id/nav_user_main"
+            android:id="@+id/nav_employee"
             android:icon="@drawable/ic_baseline_people_24"
-            android:title="@string/menu_user_main" />
+            android:title="@string/menu_employee" />
+
     </group>
 </menu>
