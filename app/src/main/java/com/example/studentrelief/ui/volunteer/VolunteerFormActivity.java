@@ -133,14 +133,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
         }
 
     }
-    @OptionsItem(R.id.action_open_user_account)
-    void menuUserForm(){
-        if(userID > 0){
-            //UserFormActivity_.intent(this).userID(userID).start();
-        }else{
-            showErrorAlert("No user account for this record!");
-        }
-    }
+
 
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
@@ -267,12 +260,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
         /**Todo: Create model for volunteer view (active status included)*/
 
     }
-    @OptionsMenuItem(R.id.action_open_user_account)
-    void openUserAccountMenu(MenuItem menuItem){
-        if(volunteerID == 0){
-          menuItem.setVisible(false);
-        }
-    }
+
     @OptionsMenuItem(R.id.action_delete)
     void openDeleteMenu(MenuItem menuItem){
         if(volunteerID == 0){

@@ -2,6 +2,7 @@ package com.example.studentrelief.ui.student;
 
 
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,18 +20,22 @@ import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.StudentModel;
+import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.ui.adapters.StudentReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.RecyclerViewClickListener;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
@@ -42,6 +47,8 @@ import org.springframework.web.client.RestClientException;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static com.example.studentrelief.ui.student.StudentListFragment.SHOW_FORM;
 
 @OptionsMenu(R.menu.menu_panel)
 @EActivity(R.layout.activity_student_panel)
@@ -55,8 +62,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     ReliefRequestClient reliefRequestClient;
     @RestService
     UserClient userClient;
-    @Extra
-    int id;
+
     @Extra
     int userID;
 
@@ -81,25 +87,24 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     RecyclerView recyclerView;
     @Pref
     MyPrefs_ myPrefs;
+    private int studentID;
+
     @AfterViews
     void afterViews(){
 
         try{
             setSupportActionBar(toolbar);
-            if(id > 0){
-                initAuthCookies();
-                getFormData();
-                loadList();
-                LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-                VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
-                recyclerView.addItemDecoration((new SimpleDividerItemDecoration(this)));
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-                //initItemClick();
-            }
+            initAuthCookies();
+            getFormData();
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
+            recyclerView.addItemDecoration((new SimpleDividerItemDecoration(this)));
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            loadList();
+            //initItemClick();
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
@@ -119,7 +124,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     //handles click menu
     @OptionsItem(R.id.action_edit)
     void menuPanel(){
-       StudentFormActivity_.intent(this).id(id).userID(userID).start();
+       StudentFormActivity_.intent(this).id(studentID).userID(userID).startForResult(SHOW_FORM);
     }
     @OptionsItem(R.id.action_logout)
     void menuLogout(){
@@ -144,13 +149,43 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     @Background
     void getFormData() {
-        if (id > 0){
-            String session = myPrefs.session().get();
-            String name = Constants.SESSION_NAME;
-            studentClient.setCookie(name,session);
-            StudentModel model   = studentClient.get(id);
+        if (userID > 0){
+
+            StudentModel model   = studentClient.getByUserID(userID).getSingleRecord();
             updateUIFormData(model);
         }
+    }
+    @OptionsItem(R.id.action_change_password)
+    void changePassword(){
+        final View layout = getLayoutInflater().inflate(R.layout.dialog_password,null);
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_password_reset))
+                .setMessage(getString(R.string.dialog_message_password_reset))
+                .setView(layout)
+                .setPositiveButton("Save", (dialogInterface, i) -> {
+                    TextInputEditText pass = layout.findViewById(R.id.passworView);
+                    String newPass = pass.getText().toString();
+                    updatePasswordAsync(newPass);
+                    dialogInterface.dismiss();
+                })
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).show();
+    }
+    @Background
+    void updatePasswordAsync(String newPass) {
+        try {
+            UserModel userModel = userClient.get(userID);
+            userModel.setPassword(newPass);
+            userClient.edit(userID,userModel);
+            updateUIAfterPasswordUpdate();
+        }catch (RestClientException ex){
+            showErrorAlert(ex.getMessage());
+        }catch (Exception ex){
+            showErrorAlert(ex.getMessage());
+        }
+    }
+    @UiThread
+    void updateUIAfterPasswordUpdate() {
+        Toast.makeText(this,"Password has been changed!",Toast.LENGTH_SHORT).show();
     }
 
     void validateItemForReliefRequest(final ReliefTaskModel model) {
@@ -164,7 +199,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         ReliefRequestModel _model = new ReliefRequestModel();
-                        _model.setStudent_id(id);
+                        _model.setStudent_id(studentID);
                         _model.setRelief_task_id(model.getRelief_task_id());
                         _model.setReleased(false);
                         addNewReliefRequest(_model);
@@ -192,17 +227,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     }
     @UiThread
     void showErrorAlert(String message) {
-        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Oops!")
-                .setContentText("An error occured! \n" + message)
-                .setConfirmText("OK")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-                .show();
+        Toast.makeText(this,message, Toast.LENGTH_LONG).show();
     }
 
 
@@ -225,6 +250,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     @UiThread
     void updateUIFormData(StudentModel model) {
+        studentID = model.getStudent_id();
         tvSrCode.setText(model.getSr_code());
         tvStudentFullName.setText(model.getFull_name());
         tvAddress.setText(model.getAddress());
@@ -258,5 +284,11 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     @Override
     public void onClick(ReliefTaskModel model) {
         validateItemForReliefRequest(model);
+    }
+
+    @OnActivityResult(SHOW_FORM)
+    void onResult(int resultCode) {
+        getFormData();
+        Log.d("Result",String.valueOf(resultCode));
     }
 }

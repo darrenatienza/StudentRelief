@@ -24,7 +24,6 @@ import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.student.StudentFormActivity_;
 import com.example.studentrelief.ui.student.StudentPanelActivity_;
-import com.example.studentrelief.ui.volunteer.VolunteerFormActivity_;
 import com.example.studentrelief.ui.volunteer.VolunteerPanelActivity_;
 
 import org.androidannotations.annotations.AfterTextChange;
@@ -139,10 +138,7 @@ public class LoginActivity extends AppCompatActivity {
     void btnStudentRegister(){
         StudentFormActivity_.intent(this).start();
     }
-    @Click
-    void btnVolunteerRegister(){
-        VolunteerFormActivity_.intent(this).start();
-    }
+
     void clear(){
         username.setText("");
         password.setText("");

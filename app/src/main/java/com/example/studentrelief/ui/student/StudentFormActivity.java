@@ -1,11 +1,7 @@
 package com.example.studentrelief.ui.student;
 
-import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,20 +15,16 @@ import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
-import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
-import org.androidannotations.annotations.TextChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -78,12 +70,49 @@ public class StudentFormActivity extends AppCompatActivity {
     private UserModel userModel;
     @Pref
     MyPrefs_ myPrefs;
-
+    private boolean validCourse;
+    private boolean validSrCode;
+    private boolean validFullName;
+    private boolean validAddress;
+    private boolean validContactNumber;
+    private boolean validCampus;
 
 
     @AfterTextChange(R.id.etSrCode)
     void srCodeAfterTextChange(TextView et){
-       et.setError(et.getText() == "" ? "Required" : null);
+        String value = et.getText().toString();
+        validSrCode = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etFullName)
+    void fullNameAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validFullName = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etAddress)
+    void addressAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validAddress = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etContactNumber)
+    void contactNumberAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validContactNumber = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etCampus)
+    void campuseAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validCampus = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
+    }
+    @AfterTextChange(R.id.etCourse)
+    void courseAfterTextChange(TextView et){
+        String value = et.getText().toString();
+        validCourse = !value.isEmpty() ? true : false;
+        et.setError(value.isEmpty() ? "Required" : null);
     }
 
 
@@ -105,6 +134,13 @@ public class StudentFormActivity extends AppCompatActivity {
             studentModel.setContact_number(contactNumber);
             studentModel.setCampus(campus);
             studentModel.setCourse(course);
+            if(id == 0){
+                userModel.setUsername(srCode);
+                userModel.setPassword(srCode);
+                userModel.setActive(false);
+                userModel.setUser_type(Constants.USER_TYPE_STUDENT);
+
+            }
             save();
 
 
@@ -157,13 +193,11 @@ public class StudentFormActivity extends AppCompatActivity {
                 studentClient.edit(id, studentModel);
 
             }else{
-                studentClient.addNew(studentModel);
-            }
-            if (userID > 0){
-                userClient.edit(userID,userModel);
-
-            }else{
-                // no adding new user, adding must be on student and volunteer activation
+                userID = userClient.add(userModel);
+                if(userID > 0){
+                    studentModel.setUser_id(userID);
+                    studentClient.addNew(studentModel);
+                }
             }
             updateUIAfterSave();
         }catch (RestClientException ex){
@@ -193,6 +227,7 @@ public class StudentFormActivity extends AppCompatActivity {
 
             }else{
                 studentModel = new StudentModel();
+                userModel = new UserModel();
                 // do not show the password fields for new student
                 // registration
             }

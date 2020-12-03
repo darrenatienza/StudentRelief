@@ -21,6 +21,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 public interface StudentClient  {
 
 
+    void setCookie(String name, String value);
+    String getCookie(String name);
 
     @Get("/records/students_view?filter=full_name,cs,{criteria}")
     @RequiresCookie(Constants.SESSION_NAME)
@@ -48,6 +50,8 @@ public interface StudentClient  {
     StudentContainer getByFullName(@Path String full_name);
 
 
-    void setCookie(String name, String value);
-    String getCookie(String name);
+
+    @Get("/records/students?filter=user_id,eq,{userID}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    JsonArrayHolder<StudentModel> getByUserID(@Path int userID);
 }

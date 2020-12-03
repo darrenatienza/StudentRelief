@@ -1,6 +1,5 @@
 package com.example.studentrelief.ui.employee;
 
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +23,6 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
-import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -82,10 +80,10 @@ public class EmployeeFormFragment extends Fragment {
             Toast.makeText(getActivity(),ex.toString(),Toast.LENGTH_SHORT).show();
         }
     }
-    @OptionsMenuItem(R.id.action_settings)
+    /*@OptionsMenuItem(R.id.action_settings)
     void onShowActionSetting(MenuItem menuItem){
         menuItem.setVisible(false);
-    }
+    }*/
 
 
 
