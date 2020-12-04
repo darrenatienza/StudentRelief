@@ -48,3 +48,21 @@ INSERT INTO relief.donations
 VALUES(2,'Dress', 1000, current_timestamp())
 ON DUPLICATE KEY update
 	name='Dress', quantity=1000;
+	
+	
+
+	/**Test volunter user*/
+INSERT INTO relief.users 
+	(user_id, username, password, user_type, active, create_time_stamp) 
+values
+	(3,'v', '$2y$10$mn4Ba.euyb6qdlnSaZz1MeQlwT/tEeCae9fPdZxsLLwODOuiV/9vG', 'volunteer' , 1, current_timestamp()) 
+ON DUPLICATE KEY UPDATE    
+	username='1', 
+	password='$2y$10$mn4Ba.euyb6qdlnSaZz1MeQlwT/tEeCae9fPdZxsLLwODOuiV/9vG', 
+	user_type='volunteer', 
+	active=1;
+	
+INSERT INTO relief.volunteers
+	(volunteer_id,full_name, address, contact_number, create_time_stamp, code, user_id)
+VALUES(1,'v', '', '', current_timestamp(), '', 3);
+

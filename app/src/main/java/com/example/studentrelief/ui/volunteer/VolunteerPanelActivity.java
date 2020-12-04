@@ -56,10 +56,10 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     TextView tvContactNumber;
 
     @Extra
-    int id;
+    int id = 1;
 
     @Extra
-    int userID;
+    int userID = 3;
 
     @ViewById
     RecyclerView recyclerView;

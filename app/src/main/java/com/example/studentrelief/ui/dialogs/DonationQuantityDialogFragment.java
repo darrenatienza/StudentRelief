@@ -1,13 +1,17 @@
 package com.example.studentrelief.ui.dialogs;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,22 +20,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.ReliefRequestDonationClient;
+import com.example.studentrelief.services.model.DonationModel;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
+
+import java.util.List;
 
 @EFragment
 public class DonationQuantityDialogFragment extends DialogFragment {
 
     @RestService
     ReliefRequestDonationClient reliefRequestDonationClient;
-
+    @RestService
+    DonationClient donationClient;
+    @ViewById(R.id.m_ac_tv_donation)
+    MaterialAutoCompleteTextView donations;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String RELIEF_REQUEST_ID = "0";
@@ -40,6 +54,10 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     private String mParam1;
     private String mParam2;
     private boolean validDonation;
+    private List<DonationModel> donationModels;
+    private ArrayAdapter donationArrayAdapter;
+
+
 
     public DonationQuantityDialogFragment() {
         // Required empty public constructor
@@ -47,22 +65,36 @@ public class DonationQuantityDialogFragment extends DialogFragment {
 
     @AfterViews
     void afterViews(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.dialog_donation_quantity, null))
-                .setTitle(getResources().getString(R.string.dialog_title_password_reset))
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    addNewReliefRequestDonation(dialog);
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
-                .create();
-        builder.create();
+        loadDonationListAsync();
     }
+    @Background
+    void loadDonationListAsync() {
+        try{
+            donationModels = donationClient.getAll("").getRecords();
+            UpdateDonationSpinnerUI(donationModels);
+        }catch (RestClientException ex){
 
+        }catch (Exception ex){
+
+        }
+
+    }
+    @UiThread
+    void UpdateDonationSpinnerUI(List<DonationModel> models) {
+        donationArrayAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line,models);
+        donations.setAdapter(donationArrayAdapter);
+        donationArrayAdapter.setNotifyOnChange(true);
+
+    }
+    @Click(R.id.btn_save)
+    void save(){
+        dismiss();
+    }
+    @Click(R.id.btn_cancel)
+    void cancel(){
+        dismiss();
+    }
     public  static DonationQuantityDialogFragment newInstance(Integer reliefRequestID){
         DonationQuantityDialogFragment fragment = new DonationQuantityDialogFragment_();
         Bundle args = new Bundle();
@@ -76,7 +108,7 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog d = super.onCreateDialog(savedInstanceState);
-
+        d.getContext().getTheme().applyStyle(R.style.MyAlertDialog,true);
         return d;
     }
 
@@ -118,5 +150,21 @@ public class DonationQuantityDialogFragment extends DialogFragment {
         Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
     }
 
+
+
+    @Override
+    public void onResume() {
+        // Store access variables for window and blank point
+        Window window = getDialog().getWindow();
+        Point size = new Point();
+        // Store dimensions of the screen in `size`
+        Display display = window.getWindowManager().getDefaultDisplay();
+        display.getSize(size);
+        // Set the width of the dialog proportional to 75% of the screen width
+        window.setLayout((int) (size.x * 0.9), WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setGravity(Gravity.CENTER);
+        // Call super onResume after sizing
+        super.onResume();
+    }
 
 }
