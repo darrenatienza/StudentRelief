@@ -52,8 +52,8 @@
     <string name="course">Course</string>
     <string name="sr_code">Sr Code</string>
     <string name="action_edit_profile">Edit Profile</string>
-    <string name="title_activity_volunteer_panel">VolunteerPanelActivity</string>
-    <string name="title_activity_student_relief_request_list">StudentReliefRequestListActivity
+    <string name="title_activity_volunteer_panel">Volunteer Panel</string>
+    <string name="title_activity_student_relief_request_list">Student Relief Request List
     </string>
     <string name="title_activity_relief_request_donation_list">ReliefRequestDonationListActivity
     </string>
@@ -108,4 +108,6 @@
     <string name="dialog_message_delete">Do you want to delete this record?</string>
     <string name="hint_position">Position</string>
     <string name="action_change_password">Change Password</string>
+    <string name="prompt_donation">Donation</string>
+    <string name="prompt_quantity">Quantity</string>
 </resources>

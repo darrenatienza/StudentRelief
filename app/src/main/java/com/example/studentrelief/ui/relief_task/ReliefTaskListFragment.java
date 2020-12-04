@@ -144,10 +144,7 @@ public class ReliefTaskListFragment extends Fragment {
         adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
-    @Click(R.id.btnSearch)
-    void search(){
-        loadList();
-    }
+
     @Click(R.id.fab)
     void click(View view){
         showFormDialog(0);

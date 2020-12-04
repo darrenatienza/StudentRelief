@@ -25,6 +25,10 @@ public interface VolunteerClient {
     @RequiresCookie(Constants.SESSION_NAME)
     VolunteerContainer getAll(@Path String criteria);
 
+    @Get("/records/volunteers?filter=user_id,eq,{userID}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    JsonArrayHolder<VolunteerModel> getByUserID(@Path Integer userID);
+
     /** excludes auto generated column */
     @Post("/records/volunteers?exclude=volunteer_id,create_time_stamp")
     @RequiresCookie(Constants.SESSION_NAME)

@@ -20,6 +20,7 @@ import com.example.studentrelief.ui.adapters.ReliefTaskAdapter;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.MyPrefs_;
+import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 import com.example.studentrelief.ui.relief_request.ReliefRequestListActivity_;
 
@@ -57,6 +58,9 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     @Extra
     int id;
 
+    @Extra
+    int userID;
+
     @ViewById
     RecyclerView recyclerView;
 
@@ -75,18 +79,19 @@ public class VolunteerPanelActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews(){
-        if(id > 0){
+        if(userID > 0){
             initAuthCookies();
             setSupportActionBar(toolbar);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
-            recyclerView.addItemDecoration(dividerItemDecoration);
+            recyclerView.addItemDecoration((new SimpleDividerItemDecoration(this)));
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            loadList();
             getVolunteerFormData();
+            loadList();
+
             initItemClick();
         }else{
             //Todo: show message that no volunteer has been selected
@@ -100,8 +105,8 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     @Background
     void getVolunteerFormData() {
         try{
-            if (id > 0){
-                VolunteerModel model   = volunteerClient.get(id);
+            if (userID > 0){
+                VolunteerModel model   = volunteerClient.getByUserID(userID).getSingleRecord();
                 updateUIFormData(model);
             }
         }catch (RestClientException e){

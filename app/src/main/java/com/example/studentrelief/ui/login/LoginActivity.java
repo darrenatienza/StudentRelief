@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.studentrelief.MainActivity_;
 import com.example.studentrelief.R;
@@ -20,6 +21,7 @@ import com.example.studentrelief.services.interfaces.VolunteerClient;
 import com.example.studentrelief.services.model.LoginModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.VolunteerModel;
+import com.example.studentrelief.ui.dialogs.DonationQuantityDialogFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.student.StudentFormActivity_;
@@ -124,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             StudentPanelActivity_.intent(this).userID(logUser.getUser_id()).start();
         }else if (userType.contains("volunteer")){
             clear();
-           VolunteerPanelActivity_.intent(this).id(logUser.getUser_id()).start();
+           VolunteerPanelActivity_.intent(this).userID(logUser.getUser_id()).start();
         }else if (userType.contains("admin")){
             clear();
             MainActivity_.intent(this).start();

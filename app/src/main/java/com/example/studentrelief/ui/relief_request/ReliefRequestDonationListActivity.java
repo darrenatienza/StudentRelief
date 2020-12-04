@@ -6,6 +6,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,11 +18,13 @@ import com.example.studentrelief.services.interfaces.ReliefRequestDonationClient
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.model.ReliefRequestDonationModel;
 import com.example.studentrelief.ui.adapters.StudentReliefAdapter;
+import com.example.studentrelief.ui.dialogs.DonationQuantityDialogFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -37,7 +41,7 @@ import org.androidannotations.rest.spring.annotations.RestService;
 import java.util.List;
 
 /**Shows the list of donations for every relief request*/
-@EActivity(R.layout.fragment_student_relief_list)
+@EActivity(R.layout.activity_relief_request_donation_list_2)
 public class ReliefRequestDonationListActivity extends AppCompatActivity {
 
     @Extra
@@ -53,14 +57,15 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
     static  final int SHOW_FORM = 101;
     @ViewById
     RecyclerView recyclerView;
-    @ViewById
-    TextView tvSearch;
-    @ViewById
-    CheckBox chkRelease;
+    @ViewById(R.id.tvSearch)
+    TextInputEditText tvSearch;
+
     @Bean
     StudentReliefAdapter adapter;
     @Pref
     MyPrefs_ myPrefs;
+    @ViewById
+    Toolbar toolbar;
     private void initAuthCookies() {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
@@ -71,6 +76,7 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
     @AfterViews
     void afterViews() {
         initAuthCookies();
+        setSupportActionBar(toolbar);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
@@ -121,7 +127,8 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
     }
     @Click(R.id.fab)
     void click(View view){
-        showForm(0);
+        DialogFragment d = DonationQuantityDialogFragment.newInstance(reliefRequestID);
+        d.show(getSupportFragmentManager(),"donationquanitity");
     }
 
     // action after save or delete click on dialog form
