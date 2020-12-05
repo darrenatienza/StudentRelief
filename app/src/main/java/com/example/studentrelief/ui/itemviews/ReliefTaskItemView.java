@@ -39,6 +39,6 @@ public class ReliefTaskItemView extends RelativeLayout {
         int red = getResources().getColor(R.color.error);
         // change color depends on status
         tvStatus.setTextColor(model.getActive() ?  red: green);
-        tvStatus.setText("Status: " + status);
+        tvStatus.setText(model.getStatus());
     }
 }

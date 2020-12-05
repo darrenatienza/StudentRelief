@@ -10,6 +10,13 @@ public class ReliefTaskModel {
     String create_time_stamp;
     boolean active;
 
+
+
+    public String getStatus() {
+
+        return active ? "Active":" Not Active";
+    }
+
     public boolean getActive() {
         return active;
     }

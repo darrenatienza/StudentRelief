@@ -1,11 +1,9 @@
 package com.example.studentrelief.services.interfaces;
 
 import com.example.studentrelief.BuildConfig;
-import com.example.studentrelief.services.model.DonnerContainer;
+import com.example.studentrelief.services.model.JsonArrayHolder;
 import com.example.studentrelief.services.model.ReliefRequestContainer;
 import com.example.studentrelief.services.model.ReliefRequestModel;
-import com.example.studentrelief.services.model.ReliefTaskModel;
-import com.example.studentrelief.services.model.containers.ReliefTaskContainer;
 import com.example.studentrelief.ui.misc.Constants;
 
 import org.androidannotations.rest.spring.annotations.Body;
@@ -42,11 +40,15 @@ public interface ReliefRequestClient {
     @RequiresCookie(Constants.SESSION_NAME)
     ReliefRequestModel get(@Path int id);
 
-    @Get("/records/relief_requests_view?filter=relief_task_id,eq,{reliefTaskID}")
+    @Get("/records/relief_requests_view?filter=relief_task_id,eq,{reliefTaskID}&filter=student_full_name,cs,{search}")
     @RequiresCookie(Constants.SESSION_NAME)
-    ReliefRequestContainer getAllByID(@Path int reliefTaskID);
+    ReliefRequestContainer getAllByID(@Path int reliefTaskID, @Path String search);
 
     // cookie handler authentication
     void setCookie(String name, String value);
     String getCookie(String name);
+
+    @Get("/records/relief_requests_view?filter=relief_task_id,eq,{reliefTaskID}&filter=student_full_name,cs,{search}&filter=released,eq,{released}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    JsonArrayHolder<ReliefRequestModel> getAll(@Path int reliefTaskID, @Path String search, @Path int released);
 }

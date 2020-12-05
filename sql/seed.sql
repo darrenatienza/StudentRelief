@@ -57,7 +57,7 @@ INSERT INTO relief.users
 values
 	(3,'v', '$2y$10$mn4Ba.euyb6qdlnSaZz1MeQlwT/tEeCae9fPdZxsLLwODOuiV/9vG', 'volunteer' , 1, current_timestamp()) 
 ON DUPLICATE KEY UPDATE    
-	username='1', 
+	username='v', 
 	password='$2y$10$mn4Ba.euyb6qdlnSaZz1MeQlwT/tEeCae9fPdZxsLLwODOuiV/9vG', 
 	user_type='volunteer', 
 	active=1;

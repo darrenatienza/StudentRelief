@@ -7,4 +7,6 @@
     <color name="error">#E91E63</color>
     <color name="dark_gray">#616161</color>
     <color name="required">#E53935</color>
+    <color name="status_active">#F44336</color>
+    <color name="status_not_active">#4CAF50</color>
 </resources>

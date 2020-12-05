@@ -79,6 +79,9 @@ public class VolunteerPanelActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews(){
+
+
+        /**Todo: Add password change and search filter */
         if(userID > 0){
             initAuthCookies();
             setSupportActionBar(toolbar);

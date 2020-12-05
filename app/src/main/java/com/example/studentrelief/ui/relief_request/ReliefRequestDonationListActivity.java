@@ -2,7 +2,6 @@ package com.example.studentrelief.ui.relief_request;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +24,7 @@ import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -42,7 +42,7 @@ import java.util.List;
 
 /**Shows the list of donations for every relief request*/
 @EActivity(R.layout.activity_relief_request_donation_list_2)
-public class ReliefRequestDonationListActivity extends AppCompatActivity {
+public class ReliefRequestDonationListActivity extends AppCompatActivity implements DonationQuantityDialogFragment.DonationQuantityDialogFragmentListener {
 
     @Extra
     int reliefRequestID;
@@ -59,7 +59,8 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @ViewById(R.id.tvSearch)
     TextInputEditText tvSearch;
-
+    @ViewById(R.id.ti_l_search)
+    TextInputLayout textInputLayoutSearch;
     @Bean
     StudentReliefAdapter adapter;
     @Pref
@@ -86,6 +87,7 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         loadList();
         initItemClick();
+        initSearch();
     }
 
 
@@ -98,6 +100,11 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
                 int id = Integer.parseInt(t.getText().toString());
                validateItemForEdit(id);
             }
+        });
+    }
+    private void initSearch() {
+        textInputLayoutSearch.setEndIconOnClickListener(v ->{
+            loadList();
         });
     }
     @UiThread
@@ -114,7 +121,8 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
     void loadList(){
         try {
             /** Model is modified to provide values on other fields*/
-            List<ReliefRequestDonationModel> models = reliefRequestDonationClient.getAllByID(reliefRequestID).getRecords();
+            String search = tvSearch.getText().toString();
+            List<ReliefRequestDonationModel> models = reliefRequestDonationClient.getAllByID(reliefRequestID,search).getRecords();
             updateList(models);
         }catch (Exception e){
             Log.e("Error",e.getMessage());
@@ -138,4 +146,8 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity {
         Log.d("Result",String.valueOf(resultCode));
     }
 
+    @Override
+    public void onDialogSaveClick(DialogFragment dialog) {
+        loadList();
+    }
 }

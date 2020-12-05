@@ -39,9 +39,9 @@ public interface ReliefRequestDonationClient {
     @RequiresCookie(Constants.SESSION_NAME)
     ReliefRequestDonationModel get(@Path int id);
 
-    @Get("/records/relief_request_donation_view?filter=relief_request_id,eq,{relief_request_id}")
+    @Get("/records/relief_request_donation_view?filter=relief_request_id,eq,{relief_request_id}&filter=donation_name,cs,{search}")
     @RequiresCookie(Constants.SESSION_NAME)
-    ReliefRequestDonationContainer getAllByID(@Path int relief_request_id);
+    ReliefRequestDonationContainer getAllByID(@Path int relief_request_id, @Path String search);
 
     void setCookie(String name, String value);
     String getCookie(String name);

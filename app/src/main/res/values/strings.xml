@@ -111,4 +111,6 @@
     <string name="prompt_donation">Donation</string>
     <string name="prompt_quantity">Quantity</string>
     <string name="action_cancel">Cancel</string>
+    <string name="label_not_active">Not Active</string>
+    <string name="label_all">All</string>
 </resources>
