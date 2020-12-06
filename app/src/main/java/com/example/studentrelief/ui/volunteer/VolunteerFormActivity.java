@@ -44,7 +44,8 @@ public class VolunteerFormActivity extends AppCompatActivity {
     UserClient userClient;
     @Extra
     int volunteerID;
-
+    @Extra
+    String userType;
     int userID;
 
     @ViewById
@@ -78,6 +79,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
         String name = Constants.SESSION_NAME;
         volunteerClient.setCookie(name,session);
     }
+
 
 
     @AfterTextChange(R.id.etFullName)
@@ -135,6 +137,11 @@ public class VolunteerFormActivity extends AppCompatActivity {
     }
 
 
+    @OptionsMenuItem(R.id.action_delete)
+    void deletOptionMenuItem(MenuItem item){
+        item.setVisible(userType.contentEquals(Constants.USER_TYPE_ADMIN) ? true : false);
+
+    }
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
@@ -213,6 +220,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             if(volunteerID > 0){
                 getFormData();
+                checkUserType();
 
             }else{
                 volunteerModel = new VolunteerModel();
@@ -225,6 +233,14 @@ public class VolunteerFormActivity extends AppCompatActivity {
         }
 
 
+    }
+    @Background()
+    void checkUserType() {
+        try{
+
+        }catch (RestClientException ex){
+
+        }
     }
 
     @Background

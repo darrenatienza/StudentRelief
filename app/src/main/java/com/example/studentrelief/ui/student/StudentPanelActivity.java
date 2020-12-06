@@ -263,14 +263,14 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     void loadList(){
         try {
 
-            List<ReliefTaskModel> models = reliefTaskClient.getAllActive().getRecords();
+            List<ReliefTaskModel> models = reliefTaskClient.getAll("").getRecords();
             if(models.toArray().length > 0){
                 /** New models (modified model) must be pass not the original models*/
                 updateList(models);
             }
 
-        }catch (Exception e){
-            Log.e("Error",e.getMessage());
+        }catch (RestClientException e){
+           showErrorAlert(e.getMessage());
         }
     }
     @UiThread

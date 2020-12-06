@@ -126,7 +126,7 @@ public class EmployeeFormFragment extends Fragment {
                     userModel.setUsername(code);
                     userModel.setPassword(code);
                     userModel.setActive(true);
-                    userModel.setUser_type(Constants.ADMIN_TYPE_STUDENT);
+                    userModel.setUser_type(Constants.USER_TYPE_ADMIN);
                 }
                 save();
             }else{

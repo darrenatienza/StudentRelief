@@ -2,6 +2,7 @@ package com.example.studentrelief.ui.relief_request;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.CheckedChange;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
@@ -66,6 +68,10 @@ public class ReliefRequestListActivity extends AppCompatActivity {
     @ViewById(R.id.textview_status)
     TextView textViewStatus;
 
+
+    @ViewById(R.id.checkBox_active)
+    CheckBox    checkBoxActive;
+
     @ViewById
     RecyclerView recyclerView;
 
@@ -77,6 +83,7 @@ public class ReliefRequestListActivity extends AppCompatActivity {
 
     @Pref
     MyPrefs_ myPrefs;
+    private ReliefTaskModel reliefTaskModel;
 
     private void initAuthCookies() {
         String session = myPrefs.session().get();
@@ -101,12 +108,12 @@ public class ReliefRequestListActivity extends AppCompatActivity {
         initSearch();
 
     }
-    @Background
+    @Background(serial = "sequence1")
     void getReliefRequestData() {
         try{
-            ReliefTaskModel reliefRequestModel = reliefTaskClient.get(reliefTaskID);
-            if(reliefRequestModel != null){
-                updateUIReliefTaskPanel(reliefRequestModel);
+            reliefTaskModel = reliefTaskClient.get(reliefTaskID);
+            if(reliefTaskModel != null){
+                updateUIReliefTaskPanel(reliefTaskModel);
             }
         }catch (RestClientException ex){
             showError(ex.getMessage());
@@ -114,6 +121,30 @@ public class ReliefRequestListActivity extends AppCompatActivity {
             showError(ex.getMessage());
         }
     }
+    @Click(R.id.checkBox_active)
+    void materialCheckboxActive(){
+        boolean isChecked = checkBoxActive.isChecked();
+        if(isChecked){
+            setReliefTaskActive(true);
+        }else setReliefTaskActive(false);
+        getReliefRequestData();
+    }
+    @Background(serial = "sequence1")
+    void setReliefTaskActive(boolean active) {
+        try{
+            reliefTaskModel.setActive(active);
+            reliefTaskClient.edit(reliefTaskID,reliefTaskModel);
+            String activeString = active ? "Active" : "Not Active";
+            showSuccessMessage("Relief task is now " + activeString);
+        }catch (RestClientException e){
+            showError(e.getMessage());
+        }
+    }
+    @UiThread
+     void showSuccessMessage(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
     @CheckedChange(R.id.materialRadioButton_active)
     void materialRadioButtonActive(CompoundButton radio, boolean isChecked){
         if(isChecked){
@@ -154,7 +185,7 @@ public class ReliefRequestListActivity extends AppCompatActivity {
         textViewReliefTaskName.setText(reliefTaskModel.getTitle());
         textViewLocation.setText(reliefTaskModel.getAffected_areas());
         textViewStatus.setText(reliefTaskModel.getStatus());
-
+        checkBoxActive.setChecked(reliefTaskModel.getActive());
         int activeColor = getResources().getColor(R.color.status_active);
         int notActiveColor = getResources().getColor(R.color.status_not_active);
         textViewStatus.setTextColor(reliefTaskModel.getActive() ?activeColor:notActiveColor );
@@ -206,4 +237,10 @@ public class ReliefRequestListActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
+
+    }
 }

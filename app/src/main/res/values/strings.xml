@@ -113,4 +113,6 @@
     <string name="action_cancel">Cancel</string>
     <string name="label_not_active">Not Active</string>
     <string name="label_all">All</string>
+    <string name="label_not_release">Not Released</string>
+    <string name="label_release">Released</string>
 </resources>
