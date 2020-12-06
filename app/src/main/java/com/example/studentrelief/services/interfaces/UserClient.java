@@ -5,6 +5,7 @@ import com.example.studentrelief.services.model.UserAddEditModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.containers.DonationContainer;
 import com.example.studentrelief.services.model.user.ActivateUserModel;
+import com.example.studentrelief.services.model.user.ChangePasswordModel;
 import com.example.studentrelief.services.model.user.RegisterUserModel;
 import com.example.studentrelief.ui.misc.Constants;
 
@@ -38,6 +39,10 @@ public interface UserClient {
     @RequiresCookie(Constants.SESSION_NAME)
     Integer add(@Body UserModel model);
 
+    /** excludes auto generated column */
+    @Post("/password")
+    @RequiresCookie(Constants.SESSION_NAME)
+    void changePassword(@Body ChangePasswordModel model);
 
     /** excludes auto generated column */
     @Put("/records/users/{id}?exclude=user_id,create_time_stamp")

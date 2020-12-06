@@ -89,6 +89,7 @@ public class ReliefRequestListActivity extends AppCompatActivity {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
         reliefRequestClient.setCookie(name,session);
+        reliefTaskClient.setCookie(name,session);
     }
 
     @AfterViews

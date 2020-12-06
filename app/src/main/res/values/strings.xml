@@ -115,4 +115,9 @@
     <string name="label_all">All</string>
     <string name="label_not_release">Not Released</string>
     <string name="label_release">Released</string>
+    <string name="label_change_your_password">Change your password</string>
+    <string name="dialog_title_select_your_action">Please select your action</string>
+    <string name="label_dashboard">Dashboard</string>
+    <string name="label_student">Student</string>
+    <string name="label_student_count">0</string>
 </resources>

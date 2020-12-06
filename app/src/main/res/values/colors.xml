@@ -9,4 +9,5 @@
     <color name="required">#E53935</color>
     <color name="status_active">#F44336</color>
     <color name="status_not_active">#4CAF50</color>
+    <color name="text_black">#000000</color>
 </resources>

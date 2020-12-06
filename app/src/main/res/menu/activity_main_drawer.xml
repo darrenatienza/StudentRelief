@@ -6,34 +6,34 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_baseline_home_24"
             android:title="@string/menu_home" />
 
         <item
             android:id="@+id/nav_student_list"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_baseline_people_24"
             android:title="@string/menu_student_list" />
 
         <item
             android:id="@+id/nav_donners_list"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_baseline_people_24"
             android:title="@string/menu_donners" />
         <item
             android:id="@+id/nav_volunteer_list"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_baseline_people_24"
             android:title="@string/menu_volunteer" />
         <item
             android:id="@+id/nav_donation_list"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_baseline_medical_services_24"
             android:title="@string/menu_donation" />
         <item
             android:id="@+id/nav_donners_donation_list"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_baseline_medical_services_24"
             android:title="@string/menu_donner_donation_list" />
 
         <item
             android:id="@+id/nav_relief_task_list"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_baseline_work_24"
             android:title="@string/menu_relief_task_list" />
         <item
             android:id="@+id/nav_employee"

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.adapters.ReliefTaskAdapter;
+import com.example.studentrelief.ui.dialogs.ChangePasswordDialogFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.MyPrefs_;
@@ -85,6 +87,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
         String name = Constants.SESSION_NAME;
         reliefTaskClient.setCookie(name,session);
         volunteerClient.setCookie(name,session);
+        userClient.setCookie(name,session);
     }
 
     @AfterViews
@@ -114,7 +117,8 @@ public class VolunteerPanelActivity extends AppCompatActivity {
 
     @OptionsItem(R.id.action_change_password)
     void changePassword(){
-        
+        DialogFragment d = ChangePasswordDialogFragment.newInstance(userID);
+        d.show(getSupportFragmentManager(),"changepassword");
     }
     @Background
     void getUserData() {
@@ -219,6 +223,25 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     void menuPanel(){
         VolunteerFormActivity_.intent(this).volunteerID(id).userType(mUserType).start();
     }
+    @OptionsItem(R.id.action_logout)
+    void onLogout(){
+        logout();
+
+    }
+    @Background
+    void logout() {
+        try{
+            userClient.logout();
+            updateUIAfterLogout();
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }
+    }
+    @Background
+    void updateUIAfterLogout() {
+       finish();
+    }
+
     @OnActivityResult(RELOAD_LIST)
     void onResult(int resultCode) {
         loadAllList();

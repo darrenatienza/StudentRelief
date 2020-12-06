@@ -25,6 +25,8 @@ import com.example.studentrelief.services.interfaces.DonationClient;
 import com.example.studentrelief.services.interfaces.ReliefRequestDonationClient;
 import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.ReliefRequestDonationModel;
+import com.example.studentrelief.ui.misc.Constants;
+import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -35,6 +37,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
@@ -47,10 +50,14 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     ReliefRequestDonationClient reliefRequestDonationClient;
     @RestService
     DonationClient donationClient;
+
     @ViewById(R.id.m_ac_tv_donation)
     MaterialAutoCompleteTextView donations;
     @ViewById(R.id.ti_et_quantity)
     TextInputEditText quantityView;
+
+    @Pref
+    MyPrefs_ myPrefs;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String RELIEF_REQUEST_ID = "0";
@@ -69,9 +76,15 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     public DonationQuantityDialogFragment() {
         // Required empty public constructor
     }
-
+    private void initAuthCookies() {
+        String session = myPrefs.session().get();
+        String name = Constants.SESSION_NAME;
+        reliefRequestDonationClient.setCookie(name,session);
+        donationClient.setCookie(name,session);
+    }
     @AfterViews
     void afterViews(){
+        initAuthCookies();
         loadDonationListAsync();
         mReliefRequestID = getArguments().getInt(RELIEF_REQUEST_ID);
         reliefRequestDonationModel = new ReliefRequestDonationModel();
@@ -83,9 +96,9 @@ public class DonationQuantityDialogFragment extends DialogFragment {
             donationModels = donationClient.getAll("").getRecords();
             UpdateDonationSpinnerUI(donationModels);
         }catch (RestClientException ex){
-
+            showError(ex.getMessage());
         }catch (Exception ex){
-
+            showError(ex.getMessage());
         }
 
     }
@@ -103,8 +116,9 @@ public class DonationQuantityDialogFragment extends DialogFragment {
         String quantity = quantityView.getText().toString();
         reliefRequestDonationModel.setRelief_request_id(mReliefRequestID);
         reliefRequestDonationModel.setDonation_id(donationID);
-
         reliefRequestDonationModel.setQuantity(Integer.valueOf(quantity));
+        // subtract the donation
+
 
         saveAsync();
 
@@ -112,6 +126,12 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     @Background
     void saveAsync() {
         try{
+            // get the quantity to be subtract to donation
+            Integer quantity = reliefRequestDonationModel.getQuantity();
+            DonationModel donationModel = donationClient.get(donationID);
+            Integer currentQuantity = donationModel.getQuantity();
+            donationModel.setQuantity(currentQuantity - quantity);
+            donationClient.edit(donationID,donationModel);
             reliefRequestDonationClient.addNew(reliefRequestDonationModel);
             updateUIAfterSave();
         }catch (RestClientException ex){

@@ -169,3 +169,14 @@ create or replace view employee_list_view as
 	inner join users u
 	on e.user_id = u.user_id
 	;
+	
+/** view for dashboard */
+create or replace view view_dashboard as
+	select
+	(select count(student_id) from students) student_count,
+	(select count(donner_id) from donners) donner_count,
+	(select count(employee_id) from employees) employee_count,
+	(select count(relief_request_id) from relief_requests) relief_request_count,
+	(select count(relief_task_id) from relief_tasks) relief_task_count,
+	(select count(user_id) from users) user_count
+	;
