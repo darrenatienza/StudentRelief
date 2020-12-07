@@ -31,7 +31,8 @@ create or replace view  relief_requests_view as
 		rt.title request_task_title,
 		rr.released,
 		rr.date_release,
-		rr.create_time_stamp
+		rr.create_time_stamp,
+		rr.donation_requests
 	from relief_requests rr
 	inner join students s
 		on rr.student_id = s.student_id

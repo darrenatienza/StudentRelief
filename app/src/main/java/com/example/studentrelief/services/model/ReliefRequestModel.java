@@ -21,10 +21,11 @@ public class ReliefRequestModel {
 
 
     public String getDonation_requests() {
-        return donation_requests;
+        return donation_requests == null ? "" : donation_requests;
     }
 
     public void setDonation_requests(String donation_requests) {
+
         this.donation_requests = donation_requests;
     }
 

@@ -86,4 +86,10 @@ public interface UserClient {
     @Put("/records/users/{id}?exclude=user_id,create_time_stamp,password")
     @RequiresCookie(Constants.SESSION_NAME)
     Integer activate(@Path int id, @Body UserModel model);
+
+    /**
+     * gets the current user */
+    @Get("/me")
+    @RequiresCookie(Constants.SESSION_NAME)
+    UserModel getCurrentUser();
 }

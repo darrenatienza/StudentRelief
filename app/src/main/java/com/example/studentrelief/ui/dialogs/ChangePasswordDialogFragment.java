@@ -151,6 +151,7 @@ public class ChangePasswordDialogFragment extends DialogFragment {
                 userClient.changePassword(changePasswordModel);
                 showSuccess("Password has been changed!");
                 dismiss();
+                getActivity().finish();
             }else{
                 showError("Invalid password!");
             }

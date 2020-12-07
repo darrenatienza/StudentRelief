@@ -17,8 +17,8 @@ import com.example.studentrelief.services.interfaces.EmployeeClient;
 import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.model.EmployeeModel;
 import com.example.studentrelief.services.model.UserModel;
-import com.example.studentrelief.services.model.VolunteerModel;
 import com.example.studentrelief.ui.adapters.EmployeeAdapter;
+import com.example.studentrelief.ui.dialogs.ChangePasswordDialogFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.MyPrefs_;
@@ -86,6 +86,7 @@ public class EmployeeListFragment extends Fragment {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
         employeeClient.setCookie(name,session);
+        userClient.setCookie(name,session);
     }
 
     private void initItemClick() {
@@ -100,21 +101,27 @@ public class EmployeeListFragment extends Fragment {
         });
     }
     @Background
-    void checkUserStatus(int volunteerID) {
+    void checkUserStatus(int employeeID) {
         try {
-            EmployeeModel employeeModel = employeeClient.get(volunteerID);
+            String[] actions = {};
+            // Get employee by selected volunteer id;
+            EmployeeModel employeeModel = employeeClient.get(employeeID);
             if(employeeModel != null){
-                int userID = employeeModel.getUser_id();
-                UserModel userModel = userClient.get(userID);
-                boolean active = userModel.isActive();
-                if(active){
-                    String actions[] = {"Edit","De activate user account","Reset Password"};
-                    showActionDialog(userID,volunteerID,actions);
 
+                int employeeUserID = employeeModel.getUser_id();
+                UserModel currentUser = userClient.getCurrentUser();
+                // verify if current user is selected
+                if(currentUser.getUser_id() == employeeUserID){
+                    actions = new String[]{Constants.DIALOG_ACTION_EDIT, Constants.DIALOG_ACTION_CHANGE_PASSWORD};
                 }else{
-                    String actions[] = {"Edit","Activate user account","Reset Password"};
-                    showActionDialog(userID,volunteerID,actions);
+                    UserModel userModel = userClient.get(employeeUserID);
+                    boolean active = userModel.isActive();
+                    actions = new String[]{Constants.DIALOG_ACTION_EDIT,
+                            active ? Constants.DIALOG_ACTION_DEACTIVATE_USER
+                                    : Constants.DIALOG_ACTION_ACTIVATE_USER,
+                            Constants.DIALOG_ACTION_RESET_PASSWORD};
                 }
+                showActionDialog(employeeUserID,employeeID,actions);
 
             }else{
                 showError("Volunteer not found!");
@@ -130,7 +137,7 @@ public class EmployeeListFragment extends Fragment {
 
 
         new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
+                .setTitle(getResources().getString(R.string.dialog_title_select_your_action))
                 .setItems(actions, (dialog, which) -> {
                     switch (which){
                         case 0:
@@ -138,10 +145,16 @@ public class EmployeeListFragment extends Fragment {
                             break;
                         case 1:
                             String value = actions[1];
-                            if(value.contentEquals("De activate user account")) {
-                                showDeActivateDialog(userID);
-                            }else{
-                                showActivateDialog(userID);
+                            switch (value){
+                                case Constants.DIALOG_ACTION_DEACTIVATE_USER:
+                                    showDeActivateDialog(userID);
+                                    break;
+                                case Constants.DIALOG_ACTION_ACTIVATE_USER:
+                                    showActivateDialog(userID);
+                                    break;
+                                default:
+                                    showChangePasswordDialog(userID);
+                                    break;
                             }
                             break;
                         case 2:
@@ -151,6 +164,15 @@ public class EmployeeListFragment extends Fragment {
                     dialog.dismiss();
                 }).show();
     }
+
+    private void showChangePasswordDialog(int userID) {
+        ChangePasswordDialogFragment changePasswordDialogFragment
+                = ChangePasswordDialogFragment.newInstance(userID);
+        changePasswordDialogFragment
+                .show(getActivity().getSupportFragmentManager(),"changePasswordDialog");
+
+    }
+
     private void showActivateDialog(int userID) {
         new MaterialAlertDialogBuilder(getActivity())
                 .setTitle(getResources().getString(R.string.dialog_student_activate_title))

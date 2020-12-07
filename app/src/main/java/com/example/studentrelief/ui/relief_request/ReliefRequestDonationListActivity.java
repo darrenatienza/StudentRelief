@@ -77,6 +77,9 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity impleme
     @ViewById(R.id.ti_l_search)
     TextInputLayout textInputLayoutSearch;
 
+    @ViewById(R.id.textview_donation_request)
+    TextView textViewDonationRequest;
+
     @ViewById(R.id.checkBox_release)
     CheckBox checkBoxReleased;
 
@@ -138,6 +141,7 @@ public class ReliefRequestDonationListActivity extends AppCompatActivity impleme
         tvAddress.setText(mReliefRequestModel.getStudent_address());
         tvContactNumber.setText(mReliefRequestModel.getStudent_contact_number());
         checkBoxReleased.setChecked(mReliefRequestModel.isReleased());
+        textViewDonationRequest.setText(mReliefRequestModel.getDonation_requests());
     }
     @Click(R.id.checkBox_release)
     void materialCheckboxRelease(){

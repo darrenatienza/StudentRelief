@@ -2,8 +2,8 @@
     <string name="app_name">Student Relief</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Extension Services Office</string>
+    <string name="nav_header_subtitle">Student Relief Application</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -118,6 +118,10 @@
     <string name="label_change_your_password">Change your password</string>
     <string name="dialog_title_select_your_action">Please select your action</string>
     <string name="label_dashboard">Dashboard</string>
-    <string name="label_student">Student</string>
+    <string name="label_student">Students</string>
     <string name="label_student_count">0</string>
+    <string name="dialog_title_address_confirmation">Confirming your address</string>
+    <string name="login_title">Batangas State University</string>
+    <string name="login_sub_title">Extension Services Office</string>
+    <string name="label_pending_relief_request">You have pending relief request. Please wait for your donation.</string>
 </resources>

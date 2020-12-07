@@ -52,6 +52,7 @@
                         android:id="@+id/textView13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="16dp"
                         android:text="Donner's"
                         android:textSize="@dimen/dashboard_title_size"
@@ -63,6 +64,7 @@
                         android:id="@+id/textview_donner_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="68dp"
                         android:layout_marginRight="68dp"
@@ -113,6 +115,7 @@
                         android:id="@+id/textView14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="16dp"
                         android:text="@string/label_student"
                         android:textSize="@dimen/dashboard_title_size"
@@ -124,6 +127,7 @@
                         android:id="@+id/textview_student_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="68dp"
                         android:layout_marginRight="68dp"
@@ -174,6 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:textColor="@color/text_black"
                         android:text="Employee's"
                         android:textSize="@dimen/dashboard_title_size"
                         app:layout_constraintEnd_toEndOf="@+id/imageView6"
@@ -184,6 +189,7 @@
                         android:id="@+id/textview_employee_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="68dp"
                         android:layout_marginRight="68dp"
@@ -234,6 +240,7 @@
                         android:id="@+id/textView16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="16dp"
                         android:text="Relief Request"
                         android:textSize="@dimen/dashboard_title_size"
@@ -245,6 +252,7 @@
                         android:id="@+id/textview_relief_request_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="68dp"
                         android:layout_marginRight="68dp"
@@ -267,7 +275,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_people_24" />
+                        app:srcCompat="@drawable/ic_baseline_medical_services_24" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
             <!-- Student -->
@@ -294,8 +302,9 @@
                         android:id="@+id/textView17"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="16dp"
-                        android:text="Relief Tasks"
+                        android:text="Relief Task's"
                         android:textSize="@dimen/dashboard_title_size"
                         app:layout_constraintEnd_toEndOf="@+id/imageView8"
                         app:layout_constraintStart_toStartOf="@+id/imageView8"
@@ -305,6 +314,7 @@
                         android:id="@+id/textview_relief_task_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="68dp"
                         android:layout_marginRight="68dp"
@@ -327,7 +337,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_people_24" />
+                        app:srcCompat="@drawable/ic_baseline_work_24" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
             <!-- Student -->
@@ -354,6 +364,7 @@
                         android:id="@+id/textView12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="16dp"
                         android:text="User's"
                         android:textSize="@dimen/dashboard_title_size"
@@ -365,6 +376,7 @@
                         android:id="@+id/textview_user_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/text_black"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="68dp"
                         android:layout_marginRight="68dp"

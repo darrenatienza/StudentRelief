@@ -1,11 +1,8 @@
 package com.example.studentrelief.ui.student;
 
 
-import android.content.DialogInterface;
-import android.os.Build;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,7 +81,8 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     TextView tvContactNumber;
     @ViewById
     TextView tvStudentCampus;
-
+    @ViewById(R.id.textView_pending_relief_request)
+    TextView textViewPendingReliefRequest;
     @Bean
     StudentReliefTaskAdapter adapter;
     @ViewById
@@ -99,6 +97,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             setSupportActionBar(toolbar);
             initAuthCookies();
             getFormData();
+            textViewPendingReliefRequest.setVisibility(View.INVISIBLE);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
             recyclerView.addItemDecoration((new SimpleDividerItemDecoration(this)));
@@ -106,13 +105,35 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            loadList();
+            checkForPendingReliefRequest();
+
             //initItemClick();
         }catch (Exception ex){
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
 
 
+    }
+    @Background(serial = "sequence1")
+    void checkForPendingReliefRequest() {
+        try{
+            List<ReliefRequestModel> reliefRequestModels = reliefRequestClient.getByStudentID(studentID,0).getRecords();
+            boolean hasNoReliefRequest = reliefRequestModels.isEmpty();
+
+            if (hasNoReliefRequest) {
+                // no pending relief request
+                loadList();
+            } else {
+                updateUIAfterCheckingPendingReliefRequest();
+            }
+        }catch (RestClientException ex){
+            showErrorAlert(ex.getMessage());
+        }
+    }
+    @UiThread
+    void updateUIAfterCheckingPendingReliefRequest() {
+        textViewPendingReliefRequest.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
     }
 
     private void initAuthCookies() {
@@ -218,15 +239,27 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 .show();
 
     }
-
-    void validateItemForReliefRequest2(final ReliefTaskModel model) {
+    void showAddressConfirmation(final ReliefTaskModel model){
+        int reliefTaskID = model.getRelief_task_id();
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_address_confirmation))
+                .setMessage("You must be a resident one of the following affected areas. \n \n"
+                        + model.getAffected_areas()).
+                setPositiveButton("Yes", (dialog, which) -> {
+                    validateItemForReliefRequest2(reliefTaskID);
+        })
+                .setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+    void validateItemForReliefRequest2(int reliefTaskID) {
         ArrayList<String> donationRequestList = new ArrayList<>();
 
         String[] multiItems = {"Food","Dress","Temporary Shelter"};
         boolean[] checkedItems = {false,false,false};
         new MaterialAlertDialogBuilder(this)
-                .setTitle("You must be a resident of the "+ model.getAffected_areas() +
-                        " to be qualify for receiving relief. Please also indicate the things you" +
+                .setTitle("Please indicate the things you" +
                         "mostly need.")
                 .setMultiChoiceItems(multiItems, checkedItems, (dialog, which, isChecked) -> {
                     String item = multiItems[which];
@@ -247,7 +280,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             }
             ReliefRequestModel _model = new ReliefRequestModel();
             _model.setStudent_id(studentID);
-            _model.setRelief_task_id(model.getRelief_task_id());
+            _model.setRelief_task_id(reliefTaskID);
             _model.setReleased(false);
             _model.setDonation_requests(donationRequests);
             addNewReliefRequest(_model);
@@ -317,7 +350,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     }
 
-    @Background
+    @Background(serial = "sequence1")
     void loadList(){
         try {
 
@@ -341,7 +374,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     /**Use to get on click event of button from recycler view*/
     @Override
     public void onClick(ReliefTaskModel model) {
-        validateItemForReliefRequest2(model);
+        showAddressConfirmation(model);
     }
 
 
