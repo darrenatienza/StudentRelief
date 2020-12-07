@@ -41,12 +41,7 @@ public class StudentReliefTaskAdapter extends RecyclerViewAdapterBase<ReliefTask
         final StudentReliefTaskItemView view = viewHolder.getView();
         final ReliefTaskModel model = items.get(position);
         Button b = view.findViewById(R.id.btnRequest);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                mClickListener.onClick(model);
-            }
-        });
+        b.setOnClickListener(_view -> mClickListener.onClick(model));
         view.bind(model);
     }
 

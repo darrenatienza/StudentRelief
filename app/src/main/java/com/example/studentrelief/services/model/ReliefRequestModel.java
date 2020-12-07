@@ -17,6 +17,16 @@ public class ReliefRequestModel {
     String student_campus;
     String student_course;
     String request_task_title;
+    String donation_requests;
+
+
+    public String getDonation_requests() {
+        return donation_requests;
+    }
+
+    public void setDonation_requests(String donation_requests) {
+        this.donation_requests = donation_requests;
+    }
 
     public String getRequest_task_title() {
         return request_task_title;

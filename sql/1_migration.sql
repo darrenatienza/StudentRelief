@@ -90,13 +90,10 @@ alter table volunteers add column if not exists code varchar(50) not null defaul
 
 		
 alter table students add column if not exists user_id int null;
-UPDATE relief.students
-set user_id=0;
+
 
 alter table volunteers add column if not exists user_id int null;
 
-UPDATE relief.volunteers
-set user_id=0 where user_id = NULL;
 
 alter table students modify column if exists user_id int not null default 0;
 alter table volunteers modify column if  exists user_id int not null default 0;
@@ -180,3 +177,4 @@ create or replace view view_dashboard as
 	(select count(relief_task_id) from relief_tasks) relief_task_count,
 	(select count(user_id) from users) user_count
 	;
+alter table relief_requests add column if not exists donation_requests varchar(250) not null default '';

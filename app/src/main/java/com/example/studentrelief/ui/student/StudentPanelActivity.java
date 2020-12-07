@@ -1,8 +1,11 @@
 package com.example.studentrelief.ui.student;
 
 
+import android.content.DialogInterface;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +47,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -88,7 +92,6 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     @Pref
     MyPrefs_ myPrefs;
     private int studentID;
-
     @AfterViews
     void afterViews(){
 
@@ -215,6 +218,61 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 .show();
 
     }
+
+    void validateItemForReliefRequest2(final ReliefTaskModel model) {
+        ArrayList<String> donationRequestList = new ArrayList<>();
+
+        String[] multiItems = {"Food","Dress","Temporary Shelter"};
+        boolean[] checkedItems = {false,false,false};
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("You must be a resident of the "+ model.getAffected_areas() +
+                        " to be qualify for receiving relief. Please also indicate the things you" +
+                        "mostly need.")
+                .setMultiChoiceItems(multiItems, checkedItems, (dialog, which, isChecked) -> {
+                    String item = multiItems[which];
+                    if(isChecked){
+                        donationRequestList.add(item);
+                    }else{
+                        donationRequestList.remove(item);
+                    }
+                }).setPositiveButton("Ok", (dialog, which) -> {
+            String donationRequests = "";
+            for (String item : donationRequestList
+            ) {
+                if(donationRequests.isEmpty()){
+                    donationRequests = item;
+                }else{
+                    donationRequests += "," + item;
+                }
+            }
+            ReliefRequestModel _model = new ReliefRequestModel();
+            _model.setStudent_id(studentID);
+            _model.setRelief_task_id(model.getRelief_task_id());
+            _model.setReleased(false);
+            _model.setDonation_requests(donationRequests);
+            addNewReliefRequest(_model);
+            dialog.dismiss();
+        })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+    // Function to insert string
+    public static String insertString(
+            String originalString,
+            String stringToBeInserted,
+            int index)
+    {
+
+        // Create a new string
+        String newString = originalString.substring(0, index + 1)
+                + stringToBeInserted
+                + originalString.substring(index + 1);
+
+        // return the modified String
+        return newString;
+    }
     @Background
     void addNewReliefRequest(ReliefRequestModel model) {
         try {
@@ -283,8 +341,10 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     /**Use to get on click event of button from recycler view*/
     @Override
     public void onClick(ReliefTaskModel model) {
-        validateItemForReliefRequest(model);
+        validateItemForReliefRequest2(model);
     }
+
+
 
     @OnActivityResult(SHOW_FORM)
     void onResult(int resultCode) {
