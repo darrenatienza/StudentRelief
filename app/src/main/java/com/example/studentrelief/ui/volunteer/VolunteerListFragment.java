@@ -232,7 +232,7 @@ public class VolunteerListFragment extends Fragment {
     }
 
     private void showForm(int volunteerID) {
-        VolunteerFormActivity_.intent(this).volunteerID(volunteerID).startForResult(SHOW_FORM);
+        VolunteerFormActivity_.intent(this).volunteerID(volunteerID).userType(Constants.USER_TYPE_VOLUNTEER).startForResult(SHOW_FORM);
     }
 
     @Background

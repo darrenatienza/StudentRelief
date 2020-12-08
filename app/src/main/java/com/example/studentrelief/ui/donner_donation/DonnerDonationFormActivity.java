@@ -53,10 +53,13 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
 
     @RestService
     DonnerDonationClient client;
+
     @RestService
     DonnerClient donnerClient;
+
     @RestService
     DonationClient donationClient;
+
     @Extra
     int id;
 

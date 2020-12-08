@@ -1,8 +1,6 @@
 package com.example.studentrelief.services.model;
 
 
-import java.util.Date;
-
 public class DonnerDonationModel {
     int donners_donations_id;
     String donation_date;

@@ -96,7 +96,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
         try{
             setSupportActionBar(toolbar);
             initAuthCookies();
-            getFormData();
+
             textViewPendingReliefRequest.setVisibility(View.INVISIBLE);
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             VerticalSpaceItemDecoration dividerItemDecoration = new VerticalSpaceItemDecoration(15);
@@ -117,6 +117,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     @Background(serial = "sequence1")
     void checkForPendingReliefRequest() {
         try{
+            getFormData();
             List<ReliefRequestModel> reliefRequestModels = reliefRequestClient.getByStudentID(studentID,0).getRecords();
             boolean hasNoReliefRequest = reliefRequestModels.isEmpty();
 
@@ -126,6 +127,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             } else {
                 updateUIAfterCheckingPendingReliefRequest();
             }
+
         }catch (RestClientException ex){
             showErrorAlert(ex.getMessage());
         }
@@ -173,11 +175,18 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     @Background
     void getFormData() {
-        if (userID > 0){
+        try{
+            if (userID > 0){
 
-            StudentModel model   = studentClient.getByUserID(userID).getSingleRecord();
-            updateUIFormData(model);
+                StudentModel model   = studentClient.getByUserID(userID).getSingleRecord();
+                updateUIFormData(model);
+            }
+        }catch (RestClientException e){
+            showErrorAlert(e.getMessage());
+        }catch (Exception ex){
+            showErrorAlert(ex.getMessage());
         }
+
     }
     @OptionsItem(R.id.action_change_password)
     void changePassword(){
