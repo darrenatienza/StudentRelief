@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.studentrelief.MainActivity_;
 import com.example.studentrelief.R;
@@ -21,7 +20,6 @@ import com.example.studentrelief.services.interfaces.VolunteerClient;
 import com.example.studentrelief.services.model.LoginModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.VolunteerModel;
-import com.example.studentrelief.ui.dialogs.DonationQuantityDialogFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.student.StudentFormActivity_;
@@ -115,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                 })
 
                 .show();
-        loadingProgressBar.setVisibility(View.INVISIBLE);
+        loadingProgressBar.setVisibility(View.GONE);
     }
 
     @UiThread
@@ -132,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
             MainActivity_.intent(this).start();
         }
 
-        loadingProgressBar.setVisibility(View.INVISIBLE);
+        loadingProgressBar.setVisibility(View.GONE);
 
 
     }
@@ -171,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
     @UiThread
     void onError(String message) {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
-        loadingProgressBar.setVisibility(View.INVISIBLE);
+        loadingProgressBar.setVisibility(View.GONE);
     }
 
     @AfterTextChange({R.id.username,R.id.password})
