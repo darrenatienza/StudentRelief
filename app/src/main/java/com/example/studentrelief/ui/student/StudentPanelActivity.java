@@ -17,6 +17,7 @@ import com.example.studentrelief.services.interfaces.ReliefRequestClient;
 import com.example.studentrelief.services.interfaces.ReliefTaskClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
+import com.example.studentrelief.services.model.ReliefRequestCountModel;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.StudentModel;
@@ -114,19 +115,19 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
 
     }
-    @Background(serial = "sequence1")
+    @Background
     void checkForPendingReliefRequest() {
         try{
             getFormData();
-            List<ReliefRequestModel> reliefRequestModels = reliefRequestClient.getByStudentID(studentID,0).getRecords();
-            boolean hasNoReliefRequest = reliefRequestModels.isEmpty();
-
-            if (hasNoReliefRequest) {
+            ReliefRequestCountModel reliefRequestModels = reliefRequestClient.getReliefRequestCount(studentID,0).getSingleRecord();
+            int count =reliefRequestModels.getRelief_request_count();
+            if (count == 0) {
                 // no pending relief request
                 loadList();
             } else {
                 updateUIAfterCheckingPendingReliefRequest();
             }
+
 
         }catch (RestClientException ex){
             showErrorAlert(ex.getMessage());
@@ -179,6 +180,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             if (userID > 0){
 
                 StudentModel model   = studentClient.getByUserID(userID).getSingleRecord();
+                studentID = model.getStudent_id();
                 updateUIFormData(model);
             }
         }catch (RestClientException e){
@@ -300,21 +302,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 })
                 .show();
     }
-    // Function to insert string
-    public static String insertString(
-            String originalString,
-            String stringToBeInserted,
-            int index)
-    {
 
-        // Create a new string
-        String newString = originalString.substring(0, index + 1)
-                + stringToBeInserted
-                + originalString.substring(index + 1);
-
-        // return the modified String
-        return newString;
-    }
     @Background
     void addNewReliefRequest(ReliefRequestModel model) {
         try {
@@ -350,7 +338,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     @UiThread
     void updateUIFormData(StudentModel model) {
-        studentID = model.getStudent_id();
+
         tvSrCode.setText(model.getSr_code());
         tvStudentFullName.setText(model.getFull_name());
         tvAddress.setText(model.getAddress());

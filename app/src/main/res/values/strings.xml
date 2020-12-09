@@ -124,4 +124,5 @@
     <string name="login_title">Batangas State University</string>
     <string name="login_sub_title">Extension Services Office</string>
     <string name="label_pending_relief_request">You have pending relief request. Please wait for your donation.</string>
+    <string name="dialog_message_new_student_register">You are now register.  /n Please wait for the admin for your account activation. /nYour default user name and password will be the same as your Sr Code.</string>
 </resources>

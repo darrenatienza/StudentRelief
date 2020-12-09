@@ -109,15 +109,12 @@ public class VolunteerListFragment extends Fragment {
                 int userID = volunteerModel.getUser_id();
                 UserModel userModel = userClient.get(userID);
                 boolean active = userModel.isActive();
-                if(active){
-                    String actions[] = {"Edit","De activate user account","Reset Password"};
-                    showActionDialog(userID,volunteerID,actions);
 
-                }else{
-                    String actions[] = {"Edit","Activate user account","Reset Password"};
+                    String actions[] =  {Constants.DIALOG_ACTION_EDIT,
+                            active? Constants.DIALOG_ACTION_DEACTIVATE_USER
+                            : Constants.DIALOG_ACTION_ACTIVATE_USER,
+                            Constants.DIALOG_ACTION_RESET_PASSWORD};
                     showActionDialog(userID,volunteerID,actions);
-                }
-
             }else{
                 showError("Volunteer not found!");
             }
@@ -141,10 +138,13 @@ public class VolunteerListFragment extends Fragment {
                             break;
                         case 1:
                             String value = actions[1];
-                            if(value.contentEquals("De activate user account")) {
-                                showDeActivateDialog(userID);
-                            }else{
-                                showActivateDialog(userID);
+                            switch (value){
+                                case Constants.DIALOG_ACTION_DEACTIVATE_USER:
+                                    showDeActivateDialog(userID);
+                                    break;
+                                case Constants.DIALOG_ACTION_ACTIVATE_USER:
+                                    showActivateDialog(userID);
+                                    break;
                             }
                             break;
                         case 2:
@@ -232,7 +232,7 @@ public class VolunteerListFragment extends Fragment {
     }
 
     private void showForm(int volunteerID) {
-        VolunteerFormActivity_.intent(this).volunteerID(volunteerID).userType(Constants.USER_TYPE_VOLUNTEER).startForResult(SHOW_FORM);
+        VolunteerFormActivity_.intent(this).volunteerID(volunteerID).startForResult(SHOW_FORM);
     }
 
     @Background

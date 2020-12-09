@@ -139,7 +139,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
 
     @OptionsMenuItem(R.id.action_delete)
     void deletOptionMenuItem(MenuItem item){
-        item.setVisible(userType.contentEquals(Constants.USER_TYPE_ADMIN) ? true : false);
+        //item.setVisible(userType.contentEquals(Constants.USER_TYPE_ADMIN) ? true : false);
 
     }
     @OptionsItem(R.id.action_delete)

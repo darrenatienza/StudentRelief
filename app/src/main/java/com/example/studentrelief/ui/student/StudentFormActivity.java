@@ -15,6 +15,7 @@ import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterTextChange;
@@ -211,8 +212,20 @@ public class StudentFormActivity extends AppCompatActivity {
     }
     @UiThread
     void updateUIAfterSave() {
-        setResult(RESULT_OK);
-        finish();
+        showNewStudentRegisterDialog();
+
+    }
+
+    private void showNewStudentRegisterDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("New Student Register")
+                .setMessage(getString(R.string.dialog_message_new_student_register))
+                .setPositiveButton("OK", (dialog, which) ->{
+                    // close the activity
+                    setResult(RESULT_OK);
+                    finish();
+                    dialog.dismiss();
+                }).show();
     }
 
 

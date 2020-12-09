@@ -38,3 +38,13 @@ create or replace view  relief_requests_view as
 		on rr.student_id = s.student_id
 	inner join relief_tasks rt
 		on rt.relief_task_id = rr.relief_task_id;
+		
+create or replace view view_student_active_relief_request_count as
+	select 
+	student_id,
+		released,
+	/**counts the number of active relief request by the student*/
+		(select count(rr2.relief_request_id) from relief_requests rr2 
+			where rr2.student_id = 1 and rr2.released = 1)
+			 relief_request_count from
+	relief_requests rr1

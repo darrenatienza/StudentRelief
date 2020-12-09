@@ -11,7 +11,10 @@ public class JsonArrayHolder<T> {
     }
 
     public T getSingleRecord(){
-        return records.get(0);
+
+            return records.get(0);
+
+
     }
 
     public void setRecords(List<T> records) {
