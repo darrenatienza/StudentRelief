@@ -17,6 +17,7 @@ import com.example.studentrelief.services.interfaces.ReliefRequestClient;
 import com.example.studentrelief.services.interfaces.ReliefTaskClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
+import com.example.studentrelief.services.model.JsonArrayHolder;
 import com.example.studentrelief.services.model.ReliefRequestCountModel;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
@@ -106,6 +107,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
+            getFormData();
             checkForPendingReliefRequest();
 
             //initItemClick();
@@ -115,17 +117,18 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
 
     }
-    @Background
+    @Background(serial = "sequence1")
     void checkForPendingReliefRequest() {
         try{
-            getFormData();
-            ReliefRequestCountModel reliefRequestModels = reliefRequestClient.getReliefRequestCount(studentID,0).getSingleRecord();
-            int count =reliefRequestModels.getRelief_request_count();
-            if (count == 0) {
+
+            JsonArrayHolder<ReliefRequestCountModel> result = reliefRequestClient.getReliefRequestCount(studentID, 0);
+            if(result.size() > 0){
+
+                updateUIAfterCheckingPendingReliefRequest();
+            }
+            else {
                 // no pending relief request
                 loadList();
-            } else {
-                updateUIAfterCheckingPendingReliefRequest();
             }
 
 
@@ -174,7 +177,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
         finish();
     }
 
-    @Background
+    @Background(serial = "sequence1")
     void getFormData() {
         try{
             if (userID > 0){

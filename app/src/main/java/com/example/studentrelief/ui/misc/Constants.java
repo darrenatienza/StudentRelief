@@ -10,4 +10,5 @@ public class Constants {
     public static final String DIALOG_ACTION_DEACTIVATE_USER="De activate user account";
     public static final String DIALOG_ACTION_ACTIVATE_USER= "Activate user account";
     public static final String DIALOG_ACTION_RESET_PASSWORD="Reset Password";
+    public static final String DIALOG_ACTION_DELETE = "Delete";
 }

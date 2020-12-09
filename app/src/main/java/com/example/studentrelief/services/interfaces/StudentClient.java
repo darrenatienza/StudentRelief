@@ -54,4 +54,8 @@ public interface StudentClient  {
     @Get("/records/students?filter=user_id,eq,{userID}")
     @RequiresCookie(Constants.SESSION_NAME)
     JsonArrayHolder<StudentModel> getByUserID(@Path int userID);
+
+    @Get("/records/students?filter=sr_code,eq,{srcode}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    JsonArrayHolder<StudentModel> getBySrCode(@Path String srcode);
 }

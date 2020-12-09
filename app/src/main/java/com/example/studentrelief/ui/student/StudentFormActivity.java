@@ -84,7 +84,27 @@ public class StudentFormActivity extends AppCompatActivity {
         String value = et.getText().toString();
         validSrCode = !value.isEmpty() ? true : false;
         et.setError(value.isEmpty() ? "Required" : null);
+
     }
+    @Background
+    void checkSrCodeIfExists(String value) {
+        try{
+            boolean isEmpty = studentClient.getBySrCode(value).isEmpty();
+            validSrCode = isEmpty ? true : false;
+            updateUIAfterSrCodeValidated();
+        }catch (RestClientException ex){
+            Log.e("Error",ex.getMessage());
+            showErrorAlert(ex.getMessage());
+        }catch (Exception ex){
+            Log.e("Error",ex.getMessage());
+            showErrorAlert(ex.getMessage());
+        }
+    }
+    @UiThread
+    void updateUIAfterSrCodeValidated() {
+        etSrCode.setError(validAddress ? "Required" : null);
+    }
+
     @AfterTextChange(R.id.etFullName)
     void fullNameAfterTextChange(TextView et){
         String value = et.getText().toString();
@@ -128,21 +148,25 @@ public class StudentFormActivity extends AppCompatActivity {
             String contactNumber = etContactNumber.getText().toString();
             String campus = etCampus.getText().toString();
             String course = etCourse.getText().toString();
-
-            studentModel.setSr_code(srCode);
-            studentModel.setFull_name(fullName);
-            studentModel.setAddress(address);
-            studentModel.setContact_number(contactNumber);
-            studentModel.setCampus(campus);
-            studentModel.setCourse(course);
-            if(id == 0){
-                userModel.setUsername(srCode);
-                userModel.setPassword(srCode);
-                userModel.setActive(false);
-                userModel.setUser_type(Constants.USER_TYPE_STUDENT);
-
+            checkSrCodeIfExists(srCode);
+            if(validAddress && validCampus && validContactNumber && validCourse && validFullName && validSrCode){
+                studentModel.setSr_code(srCode);
+                studentModel.setFull_name(fullName);
+                studentModel.setAddress(address);
+                studentModel.setContact_number(contactNumber);
+                studentModel.setCampus(campus);
+                studentModel.setCourse(course);
+                if(id == 0){
+                    userModel.setUsername(srCode);
+                    userModel.setPassword(srCode);
+                    userModel.setActive(false);
+                    userModel.setUser_type(Constants.USER_TYPE_STUDENT);
+                }
+                save();
+            }else{
+                showErrorAlert("Invalid Student Registration!");
             }
-            save();
+
 
 
 

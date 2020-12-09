@@ -1,6 +1,5 @@
 package com.example.studentrelief.ui.student;
 
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -61,6 +60,7 @@ public class StudentListFragment extends Fragment {
     @Pref
     MyPrefs_ myPrefs;
     private int selectectStudentID;
+
     private int userID;
 
     private void initAuthCookies() {
@@ -87,24 +87,22 @@ public class StudentListFragment extends Fragment {
 
 
     @Background
-    void checkUserStatus(int volunteerID) {
+    void checkUserStatus(int studentID) {
         try {
-            StudentModel volunteerModel = studentClient.get(volunteerID);
+            StudentModel volunteerModel = studentClient.get(studentID);
             if(volunteerModel != null){
-                int userID = volunteerModel.getUser_id();
+                userID = volunteerModel.getUser_id();
                 UserModel userModel = userClient.get(userID);
                 boolean active = userModel.isActive();
-                if(active){
-                    String actions[] = {"Remove","De activate user account","Reset Password"};
-                    showActionDialog(userID,volunteerID,actions);
 
-                }else{
-                    String actions[] = {"Remove","Activate user account","Reset Password"};
-                    showActionDialog(userID,volunteerID,actions);
-                }
-
+                String actions[] = {Constants.DIALOG_ACTION_DELETE,
+                        active
+                                ? Constants.DIALOG_ACTION_DEACTIVATE_USER
+                                : Constants.DIALOG_ACTION_ACTIVATE_USER,
+                        Constants.DIALOG_ACTION_RESET_PASSWORD};
+                showActionDialog(userID,studentID,actions);
             }else{
-                showError("Volunteer not found!");
+                showError("Student not found!");
             }
         }catch (RestClientException ex){
             showError(ex.getMessage());
@@ -115,10 +113,8 @@ public class StudentListFragment extends Fragment {
 
     @UiThread()
     void showActionDialog(int userID, int studentID, String[] actions) {
-
-
         new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
+                .setTitle(getResources().getString(R.string.dialog_title_select_your_action))
                 .setItems(actions, (dialog, which) -> {
                     switch (which){
                         case 0:
@@ -126,14 +122,17 @@ public class StudentListFragment extends Fragment {
                             break;
                         case 1:
                             String value = actions[1];
-                            if(value.contentEquals("De activate user account")) {
-                                showDeActivateDialog(userID);
-                            }else{
-                                showActivateDialog(userID);
+                            switch (value){
+                                case Constants.DIALOG_ACTION_ACTIVATE_USER:
+                                    showActivateDialog(true);
+                                    break;
+                                case Constants.DIALOG_ACTION_DEACTIVATE_USER:
+                                    showActivateDialog(false);
+                                    break;
                             }
                             break;
                         case 2:
-                            showResetPasswordDialog(userID);
+                            showResetPasswordDialog();
                             break;
                     }
                     dialog.dismiss();
@@ -158,7 +157,7 @@ public class StudentListFragment extends Fragment {
             showError(ex.getMessage());
         }
     }
-    private void showResetPasswordDialog(int userID) {
+    private void showResetPasswordDialog() {
         View v = getLayoutInflater().inflate(R.layout.dialog_password, null);
         new MaterialAlertDialogBuilder(getActivity())
                 .setTitle(getResources().getString(R.string.dialog_title_password_reset))
@@ -189,7 +188,7 @@ public class StudentListFragment extends Fragment {
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
     @Background
-    void updateUserAccountActiveStateAsync(int userID, boolean active) {
+    void updateUserAccountActiveStateAsync(boolean active) {
         try{
             UserModel userModel = userClient.get(userID);
             userModel.setActive(active);
@@ -199,54 +198,26 @@ public class StudentListFragment extends Fragment {
             loadList();
 
         }catch (RestClientException e){
+            Log.e("Error",e.getMessage());
             showError(e.getMessage());
 
         }catch (Exception e){
+            Log.e("Error",e.getMessage());
             showError(e.getMessage());
         }
     }
-    private void showDeActivateDialog(int volunteerID) {
-        new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_deactivate_title))
-                .setMessage(getString(R.string.dialog_student_deactivate_content_text))
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    updateUserAccountActiveStateAsync(volunteerID, false);
 
-                    dialog.dismiss();})
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                .show();
-    }
-    private void showActivateDialog(int userID) {
+    private void showActivateDialog(boolean activate) {
         new MaterialAlertDialogBuilder(getActivity())
                 .setTitle(getResources().getString(R.string.dialog_student_activate_title))
                 .setMessage(getString(R.string.dialog_student_activate_content_text))
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    updateUserAccountActiveStateAsync(userID,true);
+                    updateUserAccountActiveStateAsync(activate);
                     dialog.dismiss();})
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                 .show();
     }
-    @UiThread
-    void showActivateDialog() {
 
-        new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
-                .setMessage(getResources().getString(R.string.dialog_student_activate_content_text))
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        activateStudentAsync();
-                        dialog.dismiss();
-                    }
-                })
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        })
-        .show();
-    }
     @Background
     void activateStudentAsync() {
         try {
@@ -261,26 +232,7 @@ public class StudentListFragment extends Fragment {
             showError(ex.getMessage());
         }
     }
-    @Background
-    void checkForUserActiveStatus(){
-        try{
-            StudentModel studentModel = studentClient.get(selectectStudentID);
-            userID = studentModel.getUser_id();
-            UserModel userModel = userClient.get(userID);
-            boolean active = userModel.isActive();
-            if(!active){
-                showActivateDialog();
-            }else{
-                showAlreadyActivatedDialog();
-            }
-        }catch (RestClientException ex){
-            showError(ex.getMessage());
-        }
-        catch (Exception ex){
-            showError(ex.getMessage());
-        }
 
-    }
     @UiThread
     void showAlreadyActivatedDialog() {
         Toast.makeText(getActivity(),"Student user account is already activated!",Toast.LENGTH_SHORT).show();

@@ -41,10 +41,15 @@ create or replace view  relief_requests_view as
 		
 create or replace view view_student_active_relief_request_count as
 	select 
-	student_id,
+		student_id,
 		released,
-	/**counts the number of active relief request by the student*/
-		(select count(rr2.relief_request_id) from relief_requests rr2 
-			where rr2.student_id = 1 and rr2.released = 1)
-			 relief_request_count from
+		/**counts the number of active relief request by the student*/
+		(
+			select count(rr2.relief_request_id) 
+			from relief_requests rr2 
+	 		where rr2.student_id = rr1.student_id 
+	 		and rr2.released = rr1.released
+	 	) 
+	 	as relief_request_count 
+	from
 	relief_requests rr1

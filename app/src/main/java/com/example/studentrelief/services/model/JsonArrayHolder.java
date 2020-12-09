@@ -16,6 +16,13 @@ public class JsonArrayHolder<T> {
 
 
     }
+    public int size(){
+        return records.size();
+    }
+
+    public boolean isEmpty(){
+        return records.size() == 0 ? true : false;
+    }
 
     public void setRecords(List<T> records) {
         this.records = records;
