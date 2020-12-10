@@ -2,6 +2,8 @@ package com.example.studentrelief.ui.student;
 
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,8 @@ public class StudentFormActivity extends AppCompatActivity {
 
     @ViewById
     TextInputEditText etCourse;
+    @ViewById
+    ProgressBar progressBar;
 
     private StudentModel studentModel;
     private UserModel userModel;
@@ -82,15 +86,18 @@ public class StudentFormActivity extends AppCompatActivity {
     @AfterTextChange(R.id.etSrCode)
     void srCodeAfterTextChange(TextView et){
         String value = et.getText().toString();
+        progressBar.setVisibility(View.VISIBLE);
+        checkSrCodeIfExists(value);
         validSrCode = !value.isEmpty() ? true : false;
         et.setError(value.isEmpty() ? "Required" : null);
+
 
     }
     @Background
     void checkSrCodeIfExists(String value) {
         try{
             boolean isEmpty = studentClient.getBySrCode(value).isEmpty();
-            validSrCode = isEmpty ? true : false;
+            validSrCode = !isEmpty;
             updateUIAfterSrCodeValidated();
         }catch (RestClientException ex){
             Log.e("Error",ex.getMessage());
@@ -102,7 +109,8 @@ public class StudentFormActivity extends AppCompatActivity {
     }
     @UiThread
     void updateUIAfterSrCodeValidated() {
-        etSrCode.setError(validAddress ? "Required" : null);
+        etSrCode.setError(validSrCode ? "Already Exists" : null);
+        progressBar.setVisibility(View.GONE);
     }
 
     @AfterTextChange(R.id.etFullName)
@@ -110,6 +118,7 @@ public class StudentFormActivity extends AppCompatActivity {
         String value = et.getText().toString();
         validFullName = !value.isEmpty() ? true : false;
         et.setError(value.isEmpty() ? "Required" : null);
+
     }
     @AfterTextChange(R.id.etAddress)
     void addressAfterTextChange(TextView et){
@@ -148,7 +157,7 @@ public class StudentFormActivity extends AppCompatActivity {
             String contactNumber = etContactNumber.getText().toString();
             String campus = etCampus.getText().toString();
             String course = etCourse.getText().toString();
-            checkSrCodeIfExists(srCode);
+
             if(validAddress && validCampus && validContactNumber && validCourse && validFullName && validSrCode){
                 studentModel.setSr_code(srCode);
                 studentModel.setFull_name(fullName);

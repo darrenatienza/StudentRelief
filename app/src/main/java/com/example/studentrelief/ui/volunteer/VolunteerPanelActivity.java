@@ -50,6 +50,7 @@ import java.util.List;
 @EActivity(R.layout.activity_volunteer_panel)
 public class VolunteerPanelActivity extends AppCompatActivity {
     private static final int RELOAD_LIST = 101;
+    private static final int GET_FORM_DATA = 102;
     @RestService
     ReliefTaskClient reliefTaskClient;
     @RestService
@@ -221,7 +222,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     }
     @OptionsItem(R.id.action_edit)
     void menuPanel(){
-        VolunteerFormActivity_.intent(this).volunteerID(id).userType(mUserType).start();
+        VolunteerFormActivity_.intent(this).volunteerID(id).userType(mUserType).startForResult(GET_FORM_DATA);
     }
     @OptionsItem(R.id.action_logout)
     void onLogout(){
@@ -245,6 +246,11 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     @OnActivityResult(RELOAD_LIST)
     void onResult(int resultCode) {
         loadAllList();
+        Log.d("Result",String.valueOf(resultCode));
+    }
+    @OnActivityResult(GET_FORM_DATA)
+    void onResult2(int resultCode) {
+      getVolunteerFormData();
         Log.d("Result",String.valueOf(resultCode));
     }
 }
