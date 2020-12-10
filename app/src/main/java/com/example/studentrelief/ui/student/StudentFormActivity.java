@@ -269,6 +269,7 @@ public class StudentFormActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             initAuthCookies();
             if(id > 0){
+                etSrCode.setEnabled(false);
                 getFormData();
 
             }else{

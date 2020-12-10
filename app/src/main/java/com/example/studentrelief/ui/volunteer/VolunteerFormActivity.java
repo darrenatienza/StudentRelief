@@ -219,6 +219,7 @@ public class VolunteerFormActivity extends AppCompatActivity {
             initAuthCookies();
             setSupportActionBar(toolbar);
             if(volunteerID > 0){
+                etFullName.setEnabled(false);
                 getFormData();
                 checkUserType();
 

@@ -71,6 +71,7 @@ public class EmployeeFormFragment extends Fragment {
             employeeID = getArguments().getInt("employeeID");
             initAuthCookies();
             if(employeeID > 0) {
+                etFullName.setEnabled(false);
                 getFormData();
             }else{
                 employeeModel = new EmployeeModel();

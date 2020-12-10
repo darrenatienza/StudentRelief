@@ -113,27 +113,39 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     @Click(R.id.btn_save)
     void save(){
 
-        String quantity = quantityView.getText().toString();
-        reliefRequestDonationModel.setRelief_request_id(mReliefRequestID);
-        reliefRequestDonationModel.setDonation_id(donationID);
-        reliefRequestDonationModel.setQuantity(Integer.valueOf(quantity));
-        // subtract the donation
+        int quantity = quantityView.getText().toString().isEmpty() ? 0 : Integer.valueOf(quantityView.getText().toString() );
+        if(quantity > 0){
+            saveAsync(quantity);
+        }else{
+            showError("Invalid quantity.");
+        }
 
 
-        saveAsync();
+
 
     }
     @Background
-    void saveAsync() {
+    void saveAsync(int quantity) {
         try{
             // get the quantity to be subtract to donation
-            Integer quantity = reliefRequestDonationModel.getQuantity();
+
             DonationModel donationModel = donationClient.get(donationID);
             Integer currentQuantity = donationModel.getQuantity();
-            donationModel.setQuantity(currentQuantity - quantity);
-            donationClient.edit(donationID,donationModel);
-            reliefRequestDonationClient.addNew(reliefRequestDonationModel);
-            updateUIAfterSave();
+
+            int remainingQty = currentQuantity - quantity;
+
+            if(remainingQty < 0){
+                showError("Remaining inventory quantity must be greater than or equal to 0!");
+            }else{
+                reliefRequestDonationModel.setRelief_request_id(mReliefRequestID);
+                reliefRequestDonationModel.setDonation_id(donationID);
+                reliefRequestDonationModel.setQuantity(Integer.valueOf(quantity));
+                donationModel.setQuantity(remainingQty);
+                donationClient.edit(donationID,donationModel);
+                reliefRequestDonationClient.addNew(reliefRequestDonationModel);
+                updateUIAfterSave();
+            }
+
         }catch (RestClientException ex){
             showError(ex.getMessage());
         }catch (Exception ex){
