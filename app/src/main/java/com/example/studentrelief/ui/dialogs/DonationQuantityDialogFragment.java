@@ -76,6 +76,22 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     public DonationQuantityDialogFragment() {
         // Required empty public constructor
     }
+
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog d = super.onCreateDialog(savedInstanceState);
+        d.getContext().getTheme().applyStyle(R.style.MyAlertDialog,true);
+        return d;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.dialog_donation_quantity, null);
+        return v;
+    }
     private void initAuthCookies() {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
@@ -178,20 +194,7 @@ public class DonationQuantityDialogFragment extends DialogFragment {
 
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog d = super.onCreateDialog(savedInstanceState);
-        d.getContext().getTheme().applyStyle(R.style.MyAlertDialog,true);
-        return d;
-    }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.dialog_donation_quantity, null);
-        return v;
-    }
 
     @AfterTextChange(R.id.m_ac_tv_donation)
     void donationAfterTextChange(TextView et){

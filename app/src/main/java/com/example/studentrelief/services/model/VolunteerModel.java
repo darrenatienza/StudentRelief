@@ -19,6 +19,7 @@ public class VolunteerModel {
     int user_id;
     boolean active;
 
+
     public boolean isActive() {
         return active;
     }

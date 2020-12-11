@@ -85,14 +85,15 @@ public class StudentFormActivity extends AppCompatActivity {
 
     @AfterTextChange(R.id.etSrCode)
     void srCodeAfterTextChange(TextView et){
-        String value = et.getText().toString();
-        progressBar.setVisibility(View.VISIBLE);
-        checkSrCodeIfExists(value);
-        validSrCode = !value.isEmpty() ? true : false;
-        et.setError(value.isEmpty() ? "Required" : null);
-
-
-    }
+            String value = et.getText().toString();
+            progressBar.setVisibility(View.VISIBLE);
+            validSrCode = !value.isEmpty() ? true : false;
+            et.setError(value.isEmpty() ? "Required" : null);
+            // validation for registration of new student
+            if(userID == 0){
+                checkSrCodeIfExists(value);
+            }
+        }
     @Background
     void checkSrCodeIfExists(String value) {
         try{
