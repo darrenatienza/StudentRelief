@@ -34,6 +34,7 @@ import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -45,6 +46,7 @@ import java.util.List;
 @EActivity(R.layout.activity_relief_request_list)
 public class ReliefRequestListActivity extends AppCompatActivity {
 
+    private static final int SHOW_FORM = 101;
     @RestService
     ReliefRequestClient reliefRequestClient;
     @RestService
@@ -216,7 +218,7 @@ public class ReliefRequestListActivity extends AppCompatActivity {
     }
 
     private void showReliefRequestList(int id) {
-        ReliefRequestDonationListActivity_.intent(this).reliefRequestID(id).start();
+        ReliefRequestDonationListActivity_.intent(this).reliefRequestID(id).startForResult(SHOW_FORM);
     }
 
     @Background
@@ -237,7 +239,12 @@ public class ReliefRequestListActivity extends AppCompatActivity {
         adapter.setList(models);
         adapter.notifyDataSetChanged();
     }
-
+    // action after save or delete click on dialog form
+    @OnActivityResult(SHOW_FORM)
+    void onResult(int resultCode) {
+        loadList();
+        Log.d("Result",String.valueOf(resultCode));
+    }
     @Override
     public void onBackPressed() {
         setResult(RESULT_OK);

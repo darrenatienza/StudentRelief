@@ -52,4 +52,27 @@ create or replace view view_student_active_relief_request_count as
 	 	) 
 	 	as relief_request_count 
 	from
-	relief_requests rr1
+	relief_requests rr1;
+	
+create or replace view view_relief_task_list as
+	select
+		rt.relief_task_id,
+		rt.code,
+		rt.active,
+		rt.affected_areas,
+		rt.title,
+		(
+			select
+				count(rr.relief_request_id)
+			from
+				relief_requests rr
+			where
+				rr.relief_task_id = rt.relief_task_id and
+				rr.released = 0
+		) as not_released
+		
+	from 
+		relief_tasks rt
+	
+	
+	

@@ -23,7 +23,8 @@ public class ReliefTaskItemView extends RelativeLayout {
     TextView tvAffectedAreas;
     @ViewById
     TextView tvStatus;
-
+    @ViewById(R.id.textView_not_released)
+    TextView textViewNotReleased;
 
     public ReliefTaskItemView(Context context) {
         super(context);
@@ -40,5 +41,9 @@ public class ReliefTaskItemView extends RelativeLayout {
         // change color depends on status
         tvStatus.setTextColor(model.getActive() ?  red: green);
         tvStatus.setText(model.getStatus());
+        int notReleased = model.getNot_released();
+        textViewNotReleased.setText("Not Released: " + notReleased);
+        textViewNotReleased.setVisibility(notReleased > 0? VISIBLE : GONE);
+
     }
 }

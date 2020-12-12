@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
@@ -56,6 +57,8 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     @ViewById(R.id.ti_et_quantity)
     TextInputEditText quantityView;
 
+    @ViewById(R.id.textView_balance)
+    TextView textViewBalance;
     @Pref
     MyPrefs_ myPrefs;
     // TODO: Rename parameter arguments, choose names that match
@@ -71,6 +74,8 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     private int donationID;
     private ReliefRequestDonationModel reliefRequestDonationModel;
     private int mReliefRequestID;
+    private boolean validBalance;
+    private boolean validQuantity;
 
 
     public DonationQuantityDialogFragment() {
@@ -127,10 +132,11 @@ public class DonationQuantityDialogFragment extends DialogFragment {
 
     }
     @Click(R.id.btn_save)
-    void save(){
+    void onSave(){
 
-        int quantity = quantityView.getText().toString().isEmpty() ? 0 : Integer.valueOf(quantityView.getText().toString() );
-        if(quantity > 0){
+        int quantity = quantityView.getText().toString().isEmpty() ? 0 : Integer.valueOf(quantityView.getText().toString());
+
+        if(validBalance && validDonation && validQuantity){
             saveAsync(quantity);
         }else{
             showError("Invalid quantity.");
@@ -201,8 +207,46 @@ public class DonationQuantityDialogFragment extends DialogFragment {
         String value = et.getText().toString();
         donationID = getDonationID(donationModels,value);
         validDonation = !value.isEmpty() ? true : false;
+        textViewBalance.setVisibility(validDonation ? View.VISIBLE: View.GONE);
         et.setError(value.isEmpty() ? "Required" : null);
+        getDonationBalance();
     }
+    @Background
+    void getDonationBalance() {
+        try{
+            if(donationID> 0){
+                DonationModel donationModel = donationClient.get(donationID);
+                int balance = donationModel.getQuantity();
+                updateUIForBalance(balance);
+            }else{
+                updateUIIfNoDonationID();
+            }
+
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }
+    }
+    @UiThread
+    void updateUIIfNoDonationID() {
+        textViewBalance.setVisibility(View.GONE);
+    }
+
+    @UiThread
+    void updateUIForBalance(int balance) {
+        if(balance <= 0){
+            validBalance = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                textViewBalance.setTextColor(getContext().getColor(R.color.error));
+            }
+        }else{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                textViewBalance.setTextColor(getContext().getColor(R.color.main_green_color));
+            }
+            validBalance = true;
+        }
+        textViewBalance.setText("Balance: " + balance);
+    }
+
     int getDonationID(List<DonationModel> donationModels, String value){
         for (DonationModel model: donationModels
         ) {
@@ -215,7 +259,7 @@ public class DonationQuantityDialogFragment extends DialogFragment {
     @AfterTextChange(R.id.ti_et_quantity)
     void quantityAfterTextChange(TextView et){
         String value = et.getText().toString();
-        validDonation = !value.isEmpty() ? true : false;
+        validQuantity = !value.isEmpty() ? true : false;
         et.setError(value.isEmpty() ? "Required" : null);
     }
     @Background

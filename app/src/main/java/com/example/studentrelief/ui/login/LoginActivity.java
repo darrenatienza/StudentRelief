@@ -85,9 +85,14 @@ public class LoginActivity extends AppCompatActivity {
         model.setPassword(password);
         try{
             UserModel logUser = loginClient.login(model);
-            // put server session on shared preferences for later access
-            myPrefs.session().put(loginClient.getCookie(Constants.SESSION_NAME));
-            onLoginSuccess(logUser);
+            if(logUser.isActive()){
+                // put server session on shared preferences for later access
+                myPrefs.session().put(loginClient.getCookie(Constants.SESSION_NAME));
+                onLoginSuccess(logUser);
+            }else{
+                onLoginNotActive();
+            }
+
         }catch (RestClientException e){
             String message = e.getMessage();
            if(message.contains("403 Forbidden")){
@@ -98,6 +103,11 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
+    @UiThread
+    void onLoginNotActive() {
+        onError("Account not active!");
+    }
+
     @UiThread
     void onAuthenticationFailure() {
         new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)

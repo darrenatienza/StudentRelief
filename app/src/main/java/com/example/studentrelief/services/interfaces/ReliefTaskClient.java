@@ -3,7 +3,6 @@ package com.example.studentrelief.services.interfaces;
 import com.example.studentrelief.BuildConfig;
 import com.example.studentrelief.services.model.JsonArrayHolder;
 import com.example.studentrelief.services.model.ReliefTaskModel;
-import com.example.studentrelief.services.model.containers.ReliefTaskContainer;
 import com.example.studentrelief.ui.misc.Constants;
 
 import org.androidannotations.rest.spring.annotations.Body;
@@ -22,9 +21,9 @@ public interface ReliefTaskClient {
 
 
 
-    @Get("/records/relief_tasks?filter=title,cs,{criteria}")
+    @Get("/records/view_relief_task_list?filter=title,cs,{criteria}")
     @RequiresCookie(Constants.SESSION_NAME)
-    ReliefTaskContainer getAll(@Path String criteria);
+    JsonArrayHolder<ReliefTaskModel> getAll(@Path String criteria);
 
 
     @Get("/records/relief_tasks?filter=active,cs,{activeValue}")

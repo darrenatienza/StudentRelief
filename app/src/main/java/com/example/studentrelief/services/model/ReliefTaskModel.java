@@ -8,9 +8,20 @@ public class ReliefTaskModel {
     String title;
     String affected_areas;
     String create_time_stamp;
+    int not_released;
     boolean active;
 
+    public int getNot_released() {
+        return not_released;
+    }
 
+    public void setNot_released(int not_released) {
+        this.not_released = not_released;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
 
     public String getStatus() {
 
