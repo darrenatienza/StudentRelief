@@ -10,8 +10,14 @@
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
         <item name="checkboxStyle">@style/Widget.App.Checkbox</item>
         <item name="radioButtonStyle">@style/Widget.App.RadioButton</item>
+        <item name="colorControlActivated">@color/design_default_color_primary</item>
+        <item name="colorControlNormal">@color/design_default_color_primary_dark</item>
     </style>
 
+
+    <style name="Widget.App.ProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/error</item>
+    </style>
     <style name="Widget.App.RadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.RadioButton</item>
     </style>
