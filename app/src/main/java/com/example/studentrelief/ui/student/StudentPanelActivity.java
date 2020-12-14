@@ -117,11 +117,15 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
 
     }
-    @Background
+
+    /**
+     * Use to check pending relief request
+     */
+    @Background(serial = "sequence1")
     void checkForPendingReliefRequest() {
         try{
 
-            JsonArrayHolder<ReliefRequestCountModel> result = reliefRequestClient.getReliefRequestCount(studentID, 0);
+            JsonArrayHolder<ReliefRequestModel> result = reliefRequestClient.getReliefRequestCount(studentID, 0);
             if(result.size() > 0){
 
                 updateUIAfterCheckingPendingReliefRequest();
@@ -328,6 +332,8 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 .setTitle(getString(R.string.dialog_title_success))
                 .setMessage(getString(R.string.dialog_message_request_donation))
                 .setPositiveButton(getString(R.string.dialog_button_positive), ((dialog, which) -> {
+                    // check for pending request
+                    checkForPendingReliefRequest();
                     dialog.dismiss();
                 }))
                 .show();
@@ -361,6 +367,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     }
     @UiThread
     void updateList(List<ReliefTaskModel> models) {
+        textViewPendingReliefRequest.setVisibility(View.GONE);
         adapter.setList(models,this);
         adapter.notifyDataSetChanged();
     }
