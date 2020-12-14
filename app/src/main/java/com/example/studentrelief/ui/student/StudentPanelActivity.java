@@ -117,7 +117,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
 
     }
-    @Background(serial = "sequence1")
+    @Background
     void checkForPendingReliefRequest() {
         try{
 
@@ -324,17 +324,12 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
     @UiThread
     void showReliefRequestSaveConfirmation() {
-        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("Success")
-                .setContentText("Your new relief request has been submitted!")
-                .setConfirmText("OK")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_success))
+                .setMessage(getString(R.string.dialog_message_request_donation))
+                .setPositiveButton(getString(R.string.dialog_button_positive), ((dialog, which) -> {
+                    dialog.dismiss();
+                }))
                 .show();
     }
 
