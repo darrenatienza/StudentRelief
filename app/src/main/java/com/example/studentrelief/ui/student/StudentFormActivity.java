@@ -34,7 +34,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 @OptionsMenu(R.menu.menu_with_user_form)
 @EActivity(R.layout.activity_student_form)
 public class StudentFormActivity extends AppCompatActivity {
@@ -184,32 +183,18 @@ public class StudentFormActivity extends AppCompatActivity {
 
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
-        try {
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Are you sure?")
-                    .setContentText("Won't be able to recover this record!")
-                    .setConfirmText("Yes,delete it!")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            delete();
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .show();
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_delete))
+                .setMessage(getString(R.string.dialog_message_delete))
+                .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                    delete();
+                    dialogInterface.dismiss();
+                }))
+                .setNegativeButton(getString(R.string.dialog_button_no),((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }))
+                .show();
 
-
-        }catch (RestClientException ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }
 
     }
     @Background
@@ -300,17 +285,7 @@ public class StudentFormActivity extends AppCompatActivity {
     }
     @UiThread
     void showErrorAlert(String message) {
-        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Oops!")
-                .setContentText("An error occured! \n" + message)
-                .setConfirmText("OK")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-                .show();
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
     }
     @Background(serial = "sequence1")
     void getFormData() {

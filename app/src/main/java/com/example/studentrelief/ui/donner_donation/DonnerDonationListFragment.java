@@ -20,6 +20,7 @@ import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
@@ -34,8 +35,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 @EFragment(R.layout.fragment_donner_donation_list)
@@ -119,17 +118,12 @@ public class DonnerDonationListFragment extends Fragment {
 
     @UiThread
     void showNotApplicableForEditMessage() {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Oops!")
-                .setContentText("The quantity of this donation was uploaded to donation's record. Your not allow to do any further.")
-                .setConfirmText("OK")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getString(R.string.dialog_title_upload_quantity))
+                .setMessage(getString(R.string.dialog_message_upload_not_applicable))
+                .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }))
                 .show();
     }
 

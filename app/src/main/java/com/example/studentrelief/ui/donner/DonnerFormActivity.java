@@ -13,6 +13,7 @@ import com.example.studentrelief.services.interfaces.DonnerClient;
 import com.example.studentrelief.services.model.AddEditDonnerModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterTextChange;
@@ -28,7 +29,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 @OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_donner_form)
@@ -72,6 +73,7 @@ public class DonnerFormActivity extends AppCompatActivity {
     void afterViews(){
 
         try{
+            /**Todo: remove delete while adding*/
             initAuthCookies();
             setSupportActionBar(toolbar);
             if(id > 0) {
@@ -133,25 +135,17 @@ public class DonnerFormActivity extends AppCompatActivity {
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Are you sure?")
-                    .setContentText("Won't be able to recover this record!")
-                    .setConfirmText("Yes,delete it!")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            delete();
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(getString(R.string.dialog_title_delete))
+                    .setMessage(getString(R.string.dialog_message_delete))
+                    .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                        delete();
+                        dialogInterface.dismiss();
+                    }))
+                    .setNegativeButton(getString(R.string.dialog_button_no),((dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                    }))
                     .show();
-
 
     }catch (RestClientException ex){
         Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();

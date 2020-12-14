@@ -25,6 +25,7 @@ import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.student.StudentFormActivity_;
 import com.example.studentrelief.ui.student.StudentPanelActivity_;
 import com.example.studentrelief.ui.volunteer.VolunteerPanelActivity_;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
@@ -38,7 +39,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends AppCompatActivity {
@@ -110,18 +110,13 @@ public class LoginActivity extends AppCompatActivity {
 
     @UiThread
     void onAuthenticationFailure() {
-        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Error?")
-                .setContentText("Invalid user name or password!")
-                .setConfirmText("Ok")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
 
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_login_failed))
+                .setMessage(getString(R.string.dialog_message_login_failed))
+                .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }))
                 .show();
         loadingProgressBar.setVisibility(View.GONE);
     }

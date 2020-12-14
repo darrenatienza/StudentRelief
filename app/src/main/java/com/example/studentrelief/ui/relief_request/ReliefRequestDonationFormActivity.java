@@ -16,13 +16,12 @@ import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.ReliefRequestDonationModel;
 import com.example.studentrelief.services.model.StudentModel;
-import com.example.studentrelief.ui.dialogs.DatePickerFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemSelect;
@@ -36,7 +35,6 @@ import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 /**shows the form for updating or adding the donations for every relief request list */
 @OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_relief_request_donation_form)
@@ -132,42 +130,22 @@ public class ReliefRequestDonationFormActivity extends AppCompatActivity{
 
 
 
-    @Click(R.id.etDate)
-    void imgCalendar(){
-        DatePickerFragment mDatePickerDialogFragment;
-        mDatePickerDialogFragment = new DatePickerFragment();
-        mDatePickerDialogFragment.show(getSupportFragmentManager(), "DATE PICK");
-    }
+
 
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
-        try {
             final int currentQuantity = Integer.parseInt( etQuantity.getText().toString());
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Are you sure?")
-                    .setContentText("Won't be able to recover this record!")
-                    .setConfirmText("Yes,delete it!")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            delete(currentQuantity);
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .show();
-
-
-        }catch (RestClientException ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_delete))
+                .setMessage(getString(R.string.dialog_message_delete))
+                .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                    delete(currentQuantity);
+                    dialogInterface.dismiss();
+                }))
+                .setNegativeButton(getString(R.string.dialog_button_no),((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }))
+                .show();
 
     }
 

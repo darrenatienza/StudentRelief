@@ -1,37 +1,23 @@
 package com.example.studentrelief.ui.relief_task;
 
-import android.app.DatePickerDialog;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.interfaces.DonationClient;
-import com.example.studentrelief.services.interfaces.DonnerClient;
-import com.example.studentrelief.services.interfaces.DonnerDonationClient;
 import com.example.studentrelief.services.interfaces.ReliefTaskClient;
-import com.example.studentrelief.services.model.DonationModel;
-import com.example.studentrelief.services.model.DonnerDonationModel;
-import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
-import com.example.studentrelief.ui.dialogs.DatePickerFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ItemSelect;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
@@ -40,12 +26,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 @OptionsMenu(R.menu.menu_form)
 @EActivity(R.layout.activity_relief_task_form)
 public class ReliefTaskFormActivity extends AppCompatActivity{
@@ -128,23 +108,16 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
         try {
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Are you sure?")
-                    .setContentText("Won't be able to recover this record!")
-                    .setConfirmText("Yes,delete it!")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            delete();
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(getString(R.string.dialog_title_delete))
+                    .setMessage(getString(R.string.dialog_message_delete))
+                    .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                        delete();
+                        dialogInterface.dismiss();
+                    }))
+                    .setNegativeButton(getString(R.string.dialog_button_no),((dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                    }))
                     .show();
 
 

@@ -21,6 +21,7 @@ import com.example.studentrelief.ui.misc.DateFormatter;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -45,7 +46,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 @EActivity(R.layout.activity_donner_donation_form)
 @OptionsMenu(R.menu.menu_donner_donation_form)
@@ -238,24 +239,19 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
 
     @OptionsItem(R.id.action_upload)
     void uploadQuantity(){
-        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Are you sure?")
-                .setContentText("Won't be able to modify or remove this record after uploading the quantity.")
-                .setConfirmText("Yes,upload it!")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        uploadQuantityAsync();
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-                .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_upload_quantity))
+                .setMessage(getString(R.string.dialog_message_upload_message))
+                .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                    uploadQuantityAsync();
+                    dialogInterface.dismiss();
+                }))
+                .setNegativeButton(getString(R.string.dialog_button_no),((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }))
                 .show();
+
     }
 
 
@@ -264,32 +260,19 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
 
     @OptionsItem(R.id.action_delete)
     void btnDelete(){
-        try {
-            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("Are you sure?")
-                    .setContentText("Won't be able to recover this record!")
-                    .setConfirmText("Yes,delete it!")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            delete();
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                    .show();
 
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_delete))
+                .setMessage(getString(R.string.dialog_message_delete))
+                .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                    delete();
+                    dialogInterface.dismiss();
+                }))
+                .setNegativeButton(getString(R.string.dialog_button_no),((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }))
+                .show();
 
-        }catch (RestClientException ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }catch (Exception ex){
-            Toast.makeText(this,ex.getMessage(),Toast.LENGTH_SHORT).show();
-        }
 
     }
 

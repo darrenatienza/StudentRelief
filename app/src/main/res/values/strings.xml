@@ -128,4 +128,15 @@
     <string name="dialog_title_success">Successful</string>
     <string name="dialog_message_request_donation">Your new relief request has been submitted!</string>
     <string name="dialog_button_positive">OK</string>
+    <string name="dialog_button_yes">Yes</string>
+    <string name="dialog_button_no">No</string>
+    <string name="dialog_title_upload_quantity">Upload Quantity</string>
+    <string name="dialog_message_upload_message">After this, you won\'t be able to modify or remove this record after uploading the quantity.</string>
+    <string name="dialog_message_upload_not_applicable">The quantity of this donation was uploaded to donation\'s record. Your not allow to do any further.</string>
+    <string name="dialog_title_login_failed">Authentication Failure</string>
+    <string name="dialog_message_login_failed">Username or Password Invalid</string>
+    <string name="dialog_message_relief_task_not_active">This record is not active. Your not allow to do any further.</string>
+    <string name="dialog_title_relief_task_edit">Edit Relief Task</string>
+    <string name="dialog_title_student_relief_request">New Relief Request</string>
+    <string name="dialog_message_student_relief_request">You must be a resident of the listed area\'s to be qualify for receiving relief.</string>
 </resources>

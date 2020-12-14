@@ -19,6 +19,7 @@ import com.example.studentrelief.ui.misc.ItemClickSupport;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.AfterViews;
@@ -33,8 +34,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 @EFragment(R.layout.fragment_relief_task_list)
@@ -112,17 +111,13 @@ public class ReliefTaskListFragment extends Fragment {
 
     @UiThread
     void showNotApplicableForEditMessage() {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Oops!")
-                .setContentText("This record is not active. Your not allow to do any further.")
-                .setConfirmText("OK")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
 
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getString(R.string.dialog_title_relief_task_edit))
+                .setMessage(getString(R.string.dialog_message_relief_task_not_active))
+                .setPositiveButton(getString(R.string.dialog_button_positive),((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }))
                 .show();
     }
 

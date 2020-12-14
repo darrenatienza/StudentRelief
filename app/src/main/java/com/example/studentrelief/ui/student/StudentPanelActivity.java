@@ -18,7 +18,6 @@ import com.example.studentrelief.services.interfaces.ReliefTaskClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.model.JsonArrayHolder;
-import com.example.studentrelief.services.model.ReliefRequestCountModel;
 import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.StudentModel;
@@ -48,8 +47,6 @@ import org.springframework.web.client.RestClientException;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.example.studentrelief.ui.student.StudentListFragment.SHOW_FORM;
 
@@ -231,29 +228,20 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     }
 
     void validateItemForReliefRequest(final ReliefTaskModel model) {
-
-        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Are you sure?")
-                .setContentText("You must be a resident of the "+ model.getAffected_areas() +
-                        " to be qualify for receiving relief.")
-                .setConfirmText("Yes,I am qualify.")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        ReliefRequestModel _model = new ReliefRequestModel();
-                        _model.setStudent_id(studentID);
-                        _model.setRelief_task_id(model.getRelief_task_id());
-                        _model.setReleased(false);
-                        addNewReliefRequest(_model);
-                        sDialog.dismissWithAnimation();
-                    }
-                })
-                .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                })
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title_student_relief_request))
+                .setMessage(getString(R.string.dialog_message_student_relief_request))
+                .setPositiveButton(getString(R.string.dialog_button_yes),((dialogInterface, i) -> {
+                    ReliefRequestModel _model = new ReliefRequestModel();
+                    _model.setStudent_id(studentID);
+                    _model.setRelief_task_id(model.getRelief_task_id());
+                    _model.setReleased(false);
+                    addNewReliefRequest(_model);
+                    dialogInterface.dismiss();
+                }))
+                .setNegativeButton(getString(R.string.dialog_button_no),((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                }))
                 .show();
 
     }
