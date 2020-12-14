@@ -44,7 +44,7 @@ public class StudentFormActivity extends AppCompatActivity {
     @RestService
     UserClient userClient;
     @Extra
-    int id;
+    int studentID;
     @Extra
     int userID;
     @ViewById
@@ -86,7 +86,7 @@ public class StudentFormActivity extends AppCompatActivity {
     @AfterTextChange(R.id.etSrCode)
     void srCodeAfterTextChange(TextView et){
             String value = et.getText().toString();
-            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(studentID == 0? View.VISIBLE : View.GONE);
             validSrCode = !value.isEmpty() ? true : false;
             et.setError(value.isEmpty() ? "Required" : null);
             // validation for registration of new student
@@ -166,7 +166,7 @@ public class StudentFormActivity extends AppCompatActivity {
                 studentModel.setContact_number(contactNumber);
                 studentModel.setCampus(campus);
                 studentModel.setCourse(course);
-                if(id == 0){
+                if(studentID == 0){
                     userModel.setUsername(srCode);
                     userModel.setPassword(srCode);
                     userModel.setActive(false);
@@ -214,8 +214,8 @@ public class StudentFormActivity extends AppCompatActivity {
     }
     @Background
     void delete() {
-        if (id > 0){
-            studentClient.delete(id);
+        if (studentID > 0){
+            studentClient.delete(studentID);
 
         }
         updateUIAfterSave();
@@ -224,8 +224,8 @@ public class StudentFormActivity extends AppCompatActivity {
     @Background
     void save(){
         try {
-            if (id > 0){
-                studentClient.edit(id, studentModel);
+            if (studentID > 0){
+                studentClient.edit(studentID, studentModel);
 
             }else{
                 userID = userClient.add(userModel);
@@ -269,8 +269,9 @@ public class StudentFormActivity extends AppCompatActivity {
         try{
             setSupportActionBar(toolbar);
             initAuthCookies();
-            if(id > 0){
+            if(studentID > 0){
                 etSrCode.setEnabled(false);
+
                 getFormData();
 
             }else{
@@ -311,11 +312,11 @@ public class StudentFormActivity extends AppCompatActivity {
                 })
                 .show();
     }
-    @Background
+    @Background(serial = "sequence1")
     void getFormData() {
         try{
-            if (id > 0){
-                studentModel = studentClient.get(id);
+            if (studentID > 0){
+                studentModel = studentClient.get(studentID);
                 updateUIFormData(studentModel);
             }
             if(userID > 0){

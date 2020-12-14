@@ -154,7 +154,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     //handles click menu
     @OptionsItem(R.id.action_edit)
     void menuPanel(){
-       StudentFormActivity_.intent(this).id(studentID).userID(userID).startForResult(SHOW_FORM);
+       StudentFormActivity_.intent(this).studentID(studentID).userID(userID).startForResult(SHOW_FORM);
     }
     @OptionsItem(R.id.action_logout)
     void menuLogout(){
