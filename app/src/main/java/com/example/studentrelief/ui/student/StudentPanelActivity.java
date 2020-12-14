@@ -360,14 +360,20 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 /** New models (modified model) must be pass not the original models*/
                 updateList(models);
             }
+            hideRequestDonationText();
 
         }catch (RestClientException e){
            showErrorAlert(e.getMessage());
         }
     }
     @UiThread
-    void updateList(List<ReliefTaskModel> models) {
+    void hideRequestDonationText() {
         textViewPendingReliefRequest.setVisibility(View.GONE);
+    }
+
+    @UiThread
+    void updateList(List<ReliefTaskModel> models) {
+
         adapter.setList(models,this);
         adapter.notifyDataSetChanged();
     }
