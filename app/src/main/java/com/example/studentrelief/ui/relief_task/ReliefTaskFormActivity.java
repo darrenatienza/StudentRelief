@@ -1,5 +1,6 @@
 package com.example.studentrelief.ui.relief_task;
 
+import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -34,7 +36,7 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
     ReliefTaskClient client;
 
     @Extra
-    int id;
+    int reliefTaskID;
 
     @ViewById
     Toolbar toolbar;
@@ -69,7 +71,7 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
         try{
             initAuthCookies();
             setSupportActionBar(toolbar);
-            if(id > 0){
+            if(reliefTaskID > 0){
                 getFormData();
 
             }else{
@@ -82,7 +84,13 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
 
 
     }
+    @OptionsMenuItem(R.id.action_delete)
+    void onShowActionDelete(MenuItem menuItem){
+        if(reliefTaskID == 0){
+            menuItem.setVisible(false);
+        }
 
+    }
     /** UI Actions */
     @OptionsItem(R.id.action_save)
     void btnSave(){
@@ -135,15 +143,15 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
 
     @Background
     void getFormData() {
-        if (id > 0){
-            reliefTaskModel = client.get(id);
+        if (reliefTaskID > 0){
+            reliefTaskModel = client.get(reliefTaskID);
             updateUIFormData(reliefTaskModel);
         }
     }
     @Background
     void saveAsync(ReliefTaskModel model){
-        if (id > 0){
-            client.edit(id,model);
+        if (reliefTaskID > 0){
+            client.edit(reliefTaskID,model);
         }else{
             client.addNew(model);
         }
@@ -152,8 +160,8 @@ public class ReliefTaskFormActivity extends AppCompatActivity{
     }
     @Background
     void delete() {
-        if (id > 0){
-            client.delete(id);
+        if (reliefTaskID > 0){
+            client.delete(reliefTaskID);
         }
         updateUIAfterSave();
     }

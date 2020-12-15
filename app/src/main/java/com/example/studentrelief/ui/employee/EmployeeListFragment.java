@@ -133,7 +133,7 @@ public class EmployeeListFragment extends Fragment {
         }
     }
     @UiThread()
-    void showActionDialog(int userID, int volunteerID, String[] actions) {
+    void showActionDialog(int userID, int employeeID, String[] actions) {
 
 
         new MaterialAlertDialogBuilder(getActivity())
@@ -141,7 +141,7 @@ public class EmployeeListFragment extends Fragment {
                 .setItems(actions, (dialog, which) -> {
                     switch (which){
                         case 0:
-                            showForm(volunteerID);
+                            showForm(employeeID);
                             break;
                         case 1:
                             String value = actions[1];
@@ -242,10 +242,10 @@ public class EmployeeListFragment extends Fragment {
             showError(e.getMessage());
         }
     }
-    private void showForm(int id) {
+    private void showForm(int employeeID) {
 
         Bundle bundle = new Bundle();
-        bundle.putInt("employeeID", id);
+        bundle.putInt("employeeID", employeeID);
         NavHostFragment.findNavController(EmployeeListFragment.this)
                 .navigate(R.id.action_fragment_employee_list_to_fragment_employee_form,bundle);
 

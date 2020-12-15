@@ -102,6 +102,7 @@
     <string name="notification_success_user_account_deactivated">User Account has been de activated!</string>
     <string name="dialog_title_password_reset">Reset Password</string>
     <string name="dialog_message_password_reset">Please input your new password</string>
+    <string name="dialog_message_password_default_reset">Do you want to reset password for this account?</string>
     <string name="notification_success_password_reset">Password has been reset successfully!</string>
     <string name="menu_employee">Employee Records</string>
     <string name="dialog_title_delete">Delete Record</string>
@@ -139,4 +140,8 @@
     <string name="dialog_title_relief_task_edit">Edit Relief Task</string>
     <string name="dialog_title_student_relief_request">New Relief Request</string>
     <string name="dialog_message_student_relief_request">You must be a resident of the listed area\'s to be qualify for receiving relief.</string>
+    <string name="dialog_title_user_activate">Activate user account</string>
+    <string name="dialog_message_activate_user">Do you want to activate this user account?</string>
+    <string name="dialog_message_deactivate_user">Do you want to deactivate this user account?</string>
+    <string name="dialog_title_user_deactivate">Deactivate user account</string>
 </resources>

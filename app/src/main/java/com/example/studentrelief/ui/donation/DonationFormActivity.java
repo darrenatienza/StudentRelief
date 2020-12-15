@@ -1,5 +1,6 @@
 package com.example.studentrelief.ui.donation;
 
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -35,7 +37,7 @@ public class DonationFormActivity extends AppCompatActivity {
     DonationClient client;
 
     @Extra
-    int id;
+    int donationID;
 
     @ViewById
     Toolbar toolbar;
@@ -64,13 +66,20 @@ public class DonationFormActivity extends AppCompatActivity {
             String fullName = etName.getText().toString();
             model.setName(fullName);
             // always 0 for new record
-            if(id == 0){
+            if(donationID == 0){
                 model.setQuantity(0);
             }
 
             save(model);
 
 
+
+    }
+    @OptionsMenuItem(R.id.action_delete)
+    void onShowActionDelete(MenuItem menuItem){
+        if(donationID == 0){
+            menuItem.setVisible(false);
+        }
 
     }
     @OptionsItem(R.id.action_delete)
@@ -91,8 +100,8 @@ public class DonationFormActivity extends AppCompatActivity {
     @Background
     void delete() {
         try{
-            if (id > 0){
-                client.delete(id);
+            if (donationID > 0){
+                client.delete(donationID);
             }
             updateUIAfterSave();
         }catch (RestClientException e){
@@ -108,8 +117,8 @@ public class DonationFormActivity extends AppCompatActivity {
     @Background
     void save(DonationModel model){
         try {
-        if (id > 0){
-            client.edit(id,model);
+        if (donationID > 0){
+            client.edit(donationID,model);
         }else{
             client.addNew(model);
         }
@@ -133,7 +142,7 @@ public class DonationFormActivity extends AppCompatActivity {
         try{
             etQuantity.setEnabled(false);
             setSupportActionBar(toolbar);
-            if(id > 0){
+            if(donationID > 0){
                 getFormData();
 
             }else{
@@ -148,8 +157,8 @@ public class DonationFormActivity extends AppCompatActivity {
 
     @Background
     void getFormData() {
-        if (id > 0){
-            model   = client.get(id);
+        if (donationID > 0){
+            model   = client.get(donationID);
             updateUIFormData(model);
         }
     }

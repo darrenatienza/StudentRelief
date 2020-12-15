@@ -60,6 +60,7 @@ public class VolunteerListFragment extends Fragment {
 
     @Pref
     MyPrefs_ myPrefs;
+    private int userID;
 
     private void initAuthCookies() {
         String session = myPrefs.session().get();
@@ -106,7 +107,7 @@ public class VolunteerListFragment extends Fragment {
         try {
             VolunteerModel volunteerModel = client.get(volunteerID);
             if(volunteerModel != null){
-                int userID = volunteerModel.getUser_id();
+                userID = volunteerModel.getUser_id();
                 UserModel userModel = userClient.get(userID);
                 boolean active = userModel.isActive();
 
@@ -140,10 +141,10 @@ public class VolunteerListFragment extends Fragment {
                             String value = actions[1];
                             switch (value){
                                 case Constants.DIALOG_ACTION_DEACTIVATE_USER:
-                                    showDeActivateDialog(userID);
+                                   showActivateDialog(false);
                                     break;
                                 case Constants.DIALOG_ACTION_ACTIVATE_USER:
-                                    showActivateDialog(userID);
+                                    showActivateDialog(true);
                                     break;
                             }
                             break;
@@ -181,31 +182,25 @@ public class VolunteerListFragment extends Fragment {
             showError(ex.getMessage());
         }
     }
+    private void showActivateDialog(boolean activate) {
+        String dialogTitle = getResources().getString(activate ?
+                R.string.dialog_title_user_activate :
+                R.string.dialog_title_user_deactivate);
+        String dialogMessage = getString(activate
+                ? R.string.dialog_message_activate_user
+                :  R.string.dialog_message_deactivate_user);
 
-    private void showActivateDialog(int userID) {
         new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
-                .setMessage(getString(R.string.dialog_student_activate_content_text))
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    updateUserAccountActiveStateAsync(userID,true);
-
-                dialog.dismiss();})
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                .show();
-    }
-    private void showDeActivateDialog(int volunteerID) {
-        new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_deactivate_title))
-                .setMessage(getString(R.string.dialog_student_deactivate_content_text))
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    updateUserAccountActiveStateAsync(volunteerID, false);
-
+                .setTitle(dialogTitle)
+                .setMessage(dialogMessage)
+                .setPositiveButton(getString(R.string.dialog_button_yes), (dialog, which) -> {
+                    updateUserAccountActiveStateAsync(activate);
                     dialog.dismiss();})
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(getString(R.string.dialog_button_no), (dialog, which) -> dialog.dismiss())
                 .show();
     }
     @Background
-    void updateUserAccountActiveStateAsync(int userID, boolean active) {
+    void updateUserAccountActiveStateAsync(boolean active) {
         try{
                 UserModel userModel = userClient.get(userID);
                 userModel.setActive(active);

@@ -96,7 +96,7 @@ public class ReliefTaskListFragment extends Fragment {
     @UiThread
     void showFormDialog(int id) {
         /**TODO update this*/
-        ReliefTaskFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        ReliefTaskFormActivity_.intent(this).reliefTaskID(id).startForResult(SHOW_FORM);
     }
     @Background
     void validateItemForEdit(int id) {

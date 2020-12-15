@@ -161,7 +161,7 @@ public class StudentListFragment extends Fragment {
         View v = getLayoutInflater().inflate(R.layout.dialog_password, null);
         new MaterialAlertDialogBuilder(getActivity())
                 .setTitle(getResources().getString(R.string.dialog_title_password_reset))
-                .setMessage(getString(R.string.dialog_message_password_reset))
+                .setMessage(getString(R.string.dialog_message_password_default_reset))
                 .setPositiveButton("Yes", (dialog, which) -> {
                     resetPasswordAsync(userID);
                     dialog.dismiss();})
@@ -208,13 +208,20 @@ public class StudentListFragment extends Fragment {
     }
 
     private void showActivateDialog(boolean activate) {
+        String dialogTitle = getResources().getString(activate ?
+                R.string.dialog_title_user_activate :
+                R.string.dialog_title_user_deactivate);
+        String dialogMessage = getString(activate
+                ? R.string.dialog_message_activate_user
+                :  R.string.dialog_message_deactivate_user);
+
         new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
-                .setMessage(getString(R.string.dialog_student_activate_content_text))
-                .setPositiveButton("Yes", (dialog, which) -> {
+                .setTitle(dialogTitle)
+                .setMessage(dialogMessage)
+                .setPositiveButton(getString(R.string.dialog_button_yes), (dialog, which) -> {
                     updateUserAccountActiveStateAsync(activate);
                     dialog.dismiss();})
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(getString(R.string.dialog_button_no), (dialog, which) -> dialog.dismiss())
                 .show();
     }
 

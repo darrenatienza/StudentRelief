@@ -1,6 +1,7 @@
 package com.example.studentrelief.ui.donner;
 
 
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -41,7 +43,7 @@ public class DonnerFormActivity extends AppCompatActivity {
 
 
     @Extra
-    int id;
+    int donnerID;
 
 
     @ViewById
@@ -76,7 +78,7 @@ public class DonnerFormActivity extends AppCompatActivity {
             /**Todo: remove delete while adding*/
             initAuthCookies();
             setSupportActionBar(toolbar);
-            if(id > 0) {
+            if(donnerID > 0) {
                 getFormData();
             }else{
                 model = new AddEditDonnerModel();
@@ -85,6 +87,13 @@ public class DonnerFormActivity extends AppCompatActivity {
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
 
+
+    }
+    @OptionsMenuItem(R.id.action_delete)
+    void onShowActionDelete(MenuItem menuItem){
+        if(donnerID == 0){
+            menuItem.setVisible(false);
+        }
 
     }
     @AfterTextChange(R.id.etFullName)
@@ -156,8 +165,8 @@ public class DonnerFormActivity extends AppCompatActivity {
     }
     @Background
     void delete() {
-        if (id > 0){
-            donnerClient.delete(id);
+        if (donnerID > 0){
+            donnerClient.delete(donnerID);
 
         }
         updateUIAfterSave();
@@ -165,8 +174,8 @@ public class DonnerFormActivity extends AppCompatActivity {
 
     @Background
     void save(AddEditDonnerModel model){
-            if (id > 0){
-                donnerClient.edit(id,model);
+            if (donnerID > 0){
+                donnerClient.edit(donnerID,model);
             }else{
                 donnerClient.addNew(model);
             }
@@ -183,8 +192,8 @@ public class DonnerFormActivity extends AppCompatActivity {
 
     @Background
     void getFormData() {
-        if (id > 0){
-            model   = donnerClient.getDonner(id);
+        if (donnerID > 0){
+            model   = donnerClient.getDonner(donnerID);
             updateUIFormData(model);
         }
     }
