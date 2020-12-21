@@ -39,7 +39,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //need to make project for updating changes
-            //buildConfigField "String", "BASE_URL",
+            buildConfigField "String", 'BASE_URL', "\"https://batstateu-relief.000webhostapp.com/api.php\""
         }
         /**
          * The `initWith` property allows you to copy configurations from other build types,
@@ -58,6 +58,12 @@ android {
             // special url for user end point
             buildConfigField "String", 'USER_URL', "\"http://192.168.43.214/student-relief-api/user.php\""
             buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214/student-relief-api/api.php\""
+
+        }
+        staging{
+            initWith debug
+            // special url for user end point
+            buildConfigField "String", 'BASE_URL', "\"https://batstateu-relief.000webhostapp.com/api.php\""
 
         }
         homelan{

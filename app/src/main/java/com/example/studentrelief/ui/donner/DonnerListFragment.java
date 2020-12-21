@@ -1,14 +1,13 @@
 package com.example.studentrelief.ui.donner;
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.DonnerClient;
@@ -16,7 +15,6 @@ import com.example.studentrelief.services.model.DonnerModel;
 import com.example.studentrelief.ui.adapters.DonnerAdapter;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.ItemClickSupport;
-import com.example.studentrelief.ui.misc.MyPrefs;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.SimpleDividerItemDecoration;
 import com.example.studentrelief.ui.misc.VerticalSpaceItemDecoration;
@@ -35,8 +33,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
-
-import static android.widget.Toast.makeText;
 
 
 @EFragment(R.layout.fragment_donner_list)
@@ -95,7 +91,7 @@ public class DonnerListFragment extends Fragment {
     }
 
     private void showFormDialog(int id) {
-        DonnerFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        DonnerFormActivity_.intent(this).donnerID(id).startForResult(SHOW_FORM);
     }
 
     @Background

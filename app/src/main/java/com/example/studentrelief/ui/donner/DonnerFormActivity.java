@@ -174,12 +174,16 @@ public class DonnerFormActivity extends AppCompatActivity {
 
     @Background
     void save(AddEditDonnerModel model){
+        try {
             if (donnerID > 0){
                 donnerClient.edit(donnerID,model);
             }else{
                 donnerClient.addNew(model);
             }
             updateUIAfterSave();
+        }catch (RestClientException ex){
+           showError(ex.getMessage());
+        }
 
     }
     @UiThread
