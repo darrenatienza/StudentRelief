@@ -39,7 +39,6 @@
             android:id="@+id/tvStudentAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvCode"
             android:layout_marginTop="8dp"
             android:text="Address"
 
@@ -52,7 +51,6 @@
             android:id="@+id/tvStudentContactNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvAddress"
             android:layout_marginTop="8dp"
             android:text="Contact Number"
 
@@ -64,7 +62,6 @@
             android:id="@+id/tvStudentCampus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvContactNumber"
 
             android:layout_marginTop="8dp"
             android:text="Campus"

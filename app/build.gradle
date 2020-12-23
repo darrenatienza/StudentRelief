@@ -12,6 +12,14 @@ dependencies {
 
 }
 android {
+    signingConfigs {
+        release {
+            storeFile file(var)
+            storePassword '02425darren'
+            keyAlias 'upload'
+            keyPassword 'darren02425'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
@@ -39,7 +47,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //need to make project for updating changes
-            buildConfigField "String", 'BASE_URL', "\"https://batstateu-relief.000webhostapp.com/api.php\""
+            buildConfigField "String", 'BASE_URL', "\"http://spartan-arms.online/api.php\""
+            signingConfig signingConfigs.release
         }
         /**
          * The `initWith` property allows you to copy configurations from other build types,

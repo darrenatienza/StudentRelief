@@ -96,8 +96,7 @@ public class StudentFormActivity extends AppCompatActivity {
     @Background
     void checkSrCodeIfExists(String value) {
         try{
-            boolean isEmpty = studentClient.getBySrCode(value).isEmpty();
-            validSrCode = !isEmpty;
+            validSrCode = studentClient.getBySrCode(value).isEmpty();
             updateUIAfterSrCodeValidated();
         }catch (RestClientException ex){
             Log.e("Error",ex.getMessage());
@@ -109,7 +108,7 @@ public class StudentFormActivity extends AppCompatActivity {
     }
     @UiThread
     void updateUIAfterSrCodeValidated() {
-        etSrCode.setError(validSrCode ? "Already Exists" : null);
+        etSrCode.setError(!validSrCode ? "Already Exists" : null);
         progressBar.setVisibility(View.GONE);
     }
 
