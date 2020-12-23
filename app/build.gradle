@@ -63,7 +63,7 @@ android {
         staging{
             initWith debug
             // special url for user end point
-            buildConfigField "String", 'BASE_URL', "\"https://batstateu-relief.000webhostapp.com/api.php\""
+            buildConfigField "String", 'BASE_URL', "\"http://spartan-arms.online/api.php\""
 
         }
         homelan{
