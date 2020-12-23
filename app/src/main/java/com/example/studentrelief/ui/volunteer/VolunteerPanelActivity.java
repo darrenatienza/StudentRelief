@@ -17,6 +17,7 @@ import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.ReliefTaskClient;
 import com.example.studentrelief.services.interfaces.UserClient;
 import com.example.studentrelief.services.interfaces.VolunteerClient;
+import com.example.studentrelief.services.model.JsonArrayHolder;
 import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.services.model.VolunteerModel;
@@ -121,7 +122,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
         DialogFragment d = ChangePasswordDialogFragment.newInstance(userID);
         d.show(getSupportFragmentManager(),"changepassword");
     }
-    @Background
+    @Background(serial = "sequence1")
     void getUserData() {
         try{
             UserModel userModel = userClient.get(userID);
@@ -135,10 +136,19 @@ public class VolunteerPanelActivity extends AppCompatActivity {
     void loadAllList() {
         try {
             /** Model is modified to provide values on other fields*/
-            List<ReliefTaskModel> models = reliefTaskClient.getAll("").getRecords();
+            JsonArrayHolder<ReliefTaskModel> reliefTaskModelJsonArrayHolder = reliefTaskClient.getAll("");
+            boolean hasEmptyReliefTask = reliefTaskModelJsonArrayHolder.isEmpty();
+            if(!hasEmptyReliefTask){
+                List<ReliefTaskModel> models = reliefTaskClient.getAll("").getRecords();
+                /** New models (modified model) must be pass not the original models*/
+                updateList(models);
+            }else{
+                showError("No Relief Tasks found!");
+            }
 
-            /** New models (modified model) must be pass not the original models*/
-            updateList(models);
+
+
+
         }catch (RestClientException e){
             showError(e.getMessage());
         }
@@ -163,7 +173,7 @@ public class VolunteerPanelActivity extends AppCompatActivity {
             loadAllList();
         }
     }
-    @Background
+    @Background(serial = "sequence1")
     void getVolunteerFormData() {
         try{
             if (userID > 0){
