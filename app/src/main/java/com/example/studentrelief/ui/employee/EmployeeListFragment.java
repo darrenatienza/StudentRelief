@@ -124,7 +124,7 @@ public class EmployeeListFragment extends Fragment {
                 showActionDialog(employeeUserID,employeeID,actions);
 
             }else{
-                showError("Volunteer not found!");
+                showError("Employee not found!");
             }
         }catch (RestClientException ex){
             showError(ex.getMessage());
@@ -188,7 +188,7 @@ public class EmployeeListFragment extends Fragment {
         View v = getLayoutInflater().inflate(R.layout.dialog_password, null);
         new MaterialAlertDialogBuilder(getActivity())
                 .setTitle(getResources().getString(R.string.dialog_title_password_reset))
-                .setMessage(getString(R.string.dialog_message_password_reset))
+                .setMessage(getString(R.string.dialog_message_password_default_reset))
                 .setPositiveButton("Yes", (dialog, which) -> {
                     resetPasswordAsync(userID);
                     dialog.dismiss();})
