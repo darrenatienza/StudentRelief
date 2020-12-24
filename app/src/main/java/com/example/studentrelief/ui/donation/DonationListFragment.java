@@ -91,7 +91,7 @@ public class DonationListFragment extends Fragment {
     }
 
     private void showFormDialog(int id) {
-        DonationFormActivity_.intent(this).extra("id",id).startForResult(SHOW_FORM);
+        DonationFormActivity_.intent(this).donationID(id).startForResult(SHOW_FORM);
     }
 
     @Background
