@@ -175,8 +175,8 @@ public class EmployeeListFragment extends Fragment {
 
     private void showActivateDialog(int userID) {
         new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
-                .setMessage(getString(R.string.dialog_student_activate_content_text))
+                .setTitle(getResources().getString(R.string.dialog_title_user_activate))
+                .setMessage(getString(R.string.dialog_message_activate_user))
                 .setPositiveButton("Yes", (dialog, which) -> {
                     updateUserAccountActiveStateAsync(userID,true);
 
@@ -216,8 +216,8 @@ public class EmployeeListFragment extends Fragment {
     }
     private void showDeActivateDialog(int volunteerID) {
         new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_deactivate_title))
-                .setMessage(getString(R.string.dialog_student_deactivate_content_text))
+                .setTitle(getResources().getString(R.string.dialog_title_user_deactivate))
+                .setMessage(getString(R.string.dialog_message_deactivate_user))
                 .setPositiveButton("Yes", (dialog, which) -> {
                     updateUserAccountActiveStateAsync(volunteerID, false);
 

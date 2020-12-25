@@ -6,7 +6,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.studentrelief.R;
-import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.services.model.EmployeeModel;
 
 import org.androidannotations.annotations.EViewGroup;
@@ -19,8 +18,8 @@ public class EmployeeItemView extends RelativeLayout {
     TextView tvID;
     @ViewById(R.id.tv_fullname)
     TextView tvFullName;
-    @ViewById(R.id.tv_address)
-    TextView tvAddress;
+    @ViewById(R.id.textView_Address)
+    TextView textViewAddress;
 
     @ViewById(R.id.tv_contactNumber)
     TextView tvContactNumber;
@@ -39,6 +38,7 @@ public class EmployeeItemView extends RelativeLayout {
         tvFullName.setText(model.getFull_name());
         tvContactNumber.setText( model.getContact_number());
         tvPosition.setText(model.getPosition());
+        textViewAddress.setText(model.getAddress());
         imgAlert.setVisibility(model.isActive() ?INVISIBLE: VISIBLE);
     }
 }
