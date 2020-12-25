@@ -53,7 +53,7 @@ import java.util.TimeZone;
 public class DonnerDonationFormActivity extends AppCompatActivity{
 
     @RestService
-    DonnerDonationClient client;
+    DonnerDonationClient donnerDonationClient;
 
     @RestService
     DonnerClient donnerClient;
@@ -114,8 +114,9 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
         donnerClient.setCookie(name,session);
-        client.setCookie(name,session);
+        donnerDonationClient.setCookie(name,session);
         donationClient.setCookie(name,session);
+
     }
     @AfterViews
     void afterViews(){
@@ -125,9 +126,6 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
             initAuthCookies();
             initSettings();
             initDatePicker();
-
-
-
             setSupportActionBar(toolbar);
             loadDonnerListAsync();
             loadDonationListAsync();
@@ -286,7 +284,7 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
             // updates the quantity uploaded property of donners donations;
             donnerDonationModel.setQuantity_uploaded(true);
             // commit changes
-            client.edit(id, donnerDonationModel);
+            donnerDonationClient.edit(id, donnerDonationModel);
             donationClient.edit(donationModel.getDonation_id(),donationModel);
             updateUIAfterUploadQuantity();
         }catch (RestClientException e){
@@ -299,32 +297,32 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
-    @Background
+    @Background(serial = "init")
     void loadDonnerListAsync() {
         donnerModels = donnerClient.getAll("").getRecords();
         UpdateDonnerSpinnerUI(donnerModels);
     }
 
-    @Background
+    @Background(serial = "init")
     void loadDonationListAsync() {
         donationModels = donationClient.getAll("").getRecords();
         UpdateDonationSpinnerUI(donationModels);
     }
 
-    @Background
+    @Background(serial = "init")
     void getFormData() {
         if (id > 0){
             // get only the single record from view
-            donnerDonationModel = client.getByDonnersDonationID(id).getRecords().get(0);
+            donnerDonationModel = donnerDonationClient.getByDonnersDonationID(id).getRecords().get(0);
             updateUIFormData(donnerDonationModel);
         }
     }
     @Background
     void saveAsync(DonnerDonationModel model){
         if (id > 0){
-            client.edit(id,model);
+            donnerDonationClient.edit(id,model);
         }else{
-            client.addNew(model);
+            donnerDonationClient.addNew(model);
         }
         updateUIAfterSave();
 
@@ -332,7 +330,7 @@ public class DonnerDonationFormActivity extends AppCompatActivity{
     @Background
     void delete() {
         if (id > 0){
-            client.delete(id);
+            donnerDonationClient.delete(id);
         }
         updateUIAfterSave();
     }
