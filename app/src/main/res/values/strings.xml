@@ -144,4 +144,9 @@
     <string name="dialog_message_activate_user">Do you want to activate this user account?</string>
     <string name="dialog_message_deactivate_user">Do you want to deactivate this user account?</string>
     <string name="dialog_title_user_deactivate">Deactivate user account</string>
+    <string name="dialog_title_student_relief_suggestion">Please indicate the things you mostly needed.</string>
+    <string name="dialog_option_food">Foods</string>
+    <string name="dialog_option_clothes">Clothes</string>
+    <string name="dialog_option_temp_shelter">Temporary Shelter</string>
+    <string name="dialog_option_others">Others</string>
 </resources>
