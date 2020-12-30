@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.dialogs.ChangePasswordDialogFragment">
+    tools:context=".ui.dialogs.ReliefRequestSuggestionDialogFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -13,22 +13,22 @@
         android:layout_height="wrap_content">
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/checkBox_clothes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/dialog_option_clothes"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+            app:layout_constraintTop_toBottomOf="@+id/checkBox_food" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/checkBox_temp_shelter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/dialog_option_temp_shelter"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+            app:layout_constraintTop_toBottomOf="@+id/checkBox_clothes" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_cancel"
@@ -60,14 +60,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/dialog_title_size"
-            android:textStyle="bold"
+            android:textColor="@color/text_black"
             android:layout_marginTop="0dp"
             android:text="@string/dialog_title_student_relief_suggestion"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/checkBox_food"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -81,9 +81,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox2">
+            app:layout_constraintTop_toBottomOf="@+id/checkBox_temp_shelter">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText_others"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/dialog_option_others" />

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,14 +19,15 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.ReliefRequestClient;
 import com.example.studentrelief.services.interfaces.UserClient;
+import com.example.studentrelief.services.model.ReliefRequestModel;
 import com.example.studentrelief.services.model.UserModel;
-import com.example.studentrelief.services.model.user.ChangePasswordModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
@@ -48,25 +49,29 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
 
     @RestService
     UserClient userClient;
+    @RestService
+    ReliefRequestClient reliefRequestClient;
     @Pref
     MyPrefs_ myPrefs;
 
-    @ViewById(R.id.textInputEditText_new_password)
-    TextInputEditText textInputEditTextNewPassword;
-
-    @ViewById(R.id.textInputEditText_old_password)
-    TextInputEditText textInputEditTextOldPassword;
-
+    @ViewById(R.id.checkBox_clothes)
+    CheckBox checkBoxClothes;
+    @ViewById(R.id.checkBox_food)
+    CheckBox checkBoxFood;
+    @ViewById(R.id.checkBox_temp_shelter)
+    CheckBox checkboxTempShelter;
+    @ViewById(R.id.textInputEditText_others)
+    TextInputEditText textInputEditTextOthers;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_USER_ID= "userID";
-
+    private static final String ARG_STUDENT_ID= "studentID";
+    private static final String ARG_RELIEF_TASK_ID= "reliefTaskID";
 
     // TODO: Rename and change types of parameters
-    private int mUserID;
+    private int mStudentID;
     private UserModel mUserModel;
-    private boolean validNewPassword;
-    private boolean validoldPassword;
+    private int mReliefTaskID;
+
 
     public ReliefRequestSuggestionDialogFragment() {
         // Required empty public constructor
@@ -76,14 +81,15 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param userID Parameter 1.
+     * @param studentID Parameter 1.
      * @return A new instance of fragment ChangePasswordDialogFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReliefRequestSuggestionDialogFragment newInstance(int userID) {
+    public static ReliefRequestSuggestionDialogFragment newInstance(int studentID,int reliefTaskID) {
         ReliefRequestSuggestionDialogFragment fragment = new ReliefRequestSuggestionDialogFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_USER_ID, userID);
+        args.putInt(ARG_STUDENT_ID, studentID);
+        args.putInt(ARG_RELIEF_TASK_ID, reliefTaskID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,24 +103,24 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mUserID = getArguments().getInt(ARG_USER_ID);
+            mStudentID = getArguments().getInt(ARG_STUDENT_ID);
+            mReliefTaskID = getArguments().getInt(ARG_RELIEF_TASK_ID);
         }
     }
     private void initAuthCookies() {
         String session = myPrefs.session().get();
         String name = Constants.SESSION_NAME;
         userClient.setCookie(name,session);
+        reliefRequestClient.setCookie(name,session);
     }
 
     @AfterViews
     void afterViews(){
         try{
             initAuthCookies();
-            if(mUserID > 0){
-                getFormData();
-            }else{
+            if(mStudentID <= 0 && mReliefTaskID <= 0){
                 dismiss();
-                showError("No User selected!");
+                showError("No student or relief task selected!");
             }
         }catch (Exception ex){
 
@@ -127,7 +133,7 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
     @Background
     void getFormData() {
         try {
-            mUserModel = userClient.get(mUserID);
+            mUserModel = userClient.get(mStudentID);
         }catch (RestClientException e){
             showError(e.getMessage());
         }
@@ -146,38 +152,56 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
     @Background
     void save() {
         try {
-            if(validNewPassword && validoldPassword){
-                String oldPassword = textInputEditTextOldPassword.getText().toString();
-                String newPassword = textInputEditTextNewPassword.getText().toString();
-                ChangePasswordModel changePasswordModel = new ChangePasswordModel();
-                changePasswordModel.setUsername(mUserModel.getUsername());
-                changePasswordModel.setPassword(oldPassword);
-                changePasswordModel.setNewPassword(newPassword);
-                userClient.changePassword(changePasswordModel);
-                showSuccess("Password has been changed!");
-                dismiss();
-                getActivity().finish();
-            }else{
-                showError("Invalid password!");
-            }
+            //TODO: test for saving record
+            String donationRequests = "";
+            boolean hasClothes = checkBoxClothes.isChecked();
+            boolean hasFood = checkBoxFood.isChecked();
+            boolean hasTempShelter = checkboxTempShelter.isChecked();
+            boolean emptyOthers = textInputEditTextOthers.getText().toString().isEmpty();
+            String others = textInputEditTextOthers.getText().toString();
+            donationRequests = hasClothes ? "Clothes" + addSeparator(donationRequests) : donationRequests;
+            donationRequests = hasFood ? "Food" + addSeparator(donationRequests) : donationRequests;
+            donationRequests = hasTempShelter ? "Temporary Shelter" + addSeparator(donationRequests) : donationRequests;
+            donationRequests = !emptyOthers ? others : donationRequests;
+            ReliefRequestModel _model = new ReliefRequestModel();
+            _model.setStudent_id(mStudentID);
+            _model.setRelief_task_id(mReliefTaskID);
+            _model.setReleased(false);
+            _model.setDonation_requests(donationRequests);
+            addNewReliefRequest(_model);
+            dismiss();
 
         }catch (RestClientException e){
             showError(e.getMessage());
         }
     }
+    String addSeparator(String baseString){
+        return baseString.isEmpty() ? "" : ",";
+    }
+    @Background
+    void addNewReliefRequest(ReliefRequestModel model) {
+        try {
+            reliefRequestClient.addNew(model);
+            showReliefRequestSaveConfirmation();
+        }catch (RestClientException ex){
+            showError(ex.getMessage());
+        }
 
-    @AfterTextChange(R.id.textInputEditText_new_password)
-    void newPasswordAfterTextChanged(TextView et){
-        String value = et.getText().toString();
-        validNewPassword = !value.isEmpty() ? true : false;
-        et.setError(value.isEmpty() ? "Required" : null);
     }
-    @AfterTextChange(R.id.textInputEditText_old_password)
-    void oldPasswordAfterTextChanged(TextView et){
-        String value = et.getText().toString();
-        validoldPassword = !value.isEmpty() ? true : false;
-        et.setError(value.isEmpty() ? "Required" : null);
+    @UiThread
+    void showReliefRequestSaveConfirmation() {
+        new MaterialAlertDialogBuilder(getActivity())
+                .setTitle(getString(R.string.dialog_title_success))
+                .setMessage(getString(R.string.dialog_message_request_donation))
+                .setPositiveButton(getString(R.string.dialog_button_positive), ((dialog, which) -> {
+                    // check for pending request
+                    //checkForPendingReliefRequest();
+                    dialog.dismiss();
+                }))
+                .show();
     }
+
+
     @UiThread
      void showSuccess(String message) {
         Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();

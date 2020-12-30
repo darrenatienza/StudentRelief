@@ -284,12 +284,12 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                     donationRequests += "," + item;
                 }
             }
-            ReliefRequestModel _model = new ReliefRequestModel();
-            _model.setStudent_id(studentID);
-            _model.setRelief_task_id(reliefTaskID);
-            _model.setReleased(false);
-            _model.setDonation_requests(donationRequests);
-            addNewReliefRequest(_model);
+                ReliefRequestModel _model = new ReliefRequestModel();
+                _model.setStudent_id(studentID);
+                _model.setRelief_task_id(reliefTaskID);
+                _model.setReleased(false);
+                _model.setDonation_requests(donationRequests);
+                addNewReliefRequest(_model);
             dialog.dismiss();
         })
                 .setNegativeButton("Cancel", (dialog, which) -> {
