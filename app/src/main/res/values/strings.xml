@@ -144,9 +144,14 @@
     <string name="dialog_message_activate_user">Do you want to activate this user account?</string>
     <string name="dialog_message_deactivate_user">Do you want to deactivate this user account?</string>
     <string name="dialog_title_user_deactivate">Deactivate user account</string>
-    <string name="dialog_title_student_relief_suggestion">Please indicate the things you mostly needed.</string>
+    <string name="dialog_title_student_relief_suggestion">Please fill the form correctly.</string>
+    <string name="dialog_content1_student_relief_suggestion">Member of the family</string>
+    <string name="dialog_content2_student_relief_suggestion">Please indicate the things you mostly needed.</string>
     <string name="dialog_option_food">Foods</string>
     <string name="dialog_option_clothes">Clothes</string>
     <string name="dialog_option_temp_shelter">Temporary Shelter</string>
     <string name="dialog_option_others">Others</string>
+    <string name="dialog_option_member_family">Member of Family</string>
+    <string name="label_helper_member_family">Number of male and female, approximate age, etc. Please use comma (,) for multiple items.</string>
+    <string name="label_helper_others">Diapers, Hygiene kits, etc.  Please use comma (,) for multiple items.</string>
 </resources>

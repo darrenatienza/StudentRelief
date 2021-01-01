@@ -59,12 +59,26 @@
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/dialog_title_size"
-            android:textColor="@color/text_black"
-            android:layout_marginTop="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:text="@string/dialog_title_student_relief_suggestion"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/dialog_title_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/dialog_content2_student_relief_suggestion"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/dialog_title_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout1" />
 
         <CheckBox
             android:id="@+id/checkBox_food"
@@ -73,13 +87,32 @@
             android:layout_marginTop="8dp"
             android:text="@string/dialog_option_food"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:helperText="@string/label_helper_member_family"
+            app:helperTextTextColor="@android:color/holo_red_dark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText_member_family"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/dialog_option_member_family" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:helperText="@string/label_helper_others"
+            app:helperTextTextColor="@android:color/holo_red_dark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkBox_temp_shelter">
 

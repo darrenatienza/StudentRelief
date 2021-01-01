@@ -1,6 +1,11 @@
+/** remove all users record */
+
+delete from users where user_id > 0;
+
+
 /**Default admin user*/
 INSERT INTO relief.users (user_id, username, password, user_type, active, create_time_stamp) 
-VALUES(1,'admin', 'admin', 'admin' , 1, current_timestamp()) ON DUPLICATE KEY UPDATE    
+VALUES(1,'admin', '$2y$10$6W8O2Lxsv0U59/IqhdHkwurTgqNZw1ODbhIYweQSVWEmg0KgJm6sW', 'admin' , 1, current_timestamp()) ON DUPLICATE KEY UPDATE    
 username='admin', password='$2y$10$6W8O2Lxsv0U59/IqhdHkwurTgqNZw1ODbhIYweQSVWEmg0KgJm6sW', user_type='admin', active=1;
 
 /**Default admin employee user */
@@ -14,7 +19,7 @@ full_name= 'admin', address='', contact_number='',`position`='admin', user_id=1;
 INSERT INTO relief.users 
 	(user_id, username, password, user_type, active, create_time_stamp) 
 values
-	(2,'s', '$2y$10$K2tEQxN5vPDLRyL3g.7TsOgjjcKRPkQXrIklsh7Pk8LYQ5g/Zc3RW', 'student' , 1, current_timestamp()) 
+	(2,'1', '$2y$10$Td7e1pemJt97xiZqZm7FKeBosl57aHUlMSiGe54Wev7bwF07p44u.', 'student' , 1, current_timestamp()) 
 ON DUPLICATE KEY UPDATE    
 	username='1', 
 	password='$2y$10$292lUQ.wuAFaeAHUv28.GugtA9wBKFyHJrzciA/dOPMvTFk.JsJKO', 

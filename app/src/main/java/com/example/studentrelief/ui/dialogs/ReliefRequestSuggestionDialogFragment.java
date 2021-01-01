@@ -1,6 +1,7 @@
 package com.example.studentrelief.ui.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -62,12 +63,12 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
     CheckBox checkboxTempShelter;
     @ViewById(R.id.textInputEditText_others)
     TextInputEditText textInputEditTextOthers;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    @ViewById(R.id.textInputEditText_member_family)
+    TextInputEditText textInputEditTextMemberFamily;
+
     private static final String ARG_STUDENT_ID= "studentID";
     private static final String ARG_RELIEF_TASK_ID= "reliefTaskID";
 
-    // TODO: Rename and change types of parameters
     private int mStudentID;
     private UserModel mUserModel;
     private int mReliefTaskID;
@@ -77,6 +78,15 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
         // Required empty public constructor
     }
 
+
+    /* The activity that creates an instance of this dialog fragment must
+     * implement this interface in order to receive event callbacks.
+     * Each method passes the DialogFragment in case the host needs to query it. */
+    public interface ReliefRequestSuggestionDialogFragmentListener {
+        public void onDialogSaveClick(DialogFragment dialog);
+        //public void onDialogNegativeClick(DialogFragment dialog);
+    }
+    ReliefRequestSuggestionDialogFragmentListener listener;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -84,9 +94,9 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
      * @param studentID Parameter 1.
      * @return A new instance of fragment ChangePasswordDialogFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static ReliefRequestSuggestionDialogFragment newInstance(int studentID,int reliefTaskID) {
-        ReliefRequestSuggestionDialogFragment fragment = new ReliefRequestSuggestionDialogFragment();
+        ReliefRequestSuggestionDialogFragment fragment = new ReliefRequestSuggestionDialogFragment_();
         Bundle args = new Bundle();
         args.putInt(ARG_STUDENT_ID, studentID);
         args.putInt(ARG_RELIEF_TASK_ID, reliefTaskID);
@@ -149,34 +159,53 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
     void onSave(){
         save();
     }
-    @Background
     void save() {
         try {
-            //TODO: test for saving record
+
             String donationRequests = "";
             boolean hasClothes = checkBoxClothes.isChecked();
             boolean hasFood = checkBoxFood.isChecked();
             boolean hasTempShelter = checkboxTempShelter.isChecked();
             boolean emptyOthers = textInputEditTextOthers.getText().toString().isEmpty();
+            boolean emptyFamilyMember = textInputEditTextMemberFamily.getText().toString().isEmpty();
             String others = textInputEditTextOthers.getText().toString();
-            donationRequests = hasClothes ? "Clothes" + addSeparator(donationRequests) : donationRequests;
-            donationRequests = hasFood ? "Food" + addSeparator(donationRequests) : donationRequests;
-            donationRequests = hasTempShelter ? "Temporary Shelter" + addSeparator(donationRequests) : donationRequests;
-            donationRequests = !emptyOthers ? others : donationRequests;
+            String memberFamily = textInputEditTextMemberFamily.getText().toString();
+
+            donationRequests = !emptyFamilyMember
+                    ? donationRequests + "Family Member: " + memberFamily
+                        + addSeparator(hasFood || hasClothes || hasTempShelter || !emptyOthers)
+                    : donationRequests;
+            donationRequests = hasFood
+                    ? donationRequests +"Food"
+                        + addSeparator(hasClothes || hasTempShelter || !emptyOthers)
+                    : donationRequests;
+            donationRequests = hasClothes
+                    ?donationRequests + "Clothes"
+                        + addSeparator(hasTempShelter || !emptyOthers)
+                    : donationRequests;
+            donationRequests = hasTempShelter
+                    ? donationRequests + "Temporary Shelter"
+                        + addSeparator(!emptyOthers) : donationRequests;
+            donationRequests = !emptyOthers ? donationRequests + "Others: " + others
+                    : donationRequests;
+
             ReliefRequestModel _model = new ReliefRequestModel();
             _model.setStudent_id(mStudentID);
             _model.setRelief_task_id(mReliefTaskID);
             _model.setReleased(false);
             _model.setDonation_requests(donationRequests);
             addNewReliefRequest(_model);
-            dismiss();
-
         }catch (RestClientException e){
             showError(e.getMessage());
         }
     }
-    String addSeparator(String baseString){
-        return baseString.isEmpty() ? "" : ",";
+    @UiThread
+    void hide() {
+        dismiss();
+    }
+
+    String addSeparator(boolean hasNextValue){
+        return hasNextValue ? ", " : "";
     }
     @Background
     void addNewReliefRequest(ReliefRequestModel model) {
@@ -197,6 +226,8 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
                     // check for pending request
                     //checkForPendingReliefRequest();
                     dialog.dismiss();
+                    dismiss();
+                    listener.onDialogSaveClick(this);
                 }))
                 .show();
     }
@@ -224,11 +255,24 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
         Display display = window.getWindowManager().getDefaultDisplay();
         display.getSize(size);
         // Set the width of the dialog proportional to 75% of the screen width
-        window.setLayout((int) (size.x * 0.9), WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout((int) (size.x * 1), WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
         // Call super onResume after sizing
         super.onResume();
     }
-
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // Verify that the host activity implements the callback interface
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            listener = (ReliefRequestSuggestionDialogFragmentListener) context;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement ReliefRequestSuggestionDialogFragmentListener");
+        }
+    }
 
 }

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.example.studentrelief.services.model.ReliefTaskModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.ui.adapters.StudentReliefTaskAdapter;
+import com.example.studentrelief.ui.dialogs.ReliefRequestSuggestionDialogFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.example.studentrelief.ui.misc.RecyclerViewClickListener;
@@ -52,7 +54,7 @@ import static com.example.studentrelief.ui.student.StudentListFragment.SHOW_FORM
 
 @OptionsMenu(R.menu.menu_panel)
 @EActivity(R.layout.activity_student_panel)
-public class StudentPanelActivity extends AppCompatActivity implements RecyclerViewClickListener<ReliefTaskModel> {
+public class StudentPanelActivity extends AppCompatActivity implements RecyclerViewClickListener<ReliefTaskModel>, ReliefRequestSuggestionDialogFragment.ReliefRequestSuggestionDialogFragmentListener {
 
     @RestService
     StudentClient studentClient;
@@ -252,13 +254,21 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
                 .setMessage("You must be a resident one of the following affected areas. \n \n"
                         + model.getAffected_areas()).
                 setPositiveButton("Yes", (dialog, which) -> {
-                    validateItemForReliefRequest2(reliefTaskID);
+                    validateItemForReliefRequest3(reliefTaskID);
         })
                 .setNegativeButton("No", (dialog, which) -> {
                     dialog.dismiss();
                 })
                 .show();
     }
+
+    private void validateItemForReliefRequest3(int reliefTaskID) {
+        ReliefRequestSuggestionDialogFragment
+                .newInstance(studentID,reliefTaskID)
+                .show(getSupportFragmentManager(),"relief_task_suggestion");
+
+    }
+
     void validateItemForReliefRequest2(int reliefTaskID) {
         ArrayList<String> donationRequestList = new ArrayList<>();
 
@@ -379,5 +389,10 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     void onResult(int resultCode) {
         getFormData();
         Log.d("Result",String.valueOf(resultCode));
+    }
+
+    @Override
+    public void onDialogSaveClick(DialogFragment dialog) {
+        checkForPendingReliefRequest();
     }
 }

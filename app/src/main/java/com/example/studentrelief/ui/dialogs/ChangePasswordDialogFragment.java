@@ -57,12 +57,12 @@ public class ChangePasswordDialogFragment extends DialogFragment {
     @ViewById(R.id.textInputEditText_old_password)
     TextInputEditText textInputEditTextOldPassword;
 
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_USER_ID= "userID";
 
 
-    // TODO: Rename and change types of parameters
+
     private int mUserID;
     private UserModel mUserModel;
     private boolean validNewPassword;
@@ -79,7 +79,7 @@ public class ChangePasswordDialogFragment extends DialogFragment {
      * @param userID Parameter 1.
      * @return A new instance of fragment ChangePasswordDialogFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static ChangePasswordDialogFragment newInstance(int userID) {
         ChangePasswordDialogFragment fragment = new ChangePasswordDialogFragment_();
         Bundle args = new Bundle();
