@@ -160,7 +160,7 @@ public class VolunteerListFragment extends Fragment {
         View v = getLayoutInflater().inflate(R.layout.dialog_password, null);
         new MaterialAlertDialogBuilder(getActivity())
                 .setTitle(getResources().getString(R.string.dialog_title_password_reset))
-                .setMessage(getString(R.string.dialog_message_password_reset))
+                .setMessage(getString(R.string.dialog_message_password_default_reset))
                 .setPositiveButton("Yes", (dialog, which) -> {
                     resetPasswordAsync(userID);
                     dialog.dismiss();})
