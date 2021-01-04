@@ -131,7 +131,7 @@ public class VolunteerListFragment extends Fragment {
 
 
         new MaterialAlertDialogBuilder(getActivity())
-                .setTitle(getResources().getString(R.string.dialog_student_activate_title))
+                .setTitle(getResources().getString(R.string.dialog_title_select_your_action))
                 .setItems(actions, (dialog, which) -> {
                     switch (which){
                         case 0:
