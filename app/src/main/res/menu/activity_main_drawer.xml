@@ -39,6 +39,10 @@
             android:id="@+id/nav_employee"
             android:icon="@drawable/ic_baseline_people_24"
             android:title="@string/menu_employee" />
+        <item
+            android:id="@+id/nav_course"
+            android:icon="@drawable/ic_baseline_people_24"
+            android:title="@string/menu_course" />
 
     </group>
 </menu>

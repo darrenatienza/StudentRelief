@@ -67,7 +67,12 @@ ON DUPLICATE KEY UPDATE
 	user_type='volunteer', 
 	active=1;
 	
-INSERT INTO relief.volunteers
+INSERT into volunteers
 	(volunteer_id,full_name, address, contact_number, create_time_stamp, code, user_id)
 VALUES(1,'v', '', '', current_timestamp(), '', 3);
 
+INSERT INTO courses
+(course_id, title, create_time_stamp)
+VALUES(1,'BSIT', current_timestamp()) 
+ON DUPLICATE KEY update
+	title='BSIT';

@@ -47,4 +47,9 @@
         android:name="com.example.studentrelief.ui.employee.EmployeeFragment_"
         android:label="@string/menu_employee"
         tools:layout="@layout/fragment_employee" />
+    <fragment
+        android:id="@+id/nav_course"
+        android:name="com.example.studentrelief.ui.course.CourseListFragment_"
+        android:label="@string/menu_course"
+        tools:layout="@layout/fragment_course_list" />
 </navigation>
