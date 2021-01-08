@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.example.studentrelief.R;
 import com.example.studentrelief.services.interfaces.CourseClient;
 import com.example.studentrelief.services.model.CourseModel;
+import com.example.studentrelief.ui.employee.EmployeeListFragment;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 
@@ -36,8 +38,7 @@ public class CourseListFragment extends Fragment {
 
     @RestService
     CourseClient courseClient;
-
-    CourseListViewModel mViewModel;
+    private CourseListViewModel mViewModel;
 
 
     public void initAuthCookies() {
@@ -62,8 +63,10 @@ public class CourseListFragment extends Fragment {
         initObservers();
         initCoursesData();
     }
+
     @Background
     void initCoursesData() {
+        // prevent reloading if screen configuration changed (portrait to landscape)
         int size = mViewModel.getCourses().getValue().size();
         if(size  == 0){
             List<CourseModel> modelList = courseClient.get().getRecords();
@@ -87,8 +90,12 @@ public class CourseListFragment extends Fragment {
 
     @Click
     void button(){
-        reloadCourseData();
+        Bundle bundle = new Bundle();
+        bundle.putInt("courseID", 0);
+        NavHostFragment.findNavController(CourseListFragment.this)
+                .navigate(R.id.action_fragment_course_list_to_fragment_course_form,bundle);
     }
+
     @Background
     void reloadCourseData() {
         List<CourseModel> modelList = courseClient.get().getRecords();
