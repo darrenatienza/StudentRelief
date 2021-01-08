@@ -19,20 +19,21 @@ import java.util.List;
 
 
 public class CourseListViewModel extends ViewModel {
+
+    CourseDataHelper_ courseDataHelper_;
     // TODO: Implement the ViewModel
     private MutableLiveData<List<CourseModel>> courses;
-
-
-
 
     public MutableLiveData<List<CourseModel>> getCourses() {
 
         if (courses == null) {
+
             courses = new MutableLiveData<>();
             courses.setValue(new ArrayList<>());
         }
         return courses;
     }
+
 
 
 }
