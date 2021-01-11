@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_course_list"
-        android:name="com.example.studentrelief.ui.course.CourseListFragment_"
+        android:name="com.example.studentrelief.ui.course.views.CourseListFragment_"
         android:label="@string/label_course_list"
         tools:layout="@layout/fragment_course_list">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_course_form"
-        android:name="com.example.studentrelief.ui.course.CourseFormFragment_"
+        android:name="com.example.studentrelief.ui.course.views.CourseFormFragment_"
         android:label="@string/label_course_form"
         tools:layout="@layout/fragment_course_form">
         <argument

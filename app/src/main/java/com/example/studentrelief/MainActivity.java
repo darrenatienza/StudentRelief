@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawer;
     private FragmentManager fm;
+    private MainActivityViewModel mViewModel;
 
 
     @Override
@@ -45,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void afterViews(){
+
         setSupportActionBar(toolbar);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -56,10 +60,16 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+        initObservers();
 
     }
 
+    private void initObservers() {
+        mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        mViewModel.getAppTitle().observe(this, title ->{
+            getSupportActionBar().setTitle(title);
+        });
+    }
 
 
     @Override

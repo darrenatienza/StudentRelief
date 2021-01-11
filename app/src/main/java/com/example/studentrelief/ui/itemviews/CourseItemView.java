@@ -11,17 +11,13 @@ import com.example.studentrelief.services.model.DonationModel;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
-@EViewGroup(R.layout.donation_item)
+@EViewGroup(R.layout.item_course)
 public class CourseItemView extends RelativeLayout {
 
-    @ViewById
+    @ViewById(R.id.textView_ID)
     TextView idView;
-    @ViewById
+    @ViewById(R.id.textView_Title)
     TextView title;
-
-
-
-
 
     public CourseItemView(Context context) {
         super(context);

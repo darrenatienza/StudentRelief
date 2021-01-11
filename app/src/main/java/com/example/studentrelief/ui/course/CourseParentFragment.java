@@ -29,6 +29,12 @@ import java.util.List;
 
 @EFragment(R.layout.fragment_course_parent)
 public class CourseParentFragment extends Fragment {
+    private CourseViewModel mViewModel;
+// just empty parent activity
 
 
+    @AfterViews
+    void afterViews(){
+        mViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
+    }
 }

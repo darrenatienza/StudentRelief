@@ -20,7 +20,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_Course_Title"
+            android:id="@+id/courseTitleInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -33,6 +33,17 @@
         android:text="Please put required information"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tiFullName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

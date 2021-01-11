@@ -88,7 +88,6 @@ public class EmployeeFormFragment extends Fragment {
         if(employeeID == 0){
             menuItem.setVisible(false);
         }
-
     }
 
 
