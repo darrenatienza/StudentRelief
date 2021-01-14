@@ -90,7 +90,7 @@ public class CourseListFragment extends Fragment {
     }
     private void initSearch() {
         tiSearch.setEndIconOnClickListener(v ->{
-           mViewModel.willReloadCourses().setValue(true);
+           reloadCourseData();
         });
     }
     private void initItemClick() {
@@ -105,22 +105,14 @@ public class CourseListFragment extends Fragment {
                     .navigate(R.id.action_fragment_course_list_to_fragment_course_form,bundle);
         });
     }
-    @UiThread
-    void updateCoursesLiveData(List<CourseModel> modelList) {
-      mViewModel.setCourses(modelList);
-    }
+
 
     private void initObservers() {
         //mViewModel = new ViewModelProvider(getParentFragment()).get(CourseListViewModel.class);
         mViewModel = new ViewModelProvider(getParentFragment()).get(CourseViewModel.class);
         mMainActivityViewModel = new ViewModelProvider(getActivity()).get(MainActivityViewModel.class);
         mMainActivityViewModel.getAppTitle().setValue("Courses");
-
-        mViewModel.willReloadCourses().observe(getViewLifecycleOwner(), willReload ->{
-            if(willReload) {
-                reloadCourseData();
-            }
-        } );
+        reloadCourseData();
         mViewModel.getCourses().observe(getViewLifecycleOwner(), courses ->{
                 Log.d("record count ", String.valueOf(courses.size()));
                 adapter.setList(courses);
@@ -142,15 +134,17 @@ public class CourseListFragment extends Fragment {
             String search = searchInput.getText().toString();
             List<CourseModel> modelList = courseClient.getAll(search).getRecords();
             if(modelList.size() > 0){
-                updateCoursesLiveData(modelList);
+              updateCourseData(modelList);
             }
         }catch (RestClientException e){
             Log.e("Rest Client Error", e.toString());
         }
 
     }
-
-
+    @UiThread
+    void updateCourseData(List<CourseModel> modelList) {
+        mViewModel.getCourses().setValue(modelList);
+    }
 
 
 }

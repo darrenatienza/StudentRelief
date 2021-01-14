@@ -66,7 +66,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     UserClient userClient;
 
     @Extra
-    int userID;
+    int userID =2;
 
     @ViewById
     Toolbar toolbar;

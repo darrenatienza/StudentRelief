@@ -3,6 +3,7 @@ package com.example.studentrelief.ui.student;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,13 +12,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.studentrelief.R;
+import com.example.studentrelief.services.interfaces.CourseClient;
 import com.example.studentrelief.services.interfaces.StudentClient;
 import com.example.studentrelief.services.interfaces.UserClient;
+import com.example.studentrelief.services.model.CourseModel;
 import com.example.studentrelief.services.model.StudentModel;
 import com.example.studentrelief.services.model.UserModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterTextChange;
@@ -34,6 +38,8 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
+import java.util.List;
+
 @OptionsMenu(R.menu.menu_with_user_form)
 @EActivity(R.layout.activity_student_form)
 public class StudentFormActivity extends AppCompatActivity {
@@ -41,11 +47,14 @@ public class StudentFormActivity extends AppCompatActivity {
     @RestService
     StudentClient studentClient;
     @RestService
+    CourseClient courseClient;
+
+    @RestService
     UserClient userClient;
     @Extra
-    int studentID;
+    int studentID = 1;
     @Extra
-    int userID;
+    int userID =2;
     @ViewById
     Toolbar toolbar;
 
@@ -63,10 +72,8 @@ public class StudentFormActivity extends AppCompatActivity {
     TextInputEditText etContactNumber;
 
     @ViewById
-    TextInputEditText etCampus;
+    MaterialAutoCompleteTextView etCampus;
 
-    @ViewById
-    TextInputEditText etCourse;
     @ViewById
     ProgressBar progressBar;
 
@@ -81,6 +88,8 @@ public class StudentFormActivity extends AppCompatActivity {
     private boolean validContactNumber;
     private boolean validCampus;
 
+    @ViewById
+    MaterialAutoCompleteTextView courseInputList;
 
     @AfterTextChange(R.id.etSrCode)
     void srCodeAfterTextChange(TextView et){
@@ -137,7 +146,7 @@ public class StudentFormActivity extends AppCompatActivity {
         validCampus = !value.isEmpty() ? true : false;
         et.setError(value.isEmpty() ? "Required" : null);
     }
-    @AfterTextChange(R.id.etCourse)
+    @AfterTextChange(R.id.courseInputList)
     void courseAfterTextChange(TextView et){
         String value = et.getText().toString();
         validCourse = !value.isEmpty() ? true : false;
@@ -155,7 +164,7 @@ public class StudentFormActivity extends AppCompatActivity {
             String address = etAddress.getText().toString();
             String contactNumber = etContactNumber.getText().toString();
             String campus = etCampus.getText().toString();
-            String course = etCourse.getText().toString();
+            String course = courseInputList.getText().toString();
 
             if(validAddress && validCampus && validContactNumber && validCourse && validFullName && validSrCode){
                 studentModel.setSr_code(srCode);
@@ -230,8 +239,18 @@ public class StudentFormActivity extends AppCompatActivity {
     }
     @UiThread
     void updateUIAfterSave() {
-        showNewStudentRegisterDialog();
+        if(studentID == 0){
+            showNewStudentRegisterDialog();
+        }
 
+        else{
+            showSuccess("Record has been save");
+        }
+
+    }
+
+    private void showSuccess(String msg) {
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
     }
 
     private void showNewStudentRegisterDialog() {
@@ -253,6 +272,8 @@ public class StudentFormActivity extends AppCompatActivity {
         try{
             setSupportActionBar(toolbar);
             initAuthCookies();
+            loadCoursesAsync();
+            loadCampuses();
             if(studentID > 0){
                 etSrCode.setEnabled(false);
 
@@ -269,6 +290,26 @@ public class StudentFormActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void loadCampuses() {
+        String[] campuses = {"Main I",
+                "Main II",
+                "Lipa",
+                "Balayan",
+                "Rosario",
+                "Malvar",
+                "Arasof-Nasugbu",
+                "Lemery",
+                "Mabini",
+                "JPLPC-Malvar",
+                "San Juan",
+                "Lobo"
+        };
+        ArrayAdapter<String> courseModelArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line,campuses);
+        etCampus.setAdapter(courseModelArrayAdapter);
+        courseModelArrayAdapter.setNotifyOnChange(true);
     }
 
     private void initAuthCookies() {
@@ -310,7 +351,25 @@ public class StudentFormActivity extends AppCompatActivity {
         etAddress.setText(model.getAddress());
         etContactNumber.setText(model.getContact_number());
         etCampus.setText(model.getCampus());
-        etCourse.setText(model.getCourse());
+        courseInputList.setText(model.getCourse());
 
+    }
+
+    @Background(serial = "init")
+    void loadCoursesAsync() {
+        try{
+            List<CourseModel> courseModelList = courseClient.getAll("").getRecords();
+            updateCourseListUI(courseModelList);
+        }catch (RestClientException e){
+            showErrorAlert(e.toString());
+        }
+
+    }
+    @UiThread
+    void updateCourseListUI(List<CourseModel> courseModelList) {
+        ArrayAdapter<CourseModel> courseModelArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line,courseModelList);
+        courseInputList.setAdapter(courseModelArrayAdapter);
+        courseModelArrayAdapter.setNotifyOnChange(true);
     }
 }

@@ -158,4 +158,5 @@
     <string name="label_course_list">Courses</string>
     <string name="course_title">Title</string>
     <string name="label_course_form">Course Form</string>
+    <string name="courseInputList">Courses</string>
 </resources>

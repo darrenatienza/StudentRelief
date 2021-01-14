@@ -11,36 +11,22 @@ import java.util.List;
 
 public class CourseViewModel extends ViewModel {
 
-    private MutableLiveData<Boolean> reloadCourses;
+
     // TODO: Implement the ViewModel
     private MutableLiveData<List<CourseModel>> courses;
 
-    // handles loading decisions
-    public MutableLiveData<Boolean> willReloadCourses() {
 
-        if (reloadCourses == null) {
-
-            reloadCourses = new MutableLiveData<>();
-            reloadCourses.setValue(true);
-        }
-        return reloadCourses;
-    }
     // contains
     public MutableLiveData<List<CourseModel>> getCourses() {
 
         if (courses == null) {
 
             courses = new MutableLiveData<>();
-
+            courses.setValue(new ArrayList<>());
         }
         return courses;
     }
-    public void setCourses(List<CourseModel> courseList){
-        if(reloadCourses.getValue()){
-            courses.setValue(courseList);
-            reloadCourses.setValue(false);
-        }
-    }
+
 
 
 
