@@ -40,7 +40,4 @@ public class CourseAdapter extends RecyclerViewAdapterBase<CourseModel, CourseIt
 
         view.bind(model);
     }
-
-
-
 }
