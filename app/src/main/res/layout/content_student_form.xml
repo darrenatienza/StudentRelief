@@ -123,6 +123,7 @@
             android:inputType="phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="+639"
             android:textSize="16dp" />
 
     </com.google.android.material.textfield.TextInputLayout>

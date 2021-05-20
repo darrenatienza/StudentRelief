@@ -1,5 +1,7 @@
 package com.example.studentrelief.ui.student;
 
+import android.text.Editable;
+import android.text.Selection;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.BeforeTextChange;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
@@ -80,19 +83,74 @@ public class StudentFormActivity extends AppCompatActivity {
     private boolean validAddress;
     private boolean validContactNumber;
     private boolean validCampus;
+    private boolean isFormatting;
+    private boolean deletingHyphen;
+    private int hyphenStart;
+    private boolean deletingBackward;
 
 
     @AfterTextChange(R.id.etSrCode)
-    void srCodeAfterTextChange(TextView et){
-            String value = et.getText().toString();
+    void srCodeAfterTextChange(Editable et){
+            String value = et.toString();
             progressBar.setVisibility(studentID == 0? View.VISIBLE : View.GONE);
             validSrCode = !value.isEmpty() ? true : false;
-            et.setError(value.isEmpty() ? "Required" : null);
+            etSrCode.setError(value.isEmpty() ? "Required" : null);
+
             // validation for registration of new student
             if(userID == 0){
+
+                // add dash to edit text
+                if (isFormatting)
+                    return;
+
+                isFormatting = true;
+
+                // If deleting hyphen, also delete character before or after it
+                if (deletingHyphen && hyphenStart > 0) {
+                    if (deletingBackward) {
+                        if (hyphenStart - 1 < et.length()) {
+                            et.delete( hyphenStart - 1, hyphenStart);
+                        }
+                    } else if (hyphenStart < et.length()) {
+                        et.delete( hyphenStart, hyphenStart + 1);
+                    }
+                }
+                if (et.length() == 2 ) {
+                    et.append("-");
+                }
+
+                isFormatting = false;
                 checkSrCodeIfExists(value);
             }
         }
+
+
+    @BeforeTextChange(R.id.etSrCode)
+    void srCodeBeforeTextChange(TextView et,CharSequence text, int start, int count, int after)
+    {
+        if (isFormatting)
+            return;
+
+        // Make sure user is deleting one char, without a selection
+        final int selStart = Selection.getSelectionStart(text);
+        final int selEnd = Selection.getSelectionEnd(text);
+        if (text.length() > 1 // Can delete another character
+                && count == 1 // Deleting only one character
+                && after == 0 // Deleting
+                && text.charAt(start) == '-' // a hyphen
+                && selStart == selEnd) { // no selection
+            deletingHyphen = true;
+            hyphenStart = start;
+            // Check if the user is deleting forward or backward
+            if (selStart == start + 1) {
+                deletingBackward = true;
+            } else {
+                deletingBackward = false;
+            }
+        } else {
+            deletingHyphen = false;
+        }
+    }
     @Background
     void checkSrCodeIfExists(String value) {
         try{

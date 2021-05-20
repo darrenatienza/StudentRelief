@@ -19,6 +19,16 @@ public class ReliefRequestModel {
     String request_task_title;
     String donation_requests;
 
+    public String getNext_follow_up_date() {
+        return next_follow_up_date;
+    }
+
+    public void setNext_follow_up_date(String next_follow_up_date) {
+        this.next_follow_up_date = next_follow_up_date;
+    }
+
+    String next_follow_up_date;
+
 
     public String getDonation_requests() {
         return donation_requests == null ? "" : donation_requests;
