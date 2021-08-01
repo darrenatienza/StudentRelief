@@ -3,6 +3,7 @@ package com.example.studentrelief.ui.student;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OnActivityResult;
@@ -88,6 +90,8 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     StudentReliefTaskAdapter adapter;
     @ViewById
     RecyclerView recyclerView;
+    @ViewById
+    Button btn_followup;
     @Pref
     MyPrefs_ myPrefs;
     private int studentID;
@@ -116,6 +120,11 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
 
     }
+    @Click(R.id.btn_followup)
+    void followUp(){
+
+        btn_followup.setVisibility(View.INVISIBLE);
+    }
 
     /**
      * Use to check pending relief request
@@ -126,8 +135,8 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
 
             JsonArrayHolder<ReliefRequestModel> result = reliefRequestClient.getReliefRequestCount(studentID, 0);
             if(result.size() > 0){
-
-                updateUIAfterCheckingPendingReliefRequest();
+                boolean isFollowUp = result.getSingleRecord().isFollowup();
+                updateUIAfterCheckingPendingReliefRequest(isFollowUp);
             }
             else {
                 // no pending relief request
@@ -140,9 +149,11 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
         }
     }
     @UiThread
-    void updateUIAfterCheckingPendingReliefRequest() {
+    void updateUIAfterCheckingPendingReliefRequest(boolean isFollowUp) {
+        btn_followup.setVisibility(isFollowUp ? View.INVISIBLE : View.VISIBLE);
         textViewPendingReliefRequest.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
+
     }
 
     private void initAuthCookies() {

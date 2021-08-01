@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -196,6 +197,7 @@ public class ReliefRequestSuggestionDialogFragment extends DialogFragment {
             _model.setDonation_requests(donationRequests);
             addNewReliefRequest(_model);
         }catch (RestClientException e){
+            Log.e("Error",e.toString());
             showError(e.getMessage());
         }
     }

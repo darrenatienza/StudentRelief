@@ -1,5 +1,6 @@
 package com.example.studentrelief.ui.login;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -173,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @UiThread
     void onError(String message) {
+        Log.e("Login Error", message);
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
         loadingProgressBar.setVisibility(View.GONE);
     }

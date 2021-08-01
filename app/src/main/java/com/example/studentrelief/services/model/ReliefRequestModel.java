@@ -18,6 +18,15 @@ public class ReliefRequestModel {
     String student_course;
     String request_task_title;
     String donation_requests;
+    boolean followup;
+
+    public boolean isFollowup() {
+        return followup;
+    }
+
+    public void setFollowup(boolean followup) {
+        this.followup = followup;
+    }
 
     public String getNext_follow_up_date() {
         return next_follow_up_date;

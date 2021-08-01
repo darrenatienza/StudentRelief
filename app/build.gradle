@@ -40,8 +40,22 @@ android {
             // note that to define a string you need to escape it
             //buildConfigField "String", 'BASE_URL', "\"http://192.168.1.100/api.php\""
 
-            buildConfigField "String", 'BASE_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
-            buildConfigField "String", 'USER_URL', "\"http://192.168.195.99:8080/student-relief-api/api.php\""
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.42.39:8080/student-relief-api/api.php\""
+            buildConfigField "String", 'USER_URL', "\"http://192.168.42.39:8080/student-relief-api/api.php\""
+        }
+        debugPldt01 {
+            // note that to define a string you need to escape it
+            //buildConfigField "String", 'BASE_URL', "\"http://192.168.1.100/api.php\""
+            initWith debug
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.1.208:80/student-relief-api/api.php\""
+            buildConfigField "String", 'USER_URL', "\"http://192.168.1.208:80/student-relief-api/api.php\""
+        }
+        debugWifi {
+            // note that to define a string you need to escape it
+            //buildConfigField "String", 'BASE_URL', "\"http://192.168.1.100/api.php\""
+            initWith debug
+            buildConfigField "String", 'BASE_URL', "\"http://192.168.43.214:80/student-relief-api/api.php\""
+            buildConfigField "String", 'USER_URL', "\"http://192.168.43.214:80/student-relief-api/api.php\""
         }
         release {
             minifyEnabled false
