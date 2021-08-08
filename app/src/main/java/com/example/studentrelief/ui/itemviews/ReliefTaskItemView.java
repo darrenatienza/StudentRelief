@@ -25,6 +25,8 @@ public class ReliefTaskItemView extends RelativeLayout {
     TextView tvStatus;
     @ViewById(R.id.textView_not_released)
     TextView textViewNotReleased;
+    @ViewById(R.id.tv_followup)
+    TextView tvFollowUp;
 
     public ReliefTaskItemView(Context context) {
         super(context);
@@ -42,8 +44,10 @@ public class ReliefTaskItemView extends RelativeLayout {
         tvStatus.setTextColor(model.getActive() ?  red: green);
         tvStatus.setText(model.getStatus());
         int notReleased = model.getNot_released();
+        int followedUpCount = model.getFollowup_count();
         textViewNotReleased.setText("Not Released: " + notReleased);
         textViewNotReleased.setVisibility(notReleased > 0? VISIBLE : GONE);
-
+        tvFollowUp.setText("Followed Up: " + followedUpCount);
+        tvFollowUp.setVisibility(followedUpCount > 0 ? VISIBLE : GONE);
     }
 }

@@ -4,7 +4,6 @@ import com.example.studentrelief.BuildConfig;
 import com.example.studentrelief.services.model.JsonArrayHolder;
 import com.example.studentrelief.services.model.ReliefRequestContainer;
 import com.example.studentrelief.services.model.ReliefRequestModel;
-import com.example.studentrelief.services.model.ReliefRequestCountModel;
 import com.example.studentrelief.ui.misc.Constants;
 
 import org.androidannotations.rest.spring.annotations.Body;
@@ -61,4 +60,8 @@ public interface ReliefRequestClient {
             "&exclude=student_id,released")
     @RequiresCookie(Constants.SESSION_NAME)
     JsonArrayHolder<ReliefRequestModel> getReliefRequestCount(@Path int studentID, @Path int released);
+
+    @Get("/records/relief_requests?filter=released,eq,{released}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    JsonArrayHolder<ReliefRequestModel> getReliefRequestBy(@Path boolean released);
 }

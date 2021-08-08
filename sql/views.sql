@@ -103,7 +103,8 @@ create or replace view  relief_requests_view as
 		rr.released,
 		rr.date_release,
 		rr.create_time_stamp,
-		rr.donation_requests
+		rr.donation_requests,
+		rr.followup
 	from relief_requests rr
 	inner join students s
 		on rr.student_id = s.student_id
@@ -140,7 +141,16 @@ create or replace view view_relief_task_list as
 			where
 				rr.relief_task_id = rt.relief_task_id and
 				rr.released = 0
-		) as not_released
+		) as not_released,
+		(
+			select
+				count(rr.relief_request_id)
+			from
+				relief_requests rr
+			where
+				rr.relief_task_id = rt.relief_task_id and
+				rr.followup = 0
+		) as followup_count
 		
 	from 
 		relief_tasks rt;

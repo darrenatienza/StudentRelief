@@ -122,8 +122,34 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     }
     @Click(R.id.btn_followup)
     void followUp(){
+        followUpAsync();
 
-        btn_followup.setVisibility(View.INVISIBLE);
+    }
+
+    @Background
+    void followUpAsync() {
+        try{
+
+            JsonArrayHolder<ReliefRequestModel> result = reliefRequestClient.getReliefRequestBy(false);
+            if(result.size() > 0){
+                ReliefRequestModel reliefRequestModel = result.getSingleRecord();
+                boolean isFollowUp = reliefRequestModel.isFollowup();
+                int id = reliefRequestModel.getRelief_request_id();
+                if (!isFollowUp){
+                    reliefRequestModel.setFollowup(true);
+                    reliefRequestClient.edit(id,reliefRequestModel);
+                    followUpUISync();
+                }
+
+            }
+        }catch (RestClientException ex){
+            Log.e("Error",ex.toString());
+            showErrorAlert(ex.getMessage());
+        }
+    }
+
+    private void followUpUISync() {
+        btn_followup.setVisibility(View.GONE);
     }
 
     /**
@@ -148,9 +174,10 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             showErrorAlert(ex.getMessage());
         }
     }
+
     @UiThread
     void updateUIAfterCheckingPendingReliefRequest(boolean isFollowUp) {
-        btn_followup.setVisibility(isFollowUp ? View.INVISIBLE : View.VISIBLE);
+        btn_followup.setVisibility(isFollowUp ? View.GONE : View.VISIBLE);
         textViewPendingReliefRequest.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
 

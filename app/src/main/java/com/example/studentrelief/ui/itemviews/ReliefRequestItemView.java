@@ -27,7 +27,8 @@ public class ReliefRequestItemView extends RelativeLayout {
     TextView tvStudentCourse;
     @ViewById
     TextView tvStatus;
-
+    @ViewById
+    TextView tv_isFollowUp;
     public ReliefRequestItemView(Context context) {
         super(context);
     }
@@ -40,6 +41,12 @@ public class ReliefRequestItemView extends RelativeLayout {
         tvStudentCampus.setText(model.getStudent_campus());
         tvStudentCourse.setText( model.getStudent_course());
         tvStatus.setText(model.isReleased()? "Released" : "Not yet release");
-        tvStatus.setTextColor(model.isReleased()? getResources().getColor(R.color.main_green_color) : getResources().getColor(R.color.error));
+        int green = getResources().getColor(R.color.main_green_color);
+        int red = getResources().getColor(R.color.error);
+        tvStatus.setTextColor(model.isReleased()? green : red);
+        tv_isFollowUp.setText("Followed Up: " + (model.isFollowup()? "Yes" : "No"));
+        tv_isFollowUp.setTextColor(red);
+        tv_isFollowUp.setVisibility(model.isFollowup()? VISIBLE : GONE);
+
     }
 }

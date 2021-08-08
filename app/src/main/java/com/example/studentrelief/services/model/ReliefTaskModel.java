@@ -9,7 +9,16 @@ public class ReliefTaskModel {
     String affected_areas;
     String create_time_stamp;
     int not_released;
+    int followup_count;
     boolean active;
+
+    public int getFollowup_count() {
+        return followup_count;
+    }
+
+    public void setFollowup_count(int followup_count) {
+        this.followup_count = followup_count;
+    }
 
     public int getNot_released() {
         return not_released;
