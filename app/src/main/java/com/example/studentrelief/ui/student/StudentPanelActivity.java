@@ -399,6 +399,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             hideRequestDonationText();
 
         }catch (RestClientException e){
+            Log.e("loadListError",e.toString());
            showErrorAlert(e.getMessage());
         }
     }
