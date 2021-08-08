@@ -8,6 +8,26 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_priority_index"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/priority_index"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_priority_index"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
@@ -18,6 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tiFullName" />
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tiFullName"
         android:layout_width="0dp"
@@ -26,9 +47,9 @@
         android:hint="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
 
-        app:layout_constraintTop_toBottomOf="@+id/textView5">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_priority_index">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etName"

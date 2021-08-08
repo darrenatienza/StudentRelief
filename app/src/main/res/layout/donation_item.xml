@@ -23,17 +23,37 @@
            app:layout_constraintTop_toTopOf="parent" />
 
        <TextView
+           android:id="@+id/indexView"
+           android:textSize="30dp"
+           android:layout_width="40dp"
+           android:layout_height="0dp"
+           android:layout_marginStart="8dp"
+
+
+           android:layout_marginLeft="8dp"
+           android:layout_marginTop="8dp"
+           android:layout_marginEnd="8dp"
+           android:layout_marginRight="8dp"
+           android:layout_marginBottom="8dp"
+           android:text="0"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toStartOf="@+id/nameView"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           android:gravity="center" />
+
+       <TextView
            android:id="@+id/nameView"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:layout_marginStart="18dp"
-           android:layout_marginLeft="18dp"
+           android:layout_marginStart="50dp"
+           android:layout_marginLeft="50dp"
            android:layout_marginTop="8dp"
            android:layout_marginEnd="18dp"
+
+
            android:layout_marginRight="18dp"
            android:text="Donation Name"
-
-
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
@@ -42,8 +62,8 @@
            android:id="@+id/quantityView"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:layout_marginStart="18dp"
-           android:layout_marginLeft="18dp"
+           android:layout_marginStart="50dp"
+           android:layout_marginLeft="50dp"
            android:layout_marginTop="8dp"
            android:layout_marginEnd="18dp"
            android:layout_marginRight="18dp"

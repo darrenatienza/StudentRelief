@@ -1,5 +1,6 @@
 package com.example.studentrelief.ui.donation;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.example.studentrelief.services.model.DonationModel;
 import com.example.studentrelief.ui.misc.Constants;
 import com.example.studentrelief.ui.misc.MyPrefs_;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -49,6 +51,8 @@ public class DonationFormActivity extends AppCompatActivity {
 
     @ViewById
     EditText etQuantity;
+    @ViewById(R.id.tiet_priority_index)
+    TextInputEditText tietPriorityIndex;
 
     private DonationModel model;
     @Pref
@@ -62,9 +66,10 @@ public class DonationFormActivity extends AppCompatActivity {
 
     @OptionsItem(R.id.action_save)
     void btnSave(){
-
+            int priorityIndex = Integer.valueOf(tietPriorityIndex.getText().toString());
             String fullName = etName.getText().toString();
             model.setName(fullName);
+            model.setPriority_index(priorityIndex);
             // always 0 for new record
             if(donationID == 0){
                 model.setQuantity(0);
@@ -149,6 +154,7 @@ public class DonationFormActivity extends AppCompatActivity {
                 model = new DonationModel();
             }
         }catch (Exception ex){
+            Log.e("Error",ex.toString());
             Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
         }
 
@@ -165,6 +171,7 @@ public class DonationFormActivity extends AppCompatActivity {
 
     @UiThread
     void updateUIFormData(DonationModel model) {
+        tietPriorityIndex.setText(String.valueOf(model.getPriority_index()));
         etName.setText(model.getName());
         etQuantity.setText(String.valueOf(model.getQuantity()));
     }

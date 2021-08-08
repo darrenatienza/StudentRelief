@@ -7,6 +7,15 @@ public class DonationModel {
     String name;
     int quantity;
     String create_time_stamp;
+    int priority_index;
+
+    public int getPriority_index() {
+        return priority_index;
+    }
+
+    public void setPriority_index(int priority_index) {
+        this.priority_index = priority_index;
+    }
 
     public int getDonation_id() {
         return donation_id;

@@ -154,4 +154,5 @@
     <string name="dialog_option_member_family">Member of Family</string>
     <string name="label_helper_member_family">Number of male and female, approximate age, etc. Please use comma (,) for multiple items.</string>
     <string name="label_helper_others">Diapers, Hygiene kits, etc.  Please use comma (,) for multiple items.</string>
+    <string name="priority_index">Priority Index</string>
 </resources>

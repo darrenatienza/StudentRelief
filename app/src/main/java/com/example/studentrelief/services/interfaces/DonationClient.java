@@ -17,7 +17,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 
 @Rest(rootUrl = BuildConfig.BASE_URL,converters = { MappingJackson2HttpMessageConverter.class })
 public interface DonationClient {
-    @Get("/records/donations?filter=name,cs,{criteria}")
+    @Get("/records/donations?filter=name,cs,{criteria}&order=priority_index,asc")
     @RequiresCookie(Constants.SESSION_NAME)
     DonationContainer getAll(@Path String criteria);
     /** excludes auto generated column */
