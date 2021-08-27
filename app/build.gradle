@@ -61,7 +61,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //need to make project for updating changes
-            buildConfigField "String", 'BASE_URL', "\"http://spartan-arms.online/api.php\""
+
+            buildConfigField "String", 'BASE_URL', "\"http://http://api-spartan-arms.online/api.php\""
             signingConfig signingConfigs.release
         }
         /**
@@ -86,7 +87,7 @@ android {
         staging{
             initWith debug
             // special url for user end point
-            buildConfigField "String", 'BASE_URL', "\"http://spartan-arms.online/api.php\""
+            buildConfigField "String", 'BASE_URL', "\"http://api-spartan-arms.online/api.php\""
 
         }
         homelan{

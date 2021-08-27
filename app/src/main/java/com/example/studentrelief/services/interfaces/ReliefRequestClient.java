@@ -64,4 +64,7 @@ public interface ReliefRequestClient {
     @Get("/records/relief_requests?filter=released,eq,{released}")
     @RequiresCookie(Constants.SESSION_NAME)
     JsonArrayHolder<ReliefRequestModel> getReliefRequestBy(@Path boolean released);
+    @Get("/records/relief_requests?filter=released,eq,{released}&filter=student_id,eq,{studentID}")
+    @RequiresCookie(Constants.SESSION_NAME)
+    JsonArrayHolder<ReliefRequestModel> getReliefRequestBy(@Path int studentID, @Path boolean released);
 }

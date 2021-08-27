@@ -17,12 +17,12 @@
     <string name="menu_student_list">Students</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="menu_donners">Donners</string>
+    <string name="menu_donners">Donors</string>
     <string name="searchView">Search</string>
     <string name="full_name">Full Name</string>
     <string name="contact_number">Contact Number</string>
     <string name="address">Address</string>
-    <string name="menu_donner_form">Donner Form</string>
+    <string name="menu_donner_form">Donors Form</string>
     <string name="title_donner">Donors Form</string>
     <string name="menu_volunteer">Volunteers</string>
     <string name="title_activity_volunteer_form">Volunteer Form</string>
@@ -38,7 +38,7 @@
     <string name="title_activity_donation">Donations</string>
     <string name="name">Name</string>
     <string name="quantity">Quantity</string>
-    <string name="title_activity_donner_donation_form">Donner\'s Donation\'s</string>
+    <string name="title_activity_donner_donation_form">Donors Donation</string>
     <string name="menu_donner_donation_list">Donors Donations</string>
     <string name="date">Date</string>
     <string name="menu_student_relief_list">Student Relief\'s</string>
@@ -81,7 +81,7 @@
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="action_upload">Upload</string>
-    <string name="field_donner">Donner</string>
+    <string name="field_donner">Donor</string>
     <string name="field_donation">Donation</string>
     <string name="dialog_student_activate_title">Activate Selected Student</string>
     <string name="dialog_student_deactivate_title">De activate Selected Student</string>
@@ -155,4 +155,5 @@
     <string name="label_helper_member_family">Number of male and female, approximate age, etc. Please use comma (,) for multiple items.</string>
     <string name="label_helper_others">Diapers, Hygiene kits, etc.  Please use comma (,) for multiple items.</string>
     <string name="priority_index">Priority Index</string>
+    <string name="followup_submitted">Your follow up has been submitted!</string>
 </resources>

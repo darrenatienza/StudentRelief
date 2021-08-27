@@ -130,7 +130,7 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     void followUpAsync() {
         try{
 
-            JsonArrayHolder<ReliefRequestModel> result = reliefRequestClient.getReliefRequestBy(false);
+            JsonArrayHolder<ReliefRequestModel> result = reliefRequestClient.getReliefRequestBy(studentID,false);
             if(result.size() > 0){
                 ReliefRequestModel reliefRequestModel = result.getSingleRecord();
                 boolean isFollowUp = reliefRequestModel.isFollowup();
@@ -147,9 +147,10 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
             showErrorAlert(ex.getMessage());
         }
     }
-
-    private void followUpUISync() {
+    @UiThread
+    void followUpUISync() {
         btn_followup.setVisibility(View.GONE);
+        Toast.makeText(this,R.string.followup_submitted,Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -160,15 +161,15 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
         try{
 
             JsonArrayHolder<ReliefRequestModel> result = reliefRequestClient.getReliefRequestCount(studentID, 0);
-            if(result.size() > 0){
-                boolean isFollowUp = result.getSingleRecord().isFollowup();
-                updateUIAfterCheckingPendingReliefRequest(isFollowUp);
-            }
-            else {
+            boolean isFollowUp = false;
+            boolean hasPendingRequest = result.size() > 0 ? true: false;
+            if( !hasPendingRequest){
                 // no pending relief request
                 loadList();
+            }else{
+                isFollowUp = result.getSingleRecord().isFollowup();
             }
-
+            updateUIAfterCheckingPendingReliefRequest(hasPendingRequest,isFollowUp);
 
         }catch (RestClientException ex){
             showErrorAlert(ex.getMessage());
@@ -176,10 +177,10 @@ public class StudentPanelActivity extends AppCompatActivity implements RecyclerV
     }
 
     @UiThread
-    void updateUIAfterCheckingPendingReliefRequest(boolean isFollowUp) {
-        btn_followup.setVisibility(isFollowUp ? View.GONE : View.VISIBLE);
-        textViewPendingReliefRequest.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.INVISIBLE);
+    void updateUIAfterCheckingPendingReliefRequest(boolean hasPendingRequest,boolean isFollowUp) {
+        btn_followup.setVisibility(!isFollowUp ? View.VISIBLE : View.GONE);
+        textViewPendingReliefRequest.setVisibility(hasPendingRequest ? View.VISIBLE : View.GONE);
+        recyclerView.setVisibility(!hasPendingRequest? View.VISIBLE : View.INVISIBLE);
 
     }
 
