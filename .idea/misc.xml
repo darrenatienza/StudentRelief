@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Atienza-Desktop/StudioProjects/StudentRelief/app/src/main/res/layout/activity_donner_form.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Atienza-Desktop/StudioProjects/StudentRelief/app/src/main/res/layout/activity_volunteer_form.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Atienza-Desktop/StudioProjects/StudentRelief/app/src/main/res/layout/content_donner_form.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Atienza-Desktop/StudioProjects/StudentRelief/app/src/main/res/layout/content_volunteer_form.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Atienza-Desktop/StudioProjects/StudentRelief/app/src/main/res/layout/fragment_employee_form.xml" value="0.20416666666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -15,9 +15,9 @@ android {
     signingConfigs {
         release {
             storeFile file(var)
-            storePassword '02425darren'
-            keyAlias 'upload'
-            keyPassword 'darren02425'
+            storePassword '^8AZXLn6T'
+            keyAlias 'key0'
+            keyPassword '^8AZXLn6T'
         }
     }
     compileSdkVersion 30

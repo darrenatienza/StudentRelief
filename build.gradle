@@ -1,5 +1,5 @@
 ext {
-    var = 'C:\\Users\\darre\\android-keystores\\upload-keystore.jks'
+    var = 'C:\\Users\\Atienza-Desktop\\StudioProjects\\spartan_arms_key.jsk'
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
